@@ -1,11 +1,22 @@
-import React from 'react'
-import ChatRoom from './components/Chatroom'
+import React from 'react';
+import ChatRoom from './components/Chatroom';
+import { useRoutes } from 'react-router-dom';
+import routes from './RootRouter';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import ThemeProvider from './theme/ThemeProvider';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './common/CommonStyles.scss';
+import './index.css';
 
-const App = () => {
+function App() {
+  const content = useRoutes(routes);
+
   return (
     <>
       <ChatRoom />
-      
+
       <ThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <>
