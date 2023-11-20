@@ -1,4 +1,3 @@
-import React from 'react';
 import ChatRoom from './components/Chatroom';
 import { useRoutes } from 'react-router-dom';
 import routes from './RootRouter';
