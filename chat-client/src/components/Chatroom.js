@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
+import LoginAndRegister from './Auth/LoginAndRegister';
 
 var stompClient = null;
 const ChatRoom = () => {
@@ -13,6 +14,7 @@ const ChatRoom = () => {
         connected: false,
         messageBody: ''
     });
+
     useEffect(() => {
         console.log(userData);
     }, [userData]);
@@ -77,6 +79,7 @@ const ChatRoom = () => {
         const { value } = event.target;
         setUserData({ ...userData, "messageBody": value });
     }
+
     const sendValue = () => {
         if (stompClient) {
             var chatMessage = {
@@ -117,6 +120,7 @@ const ChatRoom = () => {
     const registerUser = () => {
         connect();
     }
+
     return (
         <div className="container">
             {userData.connected ?
@@ -163,19 +167,12 @@ const ChatRoom = () => {
                     </div>}
                 </div>
                 :
-                <div className="register">
-                    <input
-                        id="user-name"
-                        placeholder="Enter your name"
-                        name="userName"
-                        value={userData.username}
-                        onChange={handleUsername}
-                        margin="normal"
-                    />
-                    <button type="button" onClick={registerUser}>
-                        connect
-                    </button>
-                </div>}
+                <LoginAndRegister
+                    userData={userData}
+                    handleUsername={handleUsername}
+                    registerUser={registerUser}
+                />
+            }
         </div>
     )
 }
