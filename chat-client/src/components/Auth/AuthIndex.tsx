@@ -1,29 +1,33 @@
 import React, { memo } from 'react';
 import { useStore } from 'src/stores';
+import { observer } from 'mobx-react';
 
 function AuthIndex() {
     const { authStore } = useStore();
-    // const {
-    //     handleUsername,
-    //     registerUser,
-    //     userData
-    // } = authStore;
-    console.log(authStore);
+    const {
+        registerUser,
+        userData,
+        setUserData
+    } = authStore;
+
+    function handleUsername(event: any){
+        const { value } = event.target;
+        setUserData({ ...userData, "username": value });
+    }
 
     return (
         <div className="register">
-            {/* <input
+            <input
                 id="user-name"
                 placeholder="Enter your name"
-                name="userName"
-                value={userData?.username}
+                name="username"
                 onChange={handleUsername}
             />
             <button type="button" onClick={registerUser}>
                 connect
-            </button> */}
+            </button>
         </div>
     );
 }
 
-export default memo(AuthIndex);
+export default memo(observer(AuthIndex));
