@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-function LoginAndRegister(props) {
+function LoginAndRegister(props:any) {
     const { 
         handleUsername, 
         registerUser, 
@@ -15,7 +15,6 @@ function LoginAndRegister(props) {
                 name="userName"
                 value={userData.username}
                 onChange={handleUsername}
-                margin="normal"
             />
             <button type="button" onClick={registerUser}>
                 connect
