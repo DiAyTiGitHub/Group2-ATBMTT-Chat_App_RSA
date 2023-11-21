@@ -10,22 +10,31 @@ function AuthIndex() {
         setUserData
     } = authStore;
 
-    function handleUsername(event: any){
+    function handleUsername(event: any) {
         const { value } = event.target;
         setUserData({ ...userData, "username": value });
     }
 
     return (
         <div className="register">
-            <input
-                id="user-name"
-                placeholder="Enter your name"
-                name="username"
-                onChange={handleUsername}
-            />
-            <button type="button" onClick={registerUser}>
-                connect
-            </button>
+            {userData?.connected && (
+                <>
+                    Bạn đã có tài khoản! Quay lại tab chat để trải nghiệm
+                </>
+            )}
+            {!userData?.connected && (
+                <>
+                    <input
+                        id="user-name"
+                        placeholder="Enter your name"
+                        name="username"
+                        onChange={handleUsername}
+                    />
+                    <button type="button" onClick={registerUser}>
+                        connect
+                    </button>
+                </>
+            )}
         </div>
     );
 }

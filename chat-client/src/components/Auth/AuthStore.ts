@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
+import { toast } from "react-toastify";
 
 class AuthStore {
     stompClient = null;
@@ -49,6 +50,7 @@ class AuthStore {
         this.stompClient.subscribe('/ChatIndex/public', this.onMessageReceived);
         this.stompClient.subscribe('/user/' + this.userData?.username + '/private', this.onPrivateMessage);
         this.userJoin();
+        toast.success("Tạo tài khoản thành công, quay lại tab Chat!");
     }
 
     userJoin = () => {
@@ -91,7 +93,7 @@ class AuthStore {
 
     onError = (err: any) => {
         console.log(err);
-
+        toast.error("Tạo tài khoản có lỗi, thử lại!");
     }
 
     sendValue = () => {
