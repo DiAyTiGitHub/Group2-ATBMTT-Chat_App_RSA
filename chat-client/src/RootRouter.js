@@ -1,20 +1,26 @@
-// import ComponentsRouter from "src/content/pages/Components/ComponentsRouter";
-// import ManagementRouter from 'src/views/Management/ManagementRouter';
-// import { Status404Page } from './content/pages/Status/Status404/Status404Router';
-// import BaseLayoutRouter from './layouts/BaseLayout/BaseLayoutRouter';
-// import DashboardsRouter from './content/dashboards/DashboardsRouter';
 
+import ChatIndex from './components/Chat/ChatIndex';
+import FriendsIndex from './components/Friends/FriendsIndex';
+import AccountIndex from './components/Account/AccountIndex';
+import AuthIndex from './components/Auth/AuthIndex';
 
 const routes = [
-    // ...BaseLayoutRouter,
-    // ...DashboardsRouter,
-    // ...ManagementRouter,
-    // ...ComponentsRouter,
-    // {
-
-    //     path: '*',
-    //     element: <Status404Page />
-    // },
+    {
+        path: '/chat',
+        element: <ChatIndex />
+    },
+    {
+        path: '/friends',
+        element: <FriendsIndex />
+    },
+    {
+        path: '/account',
+        element: <AccountIndex />
+    },
+    {
+        path: '/login',
+        element: <AuthIndex />
+    },
 ];
 
 export default routes;
