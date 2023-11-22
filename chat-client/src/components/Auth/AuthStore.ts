@@ -15,7 +15,7 @@ class AuthStore {
     }
     tab = "ChatIndex";
 
-    constructors() {
+    constructor() {
         makeAutoObservable(this);
     }
 
@@ -46,11 +46,13 @@ class AuthStore {
     }
 
     onConnected = () => {
-        this.setUserData({ ...this.userData, "connected": true });
-        this.stompClient.subscribe('/ChatIndex/public', this.onMessageReceived);
+        this.setUserData({ ...this.userData, connected: true });
+        this.stompClient.subscribe('/chatroom/public', this.onMessageReceived);
         this.stompClient.subscribe('/user/' + this.userData?.username + '/private', this.onPrivateMessage);
         this.userJoin();
         toast.success("Tạo tài khoản thành công, quay lại tab Chat!");
+        console.dir("checking userData: " + this.userData);
+
     }
 
     userJoin = () => {
@@ -96,18 +98,26 @@ class AuthStore {
         toast.error("Tạo tài khoản có lỗi, thử lại!");
     }
 
+    handleMessage = (event: any) => {
+        const { value } = event.target;
+        this.setUserData({ ...this.userData, "messageBody": value });
+    }
+
     sendValue = () => {
         if (this.stompClient) {
+            console.log("stompClient", this.stompClient);
+
             var chatMessage = {
-                senderName: this.userData?.username,
+                senderName: this?.userData?.username,
                 receiverName: "public",
-                messageBody: this.userData.messageBody,
+                messageBody: this?.userData?.messageBody,
                 status: "MESSAGE"
             };
             console.log(chatMessage);
             this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
             this.setUserData({ ...this.userData, "messageBody": "" });
         }
+        console.log("not catched");
     }
 
     sendPrivateValue = () => {

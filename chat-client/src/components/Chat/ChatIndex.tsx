@@ -2,8 +2,6 @@ import React, { memo, useEffect, useState } from 'react'
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 
-var stompClient = null;
-
 function ChatIndex() {
     const { authStore } = useStore();
     const {
@@ -12,51 +10,17 @@ function ChatIndex() {
         tab,
         privateChats,
         setPrivateChats,
-        publicChats, 
+        publicChats,
         setPublicChats,
-        setTab
+        setTab,
+        sendPrivateValue,
+        sendValue,
+        handleMessage
     } = authStore;
 
     useEffect(() => {
         console.log(userData);
     }, [userData]);
-
-    const handleMessage = (event) => {
-        const { value } = event.target;
-        setUserData({ ...userData, "messageBody": value });
-    }
-
-    const sendValue = () => {
-        if (stompClient) {
-            var chatMessage = {
-                senderName: userData?.username,
-                receiverName: "public",
-                messageBody: userData.messageBody,
-                status: "MESSAGE"
-            };
-            console.log(chatMessage);
-            stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
-            setUserData({ ...userData, "messageBody": "" });
-        }
-    }
-
-    const sendPrivateValue = () => {
-        if (stompClient) {
-            var chatMessage = {
-                senderName: userData?.username,
-                receiverName: tab,
-                messageBody: userData.messageBody,
-                status: "MESSAGE"
-            };
-
-            if (userData?.username !== tab) {
-                privateChats.get(tab).push(chatMessage);
-                setPrivateChats(new Map(privateChats));
-            }
-            stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
-            setUserData({ ...userData, "messageBody": "" });
-        }
-    }
 
     return (
         <div className="container">
@@ -64,7 +28,7 @@ function ChatIndex() {
                 <div className="chat-box">
                     <div className="member-list">
                         <ul>
-                            <li onClick={() => { setTab("ChatIndex") }} className={`member ${tab === "ChatIndex" && "active"}`}>ChatIndex</li>
+                            <li onClick={() => { setTab("ChatIndex") }} className={`member ${tab === "ChatIndex" && "active"}`}>Public chat</li>
                             {[...privateChats.keys()].map((name, index) => (
                                 <li onClick={() => { setTab(name) }} className={`member ${tab === name && "active"}`} key={index}>{name}</li>
                             ))}

@@ -16,11 +16,11 @@ const navigations = [
     //     ],
     // },
     {
-        name: 'Chat',
+        name: 'Chats',
         path: '/chat',
     },
     {
-        name: 'Friend',
+        name: 'Friends',
         path: '/friends',
     },
     {
@@ -29,7 +29,7 @@ const navigations = [
     },
     {
         name: 'Login',
-        path: '/login',
+        path: '/',
     },
 ];
 

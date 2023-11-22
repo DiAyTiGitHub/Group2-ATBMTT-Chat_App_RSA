@@ -5,8 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="219ab52c-0b41-4f94-be17-104189d82972" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/chat-client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-client/src/components/Chatroom.js" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/components/Chatroom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/RootRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/RootRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/components/Auth/AuthIndex.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/components/Auth/AuthIndex.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/components/Auth/AuthStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/components/Auth/AuthStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/components/Chat/ChatIndex.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/components/Chat/ChatIndex.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/components/Chat/ChatStore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/components/Chat/ChatStore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/layouts/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/layouts/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/navigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/navigation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-client/src/stores.js" beforeDir="false" afterPath="$PROJECT_DIR$/chat-client/src/stores.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/controller/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +32,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
         <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
@@ -28,24 +42,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/SpringBoot/React_Spring_Boot_Chat_Application",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "spring.configuration.checksum": "e8a0ae6968d70baa28129567beb87d69",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Program Files/Java&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;e8a0ae6968d70baa28129567beb87d69&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ChatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="chat-server" />
@@ -64,7 +81,8 @@
       <option name="presentableId" value="Default" />
       <updated>1699803423302</updated>
       <workItem from="1699803424299" duration="1060000" />
-      <workItem from="1700497920554" duration="2291000" />
+      <workItem from="1700497920554" duration="5953000" />
+      <workItem from="1700625273754" duration="649000" />
     </task>
     <servers />
   </component>

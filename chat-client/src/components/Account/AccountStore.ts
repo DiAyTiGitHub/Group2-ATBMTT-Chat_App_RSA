@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
 class AccountStore {
-    constructors() {
+    constructor() {
         makeAutoObservable(this);
     }
 }

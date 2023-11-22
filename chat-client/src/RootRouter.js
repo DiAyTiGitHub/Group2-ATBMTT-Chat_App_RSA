@@ -18,7 +18,7 @@ const routes = [
         element: <AccountIndex />
     },
     {
-        path: '/login',
+        path: '/',
         element: <AuthIndex />
     },
 ];

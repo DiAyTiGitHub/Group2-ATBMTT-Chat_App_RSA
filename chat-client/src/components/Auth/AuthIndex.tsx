@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 
@@ -12,8 +12,16 @@ function AuthIndex() {
 
     function handleUsername(event: any) {
         const { value } = event.target;
-        setUserData({ ...userData, "username": value });
+        const newData = { ...userData, "username": value };
+        console.log("cahnging");
+        setUserData(newData);
     }
+
+    useEffect(function () {
+        console.log("user data changed: " + userData);
+    }, [userData]);
+
+    console.log("checking userData: " + userData);
 
     return (
         <div className="register">
@@ -29,6 +37,7 @@ function AuthIndex() {
                         placeholder="Enter your name"
                         name="username"
                         onChange={handleUsername}
+                        value={userData.username}
                     />
                     <button type="button" onClick={registerUser}>
                         connect
@@ -39,4 +48,4 @@ function AuthIndex() {
     );
 }
 
-export default memo(observer(AuthIndex));
+export default (observer(AuthIndex));
