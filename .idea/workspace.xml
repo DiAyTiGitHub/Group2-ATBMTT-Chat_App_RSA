@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="219ab52c-0b41-4f94-be17-104189d82972" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/ChatApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/config/WebSocketConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/controller/ChatController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/model/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/saproject/chat/model/Status.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/config/JwtAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/config/JwtAuthenticationEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/config/JwtRequestFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/config/JwtRequestFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/entity/UserApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/entity/UserApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/repository/UserAppRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-server/src/main/java/com/chatapp/chat/repository/UserAppRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +56,14 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.ChatApplication">
+    <configuration name="ChatApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="chat-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatapp.chat.ChatApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ChatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="chat-server" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.saproject.chat.ChatApplication" />
@@ -77,7 +84,8 @@
       <workItem from="1700497920554" duration="5953000" />
       <workItem from="1700625273754" duration="957000" />
       <workItem from="1700637481164" duration="1002000" />
-      <workItem from="1700709064125" duration="5142000" />
+      <workItem from="1700709064125" duration="6002000" />
+      <workItem from="1700727841356" duration="1249000" />
     </task>
     <servers />
   </component>

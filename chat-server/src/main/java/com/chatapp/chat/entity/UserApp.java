@@ -15,8 +15,10 @@ public class UserApp {
     @Type(type = "uuid-char")
     @Column(name = "id", unique = true, nullable = false)
     private UUID id;
+
     @Column
     private String username;
+
     @Column
     @JsonIgnore
     private String password;
@@ -37,4 +39,12 @@ public class UserApp {
         this.password = password;
     }
 
+    // Getter and Setter for id
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 }

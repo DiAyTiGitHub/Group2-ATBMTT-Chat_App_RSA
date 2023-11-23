@@ -1,6 +1,6 @@
 package com.chatapp.chat.repository;
 
-import com.diaytiproject.todoapp.entity.UserApp;
+import com.chatapp.chat.entity.UserApp;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
