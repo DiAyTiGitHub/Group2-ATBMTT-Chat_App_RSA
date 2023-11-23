@@ -29,7 +29,7 @@ function LoginPage({ handleChangeTab, navigate }: any) {
     const onSubmit = (values: any, props: any) => {
         authenticateUser(values)
             .then(function () {
-                navigate("/overview");
+                navigate("/");
             })
             .catch(function (error) {
                 console.error(error);
