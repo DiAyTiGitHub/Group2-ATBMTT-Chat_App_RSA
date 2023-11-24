@@ -1,6 +1,6 @@
 package com.chatapp.chat.model;
 
-public class UserAppDTO {
+public class UserDTO {
     private String username;
     private String password;
 

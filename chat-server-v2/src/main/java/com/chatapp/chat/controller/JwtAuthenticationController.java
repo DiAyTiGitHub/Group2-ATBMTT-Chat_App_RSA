@@ -1,7 +1,7 @@
 package com.chatapp.chat.controller;
 
 import com.chatapp.chat.config.JwtTokenUtil;
-import com.chatapp.chat.model.UserAppDTO;
+import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +41,7 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody UserAppDTO user) throws Exception {
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(userDetailsService.save(user));
     }
 

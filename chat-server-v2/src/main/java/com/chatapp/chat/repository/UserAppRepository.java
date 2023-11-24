@@ -1,14 +1,14 @@
 package com.chatapp.chat.repository;
 
-import com.chatapp.chat.entity.UserApp;
+import com.chatapp.chat.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface UserAppRepository extends CrudRepository<UserApp, UUID> {
+public interface UserAppRepository extends CrudRepository<User, UUID> {
 
-    UserApp findByUsername(String username);
+    User findByUsername(String username);
 
 }

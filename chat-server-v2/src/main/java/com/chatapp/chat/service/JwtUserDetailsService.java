@@ -1,7 +1,7 @@
 package com.chatapp.chat.service;
 
-import com.chatapp.chat.model.UserAppDTO;
-import com.chatapp.chat.entity.UserApp;
+import com.chatapp.chat.model.UserDTO;
+import com.chatapp.chat.entity.User;
 import com.chatapp.chat.repository.UserAppRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +23,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserApp user = userAppRepository.findByUsername(username);
+		User user = userAppRepository.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
@@ -31,8 +31,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 				new ArrayList<>());
 	}
 
-	public UserApp save(UserAppDTO user) {
-		UserApp newUser = new UserApp();
+	public User save(UserDTO user) {
+		User newUser = new User();
 		newUser.setUsername(user.getUsername());
 		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
 		return userAppRepository.save(newUser);
