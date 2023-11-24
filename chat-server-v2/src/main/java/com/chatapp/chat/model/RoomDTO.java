@@ -1,57 +1,32 @@
-package com.chatapp.chat.entity;
+package com.chatapp.chat.model;
 
-import org.hibernate.annotations.Type;
+import com.chatapp.chat.entity.Room;
 
-import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "tbl_room")
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Type(type = "uuid-char")
-    @Column(name = "id", unique = true, nullable = false)
+public class RoomDTO {
     private UUID id;
-    @Column
     private String code;
-    @Column
     private String name;
-    @Column
     private String description;
-    @Column
     private Date createDate;
-    @Column
     private String avatar;
-    @Column
     private String color;
+    private RoomTypeDTO roomType;
 
-    @ManyToOne
-    @JoinColumn(name = "room_type_id")
-    private RoomType roomType;
-
-    @OneToMany(mappedBy = "room")
-    private Set<Message> messages;
-
-    @OneToMany(mappedBy = "room")
-    private Set<UserRoom> userRooms;
-
-    public Set<Message> getMessages() {
-        return messages;
+    public RoomDTO() {
     }
 
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
-    }
-
-    public Set<UserRoom> getUserRooms() {
-        return userRooms;
-    }
-
-    public void setUserRooms(Set<UserRoom> userRooms) {
-        this.userRooms = userRooms;
+    public RoomDTO(Room entity) {
+        this.id = entity.getId();
+        this.code = entity.getCode();
+        this.name = entity.getName();
+        this.description = entity.getDescription();
+        this.createDate = entity.getCreateDate();
+        this.avatar = entity.getAvatar();
+        this.color = entity.getColor();
+        this.roomType = new RoomTypeDTO(entity.getRoomType());
     }
 
     public UUID getId() {
@@ -110,11 +85,11 @@ public class Room {
         this.color = color;
     }
 
-    public RoomType getRoomType() {
+    public RoomTypeDTO getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
+    public void setRoomType(RoomTypeDTO roomType) {
         this.roomType = roomType;
     }
 }
