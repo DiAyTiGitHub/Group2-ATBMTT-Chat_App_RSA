@@ -71,4 +71,9 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         if (entity == null) return null;
         return new RoomTypeDTO(entity);
     }
+
+    @Override
+    public RoomType getRoomTypeEntityByName(String roomTypeName) {
+        return roomTypeRepository.findByName(roomTypeName);
+    }
 }

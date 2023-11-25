@@ -1,5 +1,6 @@
 package com.chatapp.chat.service;
 
+import com.chatapp.chat.entity.RoomType;
 import com.chatapp.chat.model.RoomTypeDTO;
 
 import java.util.Set;
@@ -15,5 +16,7 @@ public interface RoomTypeService {
     public void deleteRoomType(UUID roomTypeId);
 
     public RoomTypeDTO getRoomTypeById(UUID roomTypeId);
+
+    public RoomType getRoomTypeEntityByName(String roomTypeName);
 
 }
