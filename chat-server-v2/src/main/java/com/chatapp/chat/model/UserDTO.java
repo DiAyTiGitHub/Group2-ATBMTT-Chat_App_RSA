@@ -9,7 +9,6 @@ public class UserDTO {
     private UUID id;
     private String code;
     private String username;
-
     private String fullname;
     private String password;
     private String address;

@@ -1,7 +1,10 @@
 package com.chatapp.chat.service.impl;
 
 import com.chatapp.chat.entity.Friend;
+import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.User;
+import com.chatapp.chat.entity.UserRoom;
+import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.UserRepository;
 import com.chatapp.chat.service.UserService;
@@ -10,9 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,18 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getCurrentLoginUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getCredentials());
-        System.out.println(auth.getDetails());
-        System.out.println(auth.getPrincipal());
-        System.out.println(auth.getName());
-
-        String currentUserName = auth.getName();
-        if (currentUserName == null) return null;
-        User entity = userRepository.findByUsername(currentUserName);
-        if (entity != null) return new UserDTO(entity);
-
-        return null;
+        User currentUser = getCurrentLoginUserEntity();
+        if (currentUser == null)
+            return null;
+        return new UserDTO(currentUser);
     }
 
     @Override
@@ -51,11 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<UserDTO> getAllFiends() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        String currentUserName = auth.getName();
-        if (currentUserName == null) return null;
-        User currentUser = userRepository.findByUsername(currentUserName);
+        User currentUser = getCurrentLoginUserEntity();
 
         Set<User> friends = new HashSet<User>();
         for (Friend relationship : currentUser.getFriendFromRequest()) {
@@ -77,5 +66,86 @@ public class UserServiceImpl implements UserService {
         }
 
         return friendList;
+    }
+
+    @Override
+    public TreeSet<RoomDTO> getAllJoinedRooms() {
+        User currentUser = getCurrentLoginUserEntity();
+        if (currentUser == null)
+            return null;
+        Set<UserRoom> userRooms = currentUser.getUserRooms();
+        if (userRooms == null) return null;
+        TreeSet<RoomDTO> rooms = new TreeSet<>(new Comparator<RoomDTO>() {
+            @Override
+            public int compare(RoomDTO o1, RoomDTO o2) {
+                return 0;
+            }
+        });
+
+        for (UserRoom userRoom : userRooms) {
+            Room room = userRoom.getRoom();
+            rooms.add(new RoomDTO(room));
+        }
+
+        return rooms;
+    }
+
+    @Override
+    public TreeSet<RoomDTO> getAllPrivateRooms() {
+        User currentUser = getCurrentLoginUserEntity();
+        if (currentUser == null)
+            return null;
+
+        Set<UserRoom> userRooms = currentUser.getUserRooms();
+        if (userRooms == null) return null;
+        TreeSet<RoomDTO> rooms = new TreeSet<>(new Comparator<RoomDTO>() {
+            @Override
+            public int compare(RoomDTO o1, RoomDTO o2) {
+                return 0;
+            }
+        });
+
+        for (UserRoom userRoom : userRooms) {
+            Room room = userRoom.getRoom();
+            if (room.getRoomType().getName().trim().toLowerCase().equals("private"))
+                rooms.add(new RoomDTO(room));
+        }
+
+        return rooms;
+    }
+
+    @Override
+    public TreeSet<RoomDTO> getAllPublicRooms() {
+        User currentUser = getCurrentLoginUserEntity();
+        if (currentUser == null)
+            return null;
+
+        Set<UserRoom> userRooms = currentUser.getUserRooms();
+        if (userRooms == null) return null;
+        TreeSet<RoomDTO> rooms = new TreeSet<>(new Comparator<RoomDTO>() {
+            @Override
+            public int compare(RoomDTO o1, RoomDTO o2) {
+                return 0;
+            }
+        });
+
+        for (UserRoom userRoom : userRooms) {
+            Room room = userRoom.getRoom();
+            if (room.getRoomType().getName().trim().toLowerCase().equals("public"))
+                rooms.add(new RoomDTO(room));
+        }
+
+        return rooms;
+    }
+
+    @Override
+    public User getCurrentLoginUserEntity() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        String currentUserName = auth.getName();
+        if (currentUserName == null) return null;
+        User currentUser = userRepository.findByUsername(currentUserName);
+
+        return currentUser;
     }
 }

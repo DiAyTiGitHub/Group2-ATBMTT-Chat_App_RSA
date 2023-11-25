@@ -64,7 +64,9 @@ public class FriendServiceImpl implements FriendService {
 
             //create new room for private chat
 
+
             Friend updatedRelationship = friendRepository.save(relationship);
+            if(updatedRelationship == null) return null;
             return new FriendDTO(updatedRelationship);
         }
 
