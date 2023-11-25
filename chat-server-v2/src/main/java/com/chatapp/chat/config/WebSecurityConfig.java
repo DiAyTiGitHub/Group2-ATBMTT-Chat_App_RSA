@@ -1,7 +1,5 @@
 package com.chatapp.chat.config;
 
-import com.chatapp.chat.config.JwtAuthenticationEntryPoint;
-import com.chatapp.chat.config.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// We don't need CSRF for this example
 		httpSecurity.cors().and().csrf().disable()
 				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/api/user/authenticate", "/api/user/register").permitAll().
+				.authorizeRequests().antMatchers("/api/auth/*").permitAll().
 				// all other requests need to be authenticated
 						anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to

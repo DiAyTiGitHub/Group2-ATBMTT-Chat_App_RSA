@@ -103,6 +103,7 @@ class AuthStore {
 
     authenticateUser = async (user: any) => {
         try {
+            axios.defaults.headers.common["Authorization"] = "Bearer ";
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
             toast.success("Login successfully!");
@@ -120,6 +121,7 @@ class AuthStore {
 
     signUpUser = async (user: any) => {
         try {
+            axios.defaults.headers.common["Authorization"] = "Bearer ";
             const { data } = await registerUser(user);
             toast.success("Register successfully! Please login again!");
             return data;
