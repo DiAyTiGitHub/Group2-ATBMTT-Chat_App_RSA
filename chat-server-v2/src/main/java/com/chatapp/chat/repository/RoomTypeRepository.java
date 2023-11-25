@@ -1,13 +1,11 @@
 package com.chatapp.chat.repository;
 
-import com.chatapp.chat.entity.User;
+import com.chatapp.chat.entity.RoomType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, UUID> {
-
-    public User findByUsername(String username);
+public interface RoomTypeRepository extends CrudRepository<RoomType, UUID> {
 }

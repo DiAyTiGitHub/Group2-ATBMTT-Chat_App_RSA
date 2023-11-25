@@ -1,14 +1,13 @@
 package com.chatapp.chat.controller;
 
-import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -34,5 +33,10 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
-
+    @GetMapping(value = "/friends")
+    public ResponseEntity<Set<UserDTO>> getAllFriends() {
+        Set<UserDTO> friends = userService.getAllFiends();
+        if (friends == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Set<UserDTO>>(friends, HttpStatus.OK);
+    }
 }

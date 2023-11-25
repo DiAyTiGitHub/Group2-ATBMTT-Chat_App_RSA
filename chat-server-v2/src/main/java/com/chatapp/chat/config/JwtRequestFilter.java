@@ -43,8 +43,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }
-        } else {
+        } else if(requestTokenHeader == null || !requestTokenHeader.startsWith("Bearer ")){
             logger.warn("JWT Token does not begin with Bearer String");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token does not begin with Bearer String");
+            return;
         }
 
         // Once we get the token validate it.

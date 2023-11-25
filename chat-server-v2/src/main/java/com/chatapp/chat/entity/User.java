@@ -40,10 +40,10 @@ public class User implements Serializable {
     private Set<Message> messages;
 
     @OneToMany(mappedBy = "requestSender")
-    private Set<Friend> friendFromRequest;
+    private Set<Friend> friendFromRequest; // a new relationship is formed when this user is the person who sends a friend request
 
     @OneToMany(mappedBy = "receiver")
-    private Set<Friend> friendFromReceive;
+    private Set<Friend> friendFromReceive; // a new relationship is formed when this user is the person who accepts a friend request
 
     @OneToMany(mappedBy = "user")
     private Set<UserRoom> userRooms;
