@@ -26,8 +26,8 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Set<UserDTO> getAllJoinedUsersByRoomId(UUID roomId) {
         Room entity = roomRepository.findById(roomId).orElse(null);
-        if(entity == null)
-        return null;
+        if (entity == null)
+            return null;
         Set<UserRoom> userRooms = entity.getUserRooms();
         TreeSet<UserDTO> joinedUsers = new TreeSet<>(new Comparator<UserDTO>() {
             @Override
@@ -36,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
             }
         });
 
-        for( UserRoom userRoom: userRooms){
+        for (UserRoom userRoom : userRooms) {
             User joinedUser = userRoom.getUser();
             joinedUsers.add(new UserDTO(joinedUser));
         }
@@ -46,32 +46,44 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO createRoom(RoomDTO dto) {
-        if(dto == null) return null;
+        if (dto == null) return null;
 
-        Room entity = new Room();
+        Room res = createRoomEntity(dto);
+
+        if (res == null)
+            return null;
+        return new RoomDTO(res);
+    }
+
+    @Override
+    public RoomDTO updateRoom(RoomDTO dto) {
+        if (dto == null) return null;
+
+        Room entity = roomRepository.findById(dto.getId()).orElse(null);
+        if (entity == null) return null;
+
         entity.setCode(dto.getCode());
         entity.setAvatar(dto.getAvatar());
         entity.setColor(dto.getColor());
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setCreateDate(new Date());
-        if(dto.getRoomType() != null){
-//            RoomType roomType = roomTypeService.getRoomTypeById();
-//            RoomType roomType = roomTypeService.getRoomTypeEntityByName(dto.);
-//            if(roomType != null)
+        if (dto.getRoomType() != null && dto.getRoomType().getId() != entity.getRoomType().getId()) {
+            RoomType roomType = roomTypeService.getRoomTypeEntityById(dto.getRoomType().getId());
+            if (roomType == null) roomType = roomTypeService.getRoomTypeEntityByName(dto.getRoomType().getName());
+            if (roomType != null) entity.setRoomType(roomType);
         }
-//        entity.setRoomType();
-        return null;
-    }
 
-    @Override
-    public RoomDTO updateRoom(RoomDTO dto) {
-        return null;
+        Room responseEntity = roomRepository.save(entity);
+
+        return new RoomDTO(responseEntity);
     }
 
     @Override
     public void deleteRoom(UUID roomId) {
-
+        Room entity = roomRepository.findById(roomId).orElse(null);
+        if (entity == null) return;
+        roomRepository.delete(entity);
     }
 
     @Override
@@ -84,5 +96,27 @@ public class RoomServiceImpl implements RoomService {
         Room entity = roomRepository.findById(roomId).orElse(null);
         if (entity == null) return null;
         return new RoomDTO(entity);
+    }
+
+    @Override
+    public Room createRoomEntity(RoomDTO dto) {
+        if (dto == null) return null;
+
+        Room entity = new Room();
+        entity.setCode(dto.getCode());
+        entity.setAvatar(dto.getAvatar());
+        entity.setColor(dto.getColor());
+        entity.setName(dto.getName());
+        entity.setDescription(dto.getDescription());
+        entity.setCreateDate(new Date());
+        if (dto.getRoomType() != null) {
+            RoomType roomType = roomTypeService.getRoomTypeEntityById(dto.getRoomType().getId());
+            if (roomType == null) roomType = roomTypeService.getRoomTypeEntityByName(dto.getRoomType().getName());
+            if (roomType != null) entity.setRoomType(roomType);
+        }
+
+        Room responseEntity = roomRepository.save(entity);
+
+        return responseEntity;
     }
 }

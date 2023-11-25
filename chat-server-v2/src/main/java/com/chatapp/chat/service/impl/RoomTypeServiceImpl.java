@@ -7,9 +7,7 @@ import com.chatapp.chat.service.RoomTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class RoomTypeServiceImpl implements RoomTypeService {
@@ -18,9 +16,9 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Override
     public Set<RoomTypeDTO> getAllRoomTypes() {
-        Set<RoomType> entites = (Set<RoomType>) roomTypeRepository.findAll();
+        List<RoomType> entities = (ArrayList<RoomType>) roomTypeRepository.findAll();
         Set<RoomTypeDTO> res = new HashSet<>();
-        for (RoomType entity : entites) {
+        for (RoomType entity : entities) {
             res.add(new RoomTypeDTO(entity));
         }
         return res;
@@ -75,5 +73,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public RoomType getRoomTypeEntityByName(String roomTypeName) {
         return roomTypeRepository.findByName(roomTypeName);
+    }
+
+    @Override
+    public RoomType getRoomTypeEntityById(UUID roomTypeId) {
+        return roomTypeRepository.findById(roomTypeId).orElse(null);
     }
 }

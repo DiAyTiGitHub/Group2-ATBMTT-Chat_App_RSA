@@ -1,12 +1,12 @@
 package com.chatapp.chat.service.impl;
 
-import com.chatapp.chat.entity.Friend;
-import com.chatapp.chat.entity.User;
-import com.chatapp.chat.model.FriendDTO;
+import com.chatapp.chat.entity.*;
+import com.chatapp.chat.model.*;
 import com.chatapp.chat.repository.FriendRepository;
+import com.chatapp.chat.repository.RoomRepository;
 import com.chatapp.chat.repository.UserRepository;
-import com.chatapp.chat.service.FriendService;
-import com.chatapp.chat.service.UserService;
+import com.chatapp.chat.repository.UserRoomRepository;
+import com.chatapp.chat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,20 +18,32 @@ import java.util.UUID;
 @Service
 public class FriendServiceImpl implements FriendService {
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private FriendRepository friendRepository;
 
+    @Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private UserRoomService userRoomService;
+
+    @Autowired
+    private RoomTypeService roomTypeService;
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private UserRoomRepository userRoomRepository;
+
     @Override
     public FriendDTO sendFriendRequest(UUID receiverId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = auth.getName();
-        if (currentUserName == null) return null;
-        User currentUser = userRepository.findByUsername(currentUserName);
-        if (currentUser == null) return null;
+        //get current user
+        User currentUser = userService.getCurrentLoginUserEntity();
 
-        User requestReceiver = userRepository.findById(receiverId).orElse(null);
+        User requestReceiver = userService.getUserEntityById(receiverId);
         if (requestReceiver == null) return null;
 
         Friend relationship = new Friend();
@@ -53,20 +65,44 @@ public class FriendServiceImpl implements FriendService {
         if (relationship == null) return null;
 
         //get current user
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserName = auth.getName();
-        if (currentUserName == null) return null;
-        User currentUser = userRepository.findByUsername(currentUserName);
-        if (currentUser == null) return null;
+        User currentUser = userService.getCurrentLoginUserEntity();
 
-        if(currentUser.getUsername().equals(relationship.getReceiver().getUsername())){
+        if (currentUser.getUsername().equals(relationship.getReceiver().getUsername())) {
             relationship.setState(true);
 
             //create new room for private chat
+            RoomDTO roomDto = new RoomDTO();
+            RoomType roomTypeEntity = roomTypeService.getRoomTypeEntityByName("private");
+            if (roomTypeEntity != null) {
+                RoomTypeDTO roomTypeDto = new RoomTypeDTO(roomTypeEntity);
+                roomDto.setRoomType(roomTypeDto);
+            }
+            roomDto.setCreateDate(new Date());
+            Room room = roomService.createRoomEntity(roomDto);
+            roomRepository.save(room);
+
+            //create 2 records for tbl_user_room
+            UserRoomDTO urSenderDto = new UserRoomDTO();
+            urSenderDto.setRoom(roomDto);
+            urSenderDto.setUser(new UserDTO(relationship.getRequestSender()));
+            urSenderDto.setNickName(relationship.getRequestSender().getUsername());
+            urSenderDto.setRole("member");
+
+            UserRoom urSender = userRoomService.createUserRoomEntity(urSenderDto);
+            userRoomRepository.save(urSender);
+
+            UserRoomDTO urReceiverDto = new UserRoomDTO();
+            urReceiverDto.setRoom(roomDto);
+            urReceiverDto.setUser(new UserDTO(relationship.getReceiver()));
+            urReceiverDto.setNickName(relationship.getReceiver().getUsername());
+            urReceiverDto.setRole("member");
+
+            UserRoom urReceiver = userRoomService.createUserRoomEntity(urReceiverDto);
+            userRoomRepository.save(urReceiver);
 
 
             Friend updatedRelationship = friendRepository.save(relationship);
-            if(updatedRelationship == null) return null;
+            if (updatedRelationship == null) return null;
             return new FriendDTO(updatedRelationship);
         }
 

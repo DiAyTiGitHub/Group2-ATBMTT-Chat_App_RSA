@@ -19,4 +19,6 @@ public interface RoomTypeService {
 
     public RoomType getRoomTypeEntityByName(String roomTypeName);
 
+    public RoomType getRoomTypeEntityById(UUID roomTypeId);
+
 }

@@ -24,4 +24,10 @@ public interface UserService {
     public TreeSet<RoomDTO> getAllPublicRooms();
 
     public User getCurrentLoginUserEntity();
+
+    public User getUserEntityById(UUID userId);
+
+    public Set<UserDTO> searchUsers(String searchString);
+
+    public Set<UserDTO> getAllUsers();
 }

@@ -1,15 +1,14 @@
 package com.chatapp.chat.service.impl;
 
 import com.chatapp.chat.entity.MessageType;
+import com.chatapp.chat.entity.RoomType;
 import com.chatapp.chat.model.MessageTypeDTO;
 import com.chatapp.chat.repository.MessageTypeRepository;
 import com.chatapp.chat.service.MessageTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class MessageTypeServiceImpl implements MessageTypeService {
@@ -18,9 +17,9 @@ public class MessageTypeServiceImpl implements MessageTypeService {
 
     @Override
     public Set<MessageTypeDTO> getAllMessageTypes() {
-        Set<MessageType> entites = (Set<MessageType>) messageTypeRepository.findAll();
+        List<MessageType> entities = (ArrayList<MessageType>) messageTypeRepository.findAll();
         Set<MessageTypeDTO> res = new HashSet<>();
-        for (MessageType entity : entites) {
+        for (MessageType entity : entities) {
             res.add(new MessageTypeDTO(entity));
         }
         return res;

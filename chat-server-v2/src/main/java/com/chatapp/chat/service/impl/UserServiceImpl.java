@@ -148,4 +148,42 @@ public class UserServiceImpl implements UserService {
 
         return currentUser;
     }
+
+    @Override
+    public User getUserEntityById(UUID userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public Set<UserDTO> searchUsers(String searchString) {
+        searchString = insertPercentageBetweenCharacters(searchString);
+        Set<UserDTO> users = userRepository.searchUsers(searchString);
+        return users;
+    }
+
+    private String insertPercentageBetweenCharacters(String input) {
+        if (input == null || input.isEmpty()) {
+            return input; // Return unchanged for empty or null input
+        }
+
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            result.append(input.charAt(i));
+            if (i < input.length() - 1) {
+                result.append('%');
+            }
+        }
+
+        return result.toString();
+    }
+
+    @Override
+    public Set<UserDTO> getAllUsers() {
+        List<User> entities = (List<User>) userRepository.findAll();
+        Set<UserDTO> res = new HashSet<>();
+        for (User entity : entities) {
+            res.add((new UserDTO(entity)));
+        }
+        return res;
+    }
 }

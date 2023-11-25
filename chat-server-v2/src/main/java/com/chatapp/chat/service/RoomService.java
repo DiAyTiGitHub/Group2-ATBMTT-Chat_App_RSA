@@ -1,5 +1,6 @@
 package com.chatapp.chat.service;
 
+import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.model.MessageDTO;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
@@ -20,6 +21,8 @@ public interface RoomService {
     public Set<MessageDTO> pagingLatestMessage(UUID earliestMessageId);
 
     public RoomDTO getRoomById(UUID roomId);
+
+    public Room createRoomEntity(RoomDTO dto);
 
 
 }
