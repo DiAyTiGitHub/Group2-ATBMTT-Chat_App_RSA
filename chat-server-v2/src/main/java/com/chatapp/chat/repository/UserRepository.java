@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface UserAppRepository extends CrudRepository<User, UUID> {
+public interface UserRepository extends CrudRepository<User, UUID> {
 
     User findByUsername(String username);
 

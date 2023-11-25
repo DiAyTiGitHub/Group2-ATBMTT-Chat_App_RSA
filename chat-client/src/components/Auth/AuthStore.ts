@@ -125,8 +125,12 @@ class AuthStore {
             return data;
         }
         catch (error) {
-            console.error(error);
-            toast.error("Registration has error occured :(");
+            if (error?.response?.status === 409)
+                toast.info("The username has existed, please choose another one!");
+            else {
+                console.error(error);
+                toast.error("Registration has error occured :(");
+            }
             throw new Error(error);
         }
     }

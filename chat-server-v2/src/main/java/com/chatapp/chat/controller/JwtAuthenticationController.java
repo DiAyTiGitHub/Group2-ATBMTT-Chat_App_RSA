@@ -1,9 +1,12 @@
 package com.chatapp.chat.controller;
 
 import com.chatapp.chat.config.JwtTokenUtil;
+import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.service.JwtUserDetailsService;
+import com.chatapp.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/user")
+@RequestMapping("/api/auth")
 public class JwtAuthenticationController {
 
     @Autowired
@@ -25,6 +28,9 @@ public class JwtAuthenticationController {
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
@@ -42,7 +48,10 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-        return ResponseEntity.ok(userDetailsService.save(user));
+        UserDTO existedUser = userService.getUserByName(user.getUsername());
+        if (existedUser == null)
+            return ResponseEntity.ok(userDetailsService.save(user));
+        return new ResponseEntity<>(null, HttpStatus.CONFLICT);
     }
 
     private void authenticate(String username, String password) throws Exception {

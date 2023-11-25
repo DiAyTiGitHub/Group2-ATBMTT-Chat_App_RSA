@@ -1,7 +1,7 @@
 import axios from "axios";
 import ConstantList from "src/appConfig";
 
-const API_PATH = ConstantList.API_ENPOINT + "/api/user";
+const API_PATH = ConstantList.API_ENPOINT + "/api/auth";
 
 export function registerUser(user: any) {
     const url = API_PATH + '/register';

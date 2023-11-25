@@ -2,7 +2,7 @@ package com.chatapp.chat.service;
 
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.entity.User;
-import com.chatapp.chat.repository.UserAppRepository;
+import com.chatapp.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,14 +16,14 @@ import java.util.ArrayList;
 public class JwtUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UserAppRepository userAppRepository;
+	private UserRepository userRepository;
 
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userAppRepository.findByUsername(username);
+		User user = userRepository.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
@@ -35,6 +35,6 @@ public class JwtUserDetailsService implements UserDetailsService {
 		User newUser = new User();
 		newUser.setUsername(user.getUsername());
 		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-		return userAppRepository.save(newUser);
+		return userRepository.save(newUser);
 	}
 }
