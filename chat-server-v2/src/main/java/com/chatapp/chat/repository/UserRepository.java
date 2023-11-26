@@ -13,6 +13,10 @@ import java.util.UUID;
 public interface UserRepository extends CrudRepository<User, UUID> {
     public User findByUsername(String username);
 
-    @Query("Select new com.chatapp.chat.model.UserDTO(entity) from User entity where entity.username like ?1 or entity.fullname like ?1 or entity.address like ?1 or entity.code like ?1")
+    @Query("SELECT new com.chatapp.chat.model.UserDTO(entity) FROM User entity WHERE " +
+            "entity.username LIKE %?1% OR " +
+            "entity.fullname LIKE %?1% OR " +
+            "entity.address LIKE %?1% OR " +
+            "entity.code LIKE %?1%")
     public Set<UserDTO> searchUsers(String searchString);
 }
