@@ -108,4 +108,33 @@ public class FriendServiceImpl implements FriendService {
 
         return null;
     }
+
+    @Override
+    public void unfriend(UUID userId) {
+        Friend relationship = this.getRelationshipEntityByFriendId(userId);
+
+        if (relationship == null) return;
+
+        friendRepository.delete(relationship);
+
+    }
+
+    @Override
+    public FriendDTO getRelationshipByFriendId(UUID friendId) {
+        Friend relationship = this.getRelationshipEntityByFriendId(friendId);
+
+        if (relationship == null) return null;
+        return new FriendDTO(relationship);
+    }
+
+    @Override
+    public Friend getRelationshipEntityByFriendId(UUID friendId) {
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+
+        User friend = userService.getUserEntityById(friendId);
+        if (friend == null) return null;
+
+        return friendRepository.getRelationShipBy2Id(currentUser.getId(), friend.getId());
+    }
 }

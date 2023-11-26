@@ -45,4 +45,9 @@ public class RoomTypeController {
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<RoomTypeDTO>(res, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{roomTypeId}")
+    public void deleteRoomType(@PathVariable UUID roomTypeId){
+        roomTypeService.deleteRoomType(roomTypeId);
+    }
 }

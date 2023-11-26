@@ -32,4 +32,16 @@ public class FriendController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<FriendDTO>(relationship, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{userId}")
+    public void unfriendUser(@PathVariable UUID userId) {
+        friendService.unfriend(userId);
+    }
+
+    @GetMapping("/relationship/{friendId}")
+    public ResponseEntity<FriendDTO> getRelationshipByFriendId(@PathVariable UUID friendId) {
+        FriendDTO relationship = friendService.getRelationshipByFriendId(friendId);
+        if (relationship == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<FriendDTO>(relationship, HttpStatus.OK);
+    }
 }

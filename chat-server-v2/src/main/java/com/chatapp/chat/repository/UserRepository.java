@@ -19,4 +19,11 @@ public interface UserRepository extends CrudRepository<User, UUID> {
             "entity.address LIKE %?1% OR " +
             "entity.code LIKE %?1%")
     public Set<UserDTO> searchUsers(String searchString);
+
+    @Query("SELECT new com.chatapp.chat.model.UserDTO(entity) FROM User entity WHERE " +
+            "(entity.username LIKE %?1% OR " +
+            "entity.fullname LIKE %?1% OR " +
+            "entity.address LIKE %?1% OR " +
+            "entity.code LIKE %?1%) AND entity.id <> ?2")
+    public Set<UserDTO> searchUsersExclude(String searchString, UUID excludeId);
 }

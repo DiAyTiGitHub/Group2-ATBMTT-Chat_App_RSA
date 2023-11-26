@@ -4,6 +4,7 @@ import com.chatapp.chat.entity.Friend;
 import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.entity.UserRoom;
+import com.chatapp.chat.model.FriendDTO;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.UserRepository;
@@ -184,6 +185,56 @@ public class UserServiceImpl implements UserService {
         for (User entity : entities) {
             res.add((new UserDTO(entity)));
         }
+        return res;
+    }
+
+    @Override
+    public Set<UserDTO> searchUsersExcludeSelf(String searchString) {
+        User currentUser = getCurrentLoginUserEntity();
+        searchString = insertPercentageBetweenCharacters(searchString);
+        Set<UserDTO> users = userRepository.searchUsersExclude(searchString, currentUser.getId());
+        return users;
+    }
+
+    @Override
+    public Set<FriendDTO> getAddFriendRequests() {
+        User currentUser = getCurrentLoginUserEntity();
+        if(currentUser == null) return null;
+
+        Set<FriendDTO> res = new TreeSet<FriendDTO>(
+                Collections.reverseOrder(new Comparator<FriendDTO>() {
+                    @Override
+                    public int compare(FriendDTO o1, FriendDTO o2) {
+                        return (o1.getLastModifyDate().compareTo(o2.getLastModifyDate()));
+                    }
+                })
+        );
+
+        for(Friend relationship : currentUser.getFriendFromReceive()){
+            res.add(new FriendDTO(relationship));
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<FriendDTO> getPendingFriendRequests() {
+        User currentUser = getCurrentLoginUserEntity();
+        if(currentUser == null) return null;
+
+        Set<FriendDTO> res = new TreeSet<FriendDTO>(
+                Collections.reverseOrder(new Comparator<FriendDTO>() {
+                    @Override
+                    public int compare(FriendDTO o1, FriendDTO o2) {
+                        return (o1.getLastModifyDate().compareTo(o2.getLastModifyDate()));
+                    }
+                })
+        );
+
+        for(Friend relationship : currentUser.getFriendFromRequest()){
+            res.add(new FriendDTO(relationship));
+        }
+
         return res;
     }
 }

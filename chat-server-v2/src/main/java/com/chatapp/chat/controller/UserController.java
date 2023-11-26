@@ -1,9 +1,6 @@
 package com.chatapp.chat.controller;
 
-import com.chatapp.chat.model.RoomDTO;
-import com.chatapp.chat.model.RoomTypeDTO;
-import com.chatapp.chat.model.SeachObject;
-import com.chatapp.chat.model.UserDTO;
+import com.chatapp.chat.model.*;
 import com.chatapp.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,10 +68,31 @@ public class UserController {
         return new ResponseEntity<Set<UserDTO>>(users, HttpStatus.OK);
     }
 
+    @PostMapping("/searchExcludeSelf")
+    public ResponseEntity<Set<UserDTO>> searchUsersExcludeSelf(@RequestBody SeachObject seachObject) {
+        Set<UserDTO> users = userService.searchUsersExcludeSelf(seachObject.getKeyword());
+        if (users == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Set<UserDTO>>(users, HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Set<UserDTO>> getAllUsers() {
         Set<UserDTO> rooms = userService.getAllUsers();
         if (rooms == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<Set<UserDTO>>(rooms, HttpStatus.OK);
+    }
+
+    @GetMapping("/addFriendRequests")
+    public ResponseEntity<Set<FriendDTO>> getAddFriendRequests() {
+        Set<FriendDTO> res = userService.getAddFriendRequests();
+        if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Set<FriendDTO>>(res, HttpStatus.OK);
+    }
+
+    @GetMapping("/pendingFriendRequests")
+    public ResponseEntity<Set<FriendDTO>> getPendingFriendRequests() {
+        Set<FriendDTO> res = userService.getPendingFriendRequests();
+        if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Set<FriendDTO>>(res, HttpStatus.OK);
     }
 }
