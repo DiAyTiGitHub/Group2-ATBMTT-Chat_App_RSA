@@ -36,16 +36,16 @@ public class User implements Serializable {
     private Date birthDate;
     @Column
     private String avatar;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Message> messages;
 
-    @OneToMany(mappedBy = "requestSender")
+    @OneToMany(mappedBy = "requestSender", fetch = FetchType.EAGER)
     private Set<Friend> friendFromRequest; // a new relationship is formed when this user is the person who sends a friend request
 
-    @OneToMany(mappedBy = "receiver")
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
     private Set<Friend> friendFromReceive; // a new relationship is formed when this user is the person who accepts a friend request
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRoom> userRooms;
 
     public Set<Message> getMessages() {

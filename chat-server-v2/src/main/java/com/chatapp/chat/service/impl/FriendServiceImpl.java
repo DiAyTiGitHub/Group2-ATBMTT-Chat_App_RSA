@@ -79,7 +79,8 @@ public class FriendServiceImpl implements FriendService {
             }
             roomDto.setCreateDate(new Date());
             Room room = roomService.createRoomEntity(roomDto);
-            roomRepository.save(room);
+            room = roomRepository.save(room);
+            roomDto = new RoomDTO(room);
 
             //create 2 records for tbl_user_room
             UserRoomDTO urSenderDto = new UserRoomDTO();
