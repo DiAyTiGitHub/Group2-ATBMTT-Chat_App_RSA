@@ -70,4 +70,9 @@ public class MessageTypeServiceImpl implements MessageTypeService {
         if (entity == null) return null;
         return new MessageTypeDTO(entity);
     }
+
+    @Override
+    public MessageType getMessageTypeEntityByName(String messageTypeName) {
+        return messageTypeRepository.findByName(messageTypeName);
+    }
 }

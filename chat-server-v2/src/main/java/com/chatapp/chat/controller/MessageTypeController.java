@@ -44,4 +44,9 @@ public class MessageTypeController {
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<MessageTypeDTO>(res, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{messageTypeId}")
+    public void deleteMessageType(@PathVariable UUID messageTypeId){
+        messageTypeService.deleteMessageType(messageTypeId);
+    }
 }

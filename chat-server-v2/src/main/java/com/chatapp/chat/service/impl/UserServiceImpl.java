@@ -8,6 +8,7 @@ import com.chatapp.chat.model.FriendDTO;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.UserRepository;
+import com.chatapp.chat.service.RoomService;
 import com.chatapp.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoomService roomService;
 
     @Override
     public UserDTO getCurrentLoginUser() {
@@ -85,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
-            rooms.add(new RoomDTO(room));
+            rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
         }
 
         return rooms;
@@ -108,8 +111,9 @@ public class UserServiceImpl implements UserService {
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
-            if (room.getRoomType().getName().trim().toLowerCase().equals("private"))
-                rooms.add(new RoomDTO(room));
+            if (room.getRoomType().getName().trim().toLowerCase().equals("private")){
+                rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
+            }
         }
 
         return rooms;
@@ -132,8 +136,9 @@ public class UserServiceImpl implements UserService {
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
-            if (room.getRoomType().getName().trim().toLowerCase().equals("public"))
-                rooms.add(new RoomDTO(room));
+            if (room.getRoomType().getName().trim().toLowerCase().equals("public")){
+                rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
+            }
         }
 
         return rooms;

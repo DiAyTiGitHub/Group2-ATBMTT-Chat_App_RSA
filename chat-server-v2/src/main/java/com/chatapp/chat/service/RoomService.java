@@ -24,5 +24,5 @@ public interface RoomService {
 
     public Room createRoomEntity(RoomDTO dto);
 
-
+    public RoomDTO handleAddJoinedUserIntoRoomDTO(Room room);
 }

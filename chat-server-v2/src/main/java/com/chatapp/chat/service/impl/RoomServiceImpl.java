@@ -119,4 +119,11 @@ public class RoomServiceImpl implements RoomService {
 
         return responseEntity;
     }
+
+    @Override
+    public RoomDTO handleAddJoinedUserIntoRoomDTO(Room room){
+        RoomDTO data = new RoomDTO(room);
+        data.setParticipants(this.getAllJoinedUsersByRoomId(data.getId()));
+        return data;
+    }
 }

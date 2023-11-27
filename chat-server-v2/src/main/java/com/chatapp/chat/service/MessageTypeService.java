@@ -1,5 +1,6 @@
 package com.chatapp.chat.service;
 
+import com.chatapp.chat.entity.MessageType;
 import com.chatapp.chat.model.MessageTypeDTO;
 
 import java.util.Set;
@@ -15,5 +16,7 @@ public interface MessageTypeService {
     public void deleteMessageType(UUID MessageTypeId);
 
     public MessageTypeDTO getMessageTypeById(UUID MessageTypeId);
+
+    public MessageType getMessageTypeEntityByName(String messageTypeName);
 
 }
