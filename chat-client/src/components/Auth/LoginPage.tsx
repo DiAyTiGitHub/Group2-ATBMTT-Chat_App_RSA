@@ -29,7 +29,8 @@ function LoginPage({ handleChangeTab, navigate }: any) {
     const onSubmit = (values: any, props: any) => {
         authenticateUser(values)
             .then(function () {
-                navigate("/");
+                
+                navigate("/chat");
             })
             .catch(function (error) {
                 console.error(error);

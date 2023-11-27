@@ -4,10 +4,11 @@ import SockJS from 'sockjs-client';
 import { toast } from "react-toastify";
 import LocalStorage from "src/common/LocalStorage";
 import { registerUser, authenticateUser } from "../../services/AuthService";
+import { getCurrentLoginUser } from "../../services/UserService";
 import axios from "axios";
 
 class AuthStore {
-    
+
     constructor() {
         makeAutoObservable(this);
     }
@@ -17,6 +18,8 @@ class AuthStore {
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
             toast.success("Login successfully!");
+            const { data: userData } = await getCurrentLoginUser();
+            this.setUser(userData);
             return data;
         }
         catch (error) {
@@ -60,13 +63,6 @@ class AuthStore {
             delete axios.defaults.headers.common["Authorization"];
         }
     }
-
-    setLoginUser = (data: any) => {
-        let user: any = {};
-        user.token = data.access_token;
-        this.setUser(user);
-        return user;
-    };
 
     //set token
     setLoginToken = (data: any) => LocalStorage.setItem("auth_token", data);

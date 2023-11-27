@@ -28,7 +28,7 @@ const navigations = [
         path: '/account',
     },
     {
-        name: 'Login',
+        name: 'Login with other accounts',
         path: '/',
     },
 ];
