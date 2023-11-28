@@ -13,7 +13,22 @@ export function getUserById(userId: string) {
     return axios.get(url);
 }
 
-export function getAllFriend(){
+export function getAllFriend() {
     const url = API_PATH + '/friends';
+    return axios.get(url);
+}
+
+export function searchUsersExcludeSelf(searchObject: any) {
+    const url = API_PATH + '/searchExcludeSelf';
+    return axios.post(url, searchObject);
+}
+
+export function searchUsers(searchObject: any) {
+    const url = API_PATH + '/search';
+    return axios.post(url, searchObject);
+}
+
+export function getAllUsers(){
+    const url = API_PATH + '/all';
     return axios.get(url);
 }

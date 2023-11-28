@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from "react-toastify";
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client';
 
 class ChatStore {
     privateMessage = "";
@@ -70,7 +72,7 @@ class ChatStore {
 
 
 
-    stompClient = null;
+    // stompClient = null;
     
     // registerUser = () => {
     //     this.connect();
@@ -90,6 +92,11 @@ class ChatStore {
     //     toast.success("Tạo tài khoản thành công, quay lại tab Chat!");
     //     console.dir("checking userData: " + this.userData);
 
+    // }
+
+    // onError = (err: any) => {
+    //     console.log(err);
+    //     toast.error("Connect to chat server error, please try again!");
     // }
 
     // userJoin = () => {
@@ -130,10 +137,7 @@ class ChatStore {
     //     }
     // }
 
-    // onError = (err: any) => {
-    //     console.log(err);
-    //     toast.error("Tạo tài khoản có lỗi, thử lại!");
-    // }
+    
 }
 
 export default ChatStore;

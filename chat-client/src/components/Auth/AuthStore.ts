@@ -56,9 +56,11 @@ class AuthStore {
 
     setSession(token: any) {
         if (token) {
+            console.log("reseted token!");
             LocalStorage.setItem("jwt_token", token);
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         } else {
+            console.log("uncatched token!");
             LocalStorage.removeItem("jwt_token");
             delete axios.defaults.headers.common["Authorization"];
         }
