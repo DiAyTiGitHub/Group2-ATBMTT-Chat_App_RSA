@@ -136,6 +136,14 @@ html {
     height: 150px !important;
 }
 
+.h-88 {
+    height: 88px !important;
+}
+
+.w-auto {
+    width: auto !important;
+}
+
 .h-320 {
     height: 320px;
 }
@@ -283,4 +291,16 @@ html {
 
 .br-10 {
     border-radius: 10px !important;
+}
+
+.br-50p {
+    border-radius: 50% !important;
+}
+
+.over-hidden {
+    overflow: hidden !important;
+}
+
+.flex-1 {
+    flex: 1;
 }

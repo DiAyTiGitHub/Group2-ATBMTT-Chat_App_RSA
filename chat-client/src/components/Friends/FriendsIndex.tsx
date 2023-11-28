@@ -7,6 +7,8 @@ import { observer } from 'mobx-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Grid, Paper, Avatar, TextField, Button, Typography, Link, Checkbox, FormControlLabel } from '@mui/material'; // Import components from '@mui/material' instead of '@mui/core'
 import * as Yup from 'yup';
+import { values } from "mobx";
+import UserItem from "./UserItem";
 
 function FriendsIndex() {
     const navigate = useNavigate();
@@ -45,16 +47,17 @@ function FriendsIndex() {
     }, []);
 
     return (
-        <Grid container spacing={2} className="p-4">
-            <Grid item xs={12} sm={4} md={3}>
-                <div className="appCard p-3">
-                    <Formik
-                        initialValues={initialValues}
-                        onSubmit={handleSubmit}
-                        validationSchema={validationSchema}
-                    >
-                        {(props) => (
-                            <Form autoComplete='off' className="p-0 m-0">
+        <Formik
+            initialValues={initialValues}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+        >
+            {(props) => (
+                <Form autoComplete='off' className="p-0 m-0">
+                    <Grid container spacing={2} className="px-4">
+                        <Grid item xs={12} sm={4} md={3}>
+                            <div className="appCard p-3">
+
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Field
@@ -77,28 +80,34 @@ function FriendsIndex() {
                                         </Button>
                                     </Grid>
                                 </Grid>
-                            </Form>
-                        )}
-                    </Formik>
-                </div>
-            </Grid>
-            <Grid item xs={12} sm={8} md={9}>
-                <div className="appCard p-3">
-                    <Grid container spacing={2}>
-                        {
-                            usersList.map(function (user, index) {
-                                return (
-                                    <Grid item xs={12} key={index}>
-                                        {user.username}
-                                    </Grid>
-                                );
-                            })
-                        }
-                    </Grid>
 
-                </div>
-            </Grid>
-        </Grid>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} sm={8} md={9}>
+                            <div className="appCard p-3 ">
+                                <Grid container spacing={2} className="m-0 p-0 w-100">
+                                    {
+                                        props?.values?.keyword.trim() == "" && (
+                                            <h5 className="p-0 m-0">All available users </h5>
+                                        )
+                                    }
+                                    {
+                                        usersList.map(function (user, index) {
+                                            return (
+                                                <Grid item xs={12} key={index} className="p-0 m-0 w-100 py-2">
+                                                    <UserItem userInfo={user} />
+                                                </Grid>
+                                            );
+                                        })
+                                    }
+                                </Grid>
+
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Form>
+            )}
+        </Formik>
     );
 }
 
