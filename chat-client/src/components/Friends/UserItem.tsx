@@ -9,12 +9,12 @@ function UserItem({ userInfo }: any) {
     }
 
     return (
-        <div className="appCard flex w-100 br-10 pointer userItem over-hidden">
+        <div className="appCard flex w-100 br-10  userItem over-hidden">
             <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="user image"
                 className='w-auto h-88 br-50p'
             />
             <div className="userItemContent flex-1 p-3">
-                <h6 className="p-0 m-0">
+                <h6 className="p-0 m-0 pointer">
                     {userInfo?.fullname ? (
                         <>{userInfo?.fullname} - ' ' {userInfo?.username}</>
                     ) : (
@@ -24,7 +24,7 @@ function UserItem({ userInfo }: any) {
 
             </div>
             <div className="userItemAction flex-center flex-column p-3">
-                <button className='br-10' onClick={handleClickAddFriend}>
+                <button className='pointer br-10' onClick={handleClickAddFriend} type='button'>
                     <h6 className='p-0 m-0'>
                         Kết bạn
                     </h6>

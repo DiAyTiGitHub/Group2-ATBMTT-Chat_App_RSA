@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
-            if (room.getRoomType().getName().trim().toLowerCase().equals("private")){
+            if (room.getRoomType().getName().trim().toLowerCase().equals("private")) {
                 rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
             }
         }
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
-            if (room.getRoomType().getName().trim().toLowerCase().equals("public")){
+            if (room.getRoomType().getName().trim().toLowerCase().equals("public")) {
                 rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
             }
         }
@@ -204,7 +204,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<FriendDTO> getAddFriendRequests() {
         User currentUser = getCurrentLoginUserEntity();
-        if(currentUser == null) return null;
+        if (currentUser == null) return null;
 
         Set<FriendDTO> res = new TreeSet<FriendDTO>(
                 Collections.reverseOrder(new Comparator<FriendDTO>() {
@@ -215,8 +215,10 @@ public class UserServiceImpl implements UserService {
                 })
         );
 
-        for(Friend relationship : currentUser.getFriendFromReceive()){
-            res.add(new FriendDTO(relationship));
+        for (Friend relationship : currentUser.getFriendFromReceive()) {
+            if (relationship.getState() == false) {
+                res.add(new FriendDTO(relationship));
+            }
         }
 
         return res;
@@ -225,7 +227,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<FriendDTO> getPendingFriendRequests() {
         User currentUser = getCurrentLoginUserEntity();
-        if(currentUser == null) return null;
+        if (currentUser == null) return null;
 
         Set<FriendDTO> res = new TreeSet<FriendDTO>(
                 Collections.reverseOrder(new Comparator<FriendDTO>() {
@@ -236,8 +238,10 @@ public class UserServiceImpl implements UserService {
                 })
         );
 
-        for(Friend relationship : currentUser.getFriendFromRequest()){
-            res.add(new FriendDTO(relationship));
+        for (Friend relationship : currentUser.getFriendFromRequest()) {
+            if (relationship.getState() == false) {
+                res.add(new FriendDTO(relationship));
+            }
         }
 
         return res;

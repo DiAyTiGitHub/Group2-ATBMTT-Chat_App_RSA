@@ -29,7 +29,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
-        System.out.println("ran in filter internal!");
 
         String username = null;
         String jwtToken = null;
