@@ -28,7 +28,17 @@ export function searchUsers(searchObject: any) {
     return axios.post(url, searchObject);
 }
 
-export function getAllUsers(){
+export function getAllUsers() {
     const url = API_PATH + '/all';
+    return axios.get(url);
+}
+
+export function addFriendRequests() {
+    const url = API_PATH + '/addFriendRequests';
+    return axios.get(url);
+}
+
+export function pendingFriendRequests() {
+    const url = API_PATH + '/pendingFriendRequests';
     return axios.get(url);
 }

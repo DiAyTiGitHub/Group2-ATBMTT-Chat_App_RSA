@@ -35,3 +35,5 @@ build/
 #IDE metadata
 **.idea/** 
 **/.idea
+
+**/application

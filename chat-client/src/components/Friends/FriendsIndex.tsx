@@ -28,7 +28,18 @@ function FriendsIndex() {
     });
 
     const { friendsStore } = useStore();
-    const { searchUserByKeyword, usersList, allUsers } = friendsStore;
+    const {
+        searchUserByKeyword,
+        usersList,
+        allUsers,
+        getAddFriendRequests,
+        getPendingFriendRequests,
+        allFriends,
+        addFriendUsers,
+        pendingFriendUsers
+    } = friendsStore;
+
+    console.log(addFriendUsers, pendingFriendUsers)
 
     const handleSubmit = (values: any, props: any) => {
         console.log("chekcing values :", values);
@@ -43,6 +54,9 @@ function FriendsIndex() {
     };
 
     useEffect(function () {
+        allFriends();
+        getAddFriendRequests();
+        getPendingFriendRequests();
         allUsers();
     }, []);
 

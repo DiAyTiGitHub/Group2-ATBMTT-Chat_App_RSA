@@ -69,7 +69,7 @@ class AuthStore {
     //set token
     setLoginToken = (data: any) => LocalStorage.setItem("auth_token", data);
     setUser = (user: any) => LocalStorage.setItem("auth_user", user);
-    removeUser = () => localStorage.removeItem("auth_user");
+    removeUser = () => LocalStorage.removeItem("auth_user");
 }
 
 export default AuthStore;

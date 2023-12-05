@@ -37,6 +37,8 @@ public class FriendServiceImpl implements FriendService {
 
     @Autowired
     private UserRoomRepository userRoomRepository;
+    @Autowired
+    private SetupDataService setupDataService;
 
     @Override
     public FriendDTO sendFriendRequest(UUID receiverId) {
@@ -73,6 +75,8 @@ public class FriendServiceImpl implements FriendService {
             //create new room for private chat
             RoomDTO roomDto = new RoomDTO();
             RoomType roomTypeEntity = roomTypeService.getRoomTypeEntityByName("private");
+            if (roomTypeEntity == null) setupDataService.setupData();
+            roomTypeEntity = roomTypeService.getRoomTypeEntityByName("private");
             if (roomTypeEntity != null) {
                 RoomTypeDTO roomTypeDto = new RoomTypeDTO(roomTypeEntity);
                 roomDto.setRoomType(roomTypeDto);

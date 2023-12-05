@@ -1,17 +1,48 @@
 import { makeAutoObservable, observable, action } from 'mobx';
 import { toast } from 'react-toastify';
-import { getAllUsers, searchUsers, searchUsersExcludeSelf } from 'src/services/UserService';
+import {
+    getAllFriend,
+    getAllUsers,
+    searchUsers,
+    searchUsersExcludeSelf,
+    addFriendRequests,
+    pendingFriendRequests
+} from 'src/services/UserService';
+import {
+    sendFriendRequest,
+    acceptFriendRequest,
+} from 'src/services/FriendsService';
 
 class FriendsStore {
     usersList = [];
-    friendshipStatus = {};
+    addFriendUsers = [];
+    pendingFriendUsers = [];
+    currentFriends = [];
 
     constructor() {
-        makeAutoObservable(this
-            , {
-            friendshipStatus: observable,
-            updateFriendshipStatus: action,}
-            );
+        makeAutoObservable(this);
+    }
+
+    getAddFriendRequests = async () => {
+        try {
+            const { data } = await addFriendRequests();
+            this.addFriendUsers = data;
+            return data;
+        }
+        catch (error) {
+            toast.error("Something went wrong :(");
+        }
+    }
+
+    getPendingFriendRequests = async () => {
+        try {
+            const { data } = await pendingFriendRequests();
+            this.pendingFriendUsers = data;
+            return data;
+        }
+        catch (error) {
+            toast.error("Something went wrong :(");
+        }
     }
 
     allUsers = async () => {
@@ -45,13 +76,38 @@ class FriendsStore {
         }
     }
 
-    updateFriendshipStatus(userId, response) {
-        if (response) {
-          this.friendshipStatus[userId] = response; // Assuming the response contains friendship status
-        } else {
-          // Handle error or update state accordingly
+    addFriend = async (userInfo: any) => {
+        try {
+            const response = await sendFriendRequest(userInfo?.id);
+            console.log('Friend request sent successfully:', response);
+            toast.success("Gửi kết bạn thành công đến người dùng " + userInfo?.username);
+        } catch (error) {
+            console.error('Error sending friend request:', error.message);
+            toast.error("Gửi kết bạn có lỗi");
+
         }
-      }
+    }
+
+    acceptFriend = async (relationship: any) => {
+        try {
+            const response = await acceptFriendRequest(relationship?.id);
+            toast.success("Kết bạn thành công!");
+        } catch (error) {
+            console.error('Error sending friend request:', error.message);
+            toast.error("Gửi kết bạn có lỗi");
+
+        }
+    }
+
+    allFriends = async () => {
+        try {
+            const { data } = await getAllFriend();
+            this.currentFriends = data;
+        } catch (error) {
+            console.error('Error sending friend request:', error.message);
+            toast.error("Lấy dữ liệu có lỗi");
+        }
+    }
 }
 
 export default FriendsStore;

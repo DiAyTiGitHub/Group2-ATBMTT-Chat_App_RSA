@@ -3,6 +3,7 @@ import ChatIndex from './components/Chat/ChatIndex';
 import FriendsIndex from './components/Friends/FriendsIndex';
 import AccountIndex from './components/Account/AccountIndex';
 import AuthIndex from './components/Auth/AuthIndex';
+import ChatV2Index from './components/ChatV2/ChatV2Index';
 
 const routes = [
     {
@@ -20,6 +21,10 @@ const routes = [
     {
         path: '/',
         element: <AuthIndex />
+    },
+    {
+        path: '/chat-v2',
+        element: <ChatV2Index />
     },
 ];
 

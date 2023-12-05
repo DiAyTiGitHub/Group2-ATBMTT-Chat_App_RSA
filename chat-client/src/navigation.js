@@ -16,6 +16,10 @@ const navigations = [
     //     ],
     // },
     {
+        name: 'Chats V2',
+        path: '/chat-v2',
+    },
+    {
         name: 'Chats',
         path: '/chat',
     },
