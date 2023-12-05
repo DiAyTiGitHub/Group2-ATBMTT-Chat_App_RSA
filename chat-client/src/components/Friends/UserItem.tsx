@@ -1,12 +1,27 @@
 import { observer } from 'mobx-react';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useStore } from 'src/stores';
+import { sendFriendRequest } from './FriendsService';
 
 function UserItem({ userInfo }: any) {
     console.log(userInfo);
 
-    function handleClickAddFriend() {
-        console.log('clicked');
-    }
+    const {friendsStore} = useStore();
+    // function handleClickAddFriend() {
+    //     console.log('clicked');
+    // }
+    const handleClickAddFriend = useCallback(async () => {
+        try {
+
+            const response = await sendFriendRequest(userInfo.userId);
+
+            friendsStore.updateFriendshipStatus(userInfo.userId, response);
+
+            console.log('Friend request sent successfully:', response);
+        } catch (error) {
+            console.error('Error sending friend request:', error.message);
+        }
+    }, [friendsStore, userInfo]);
 
     return (
         <div className="appCard flex w-100 br-10  userItem over-hidden">

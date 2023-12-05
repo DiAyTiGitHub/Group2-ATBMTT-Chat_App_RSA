@@ -1,12 +1,17 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, observable, action } from 'mobx';
 import { toast } from 'react-toastify';
 import { getAllUsers, searchUsers, searchUsersExcludeSelf } from 'src/services/UserService';
 
 class FriendsStore {
     usersList = [];
+    friendshipStatus = {};
 
     constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this
+            , {
+            friendshipStatus: observable,
+            updateFriendshipStatus: action,}
+            );
     }
 
     allUsers = async () => {
@@ -39,6 +44,14 @@ class FriendsStore {
             }
         }
     }
+
+    updateFriendshipStatus(userId, response) {
+        if (response) {
+          this.friendshipStatus[userId] = response; // Assuming the response contains friendship status
+        } else {
+          // Handle error or update state accordingly
+        }
+      }
 }
 
 export default FriendsStore;
