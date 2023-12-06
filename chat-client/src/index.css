@@ -6,7 +6,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-  
+ 
+a {
+    text-decoration: none;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
@@ -62,6 +66,7 @@ width: 20%;
 .chat-messages{
     height: 80%;
     border: 1px solid #000;
+    overflow-y: scroll;
 }
 
 .send-message{
@@ -72,7 +77,7 @@ width: 20%;
 
 .input-message{
     width:90%;
-    border-radius: 50px;
+    border-radius: 20px;
 }
 
 ul {
@@ -82,7 +87,7 @@ ul {
 
 .send-button{
     width:10%;
-    border-radius: 50px;
+    border-radius: 20px;
     margin-left: 5px;
     cursor: pointer;
 }
@@ -106,17 +111,26 @@ ul {
     color:#fff;
 }
 
-.avatar{
-    background-color: cornflowerblue;
-    padding: 3px 5px;
-    border-radius: 5px;
-    color:#fff;
+.sender-name{
+    margin-left: 1em;
+    font-size: .7em;
+    color:#000;
+    
 }
 
-.avatar.self{
+.avatar {
+    margin: 0 .2em;
+    display: flex;
+    align-items: end;
+    height: 2em;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* .avatar.self{
     color:#000;
     background-color: greenyellow;
-}
+} */
 
 .message{
     padding:5px;
@@ -125,12 +139,17 @@ ul {
     flex-direction: row;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     margin: 5px 10px;
+    align-items: center;
 }
 
 .message-data{
-    padding:5px;
+    padding: .7rem ;
+    max-width: 40em;
+    border-radius: 20px;
+    background-color: rgb(43, 43, 216);
+    color: white;
 }
 
-.message.self{
-    justify-content: end;
+.self{
+    justify-content: flex-end;
 }
