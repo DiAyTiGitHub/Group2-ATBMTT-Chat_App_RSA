@@ -24,7 +24,7 @@ input {
 button{
     border: none;
     padding: 10px;
-    background: green;
+    background: blueviolet;
     color:#fff;
     font-size: 1.2em;
     font-weight: bold;
@@ -55,7 +55,7 @@ button{
 }
 
 .member-list{
-width: 20%;
+    width: 20%;
 }
 
 .chat-content{
@@ -99,6 +99,8 @@ ul {
     cursor: pointer;
     margin: 5px 2px;
     box-shadow: 0 8px 8px -4px lightblue;
+    border-radius: 20px;
+
 }
 
 .member.active{
@@ -153,3 +155,42 @@ ul {
 .self{
     justify-content: flex-end;
 }
+
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+  }
