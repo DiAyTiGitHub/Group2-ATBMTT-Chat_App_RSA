@@ -37,4 +37,6 @@ public interface UserService {
     public Set<UserDTO> getAllUsers();
 
     public Set<UserDTO> searchUsersExcludeSelf(String searchString);
+
+    public UserDTO updateUserInfo(UserDTO dto);
 }

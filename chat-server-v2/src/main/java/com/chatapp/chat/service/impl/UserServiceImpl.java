@@ -246,4 +246,13 @@ public class UserServiceImpl implements UserService {
 
         return res;
     }
+
+    @Override
+    public UserDTO updateUserInfo(UserDTO dto) {
+        if (dto == null) return null;
+        User entity = getCurrentLoginUserEntity();
+        if (entity == null) return null;
+        entity.setAvatar(dto.getAvatar());
+        return new UserDTO(userRepository.save(entity));
+    }
 }
