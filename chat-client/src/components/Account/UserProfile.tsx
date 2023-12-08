@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { useObserver } from 'mobx-react';
 import { useStore } from 'src/stores';
+import LocalStorage from 'src/common/LocalStorage';
 import {
     Box,
     Button,
@@ -26,16 +27,15 @@ const gender = [
     },
 ];
 
-const UserProfile: React.FC = () => {
-    const { userStore } = useStore();
+const UserProfile: React.FC = ({  }: any) => {
 
     const [values, setValues] = useState({
-        avatar: '',
-        fullName: 'Hoàng Vương',
-        userName: 'Nathan',
-        address: 'Hà Nội',
-        gender: 'Male',
-        birthDate: '25/10/2002'
+        avatar: LocalStorage.getLoginUser()?.avatar,
+        fullName: LocalStorage.getLoginUser()?.fullname,
+        userName: LocalStorage.getLoginUser()?.username,
+        address: LocalStorage.getLoginUser()?.address,
+        gender: LocalStorage.getLoginUser()?.gender,
+        birthDate: LocalStorage.getLoginUser()?.birthDate
     });
 
     const handleChange = useCallback(
