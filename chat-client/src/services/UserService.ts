@@ -42,3 +42,8 @@ export function pendingFriendRequests() {
     const url = API_PATH + '/pendingFriendRequests';
     return axios.get(url);
 }
+
+export function getAllJoinedRooms() {
+    const url = API_PATH + '/joinedRoom';
+    return axios.get(url);
+}

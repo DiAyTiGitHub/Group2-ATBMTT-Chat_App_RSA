@@ -10,52 +10,50 @@ import InfoList from './InfoList/InfoList';
 import './ChatV2Index.css';
 
 function ChatIndex() {
+    const { chatStore } = useStore();
+
+    const { publicMessageStack, registerUser } = chatStore;
+    console.log("publicMessageStack: ", publicMessageStack);
+
     const navigate = useNavigate();
     useEffect(function () {
         if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
+        else {
+            registerUser();
+        }
     }, []);
 
-    const { authStore, chatStore } = useStore();
     const {
-        // currentUser
-    } = authStore;
+        sendPrivateValue,
+        sendValue,
+    } = chatStore;
 
-    const userData = {
-        connected: true,
-        username: "diayti",
-    };
+    const [tab, setTab] = useState("ChatIndex");
+    const [publicMessage, setPublicMessage] = useState("");
+    const [privateMessage, setPrivateMessage] = useState("");
 
-    // const {
-    //     setTab,
-    //     sendPrivateValue,
-    //     sendValue,
-    //     tab,
-    //     privateMessage,
-    //     publicMessage,
-    //     setPrivateMessage,
-    //     setPublicMessage
-    // } = chatStore;
+    function handleChangePrivateMessage(event: any) {
+        const { value } = event.target;
+        setPrivateMessage(value);
+    }
 
-    // function handleChangePrivateMessage(event: any) {
-    //     const { value } = event.target;
-    //     setPrivateMessage(value);
-    // }
+    function handleChangePublicMessage(event: any) {
+        const { value } = event.target;
+        setPublicMessage(value);
+    }
 
-    // function handleChangePublicMessage(event: any) {
-    //     const { value } = event.target;
-    //     setPublicMessage(value);
-    // }
+    function handleSendPublicMessage() {
+        sendValue(publicMessage);
+    }
 
-    // function handleSendPublicMessage() {
-    //     sendValue(authStore);
-    // }
+    function handleSendPrivateMessage() {
+        sendPrivateValue(privateMessage);
+    }
 
-    // function handleSendPrivateMessage() {
-    //     sendPrivateValue(authStore);
-    // }
+    const currentUser = LocalStorage.getLoginUser();
 
     return (
         <div className="app">

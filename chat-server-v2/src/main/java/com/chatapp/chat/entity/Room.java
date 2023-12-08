@@ -35,7 +35,7 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<Message> messages;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
     private Set<UserRoom> userRooms;
 
     public Set<Message> getMessages() {

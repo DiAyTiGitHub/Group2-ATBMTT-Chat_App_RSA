@@ -3,10 +3,11 @@ package com.chatapp.chat.model;
 import com.chatapp.chat.entity.Message;
 import com.chatapp.chat.entity.MessageType;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
-public class MessageDTO {
+public class MessageDTO implements Comparator<MessageDTO> {
     private UUID id;
     private String content;
     private Date sendDate;
@@ -72,5 +73,10 @@ public class MessageDTO {
 
     public void setMessageType(MessageTypeDTO messageType) {
         this.messageType = messageType;
+    }
+
+    @Override
+    public int compare(MessageDTO o1, MessageDTO o2) {
+        return o1.getSendDate().compareTo(o2.getSendDate());
     }
 }
