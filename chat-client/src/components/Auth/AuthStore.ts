@@ -17,6 +17,8 @@ class AuthStore {
         try {
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
+            // this.connectToSocket();
+
             toast.success("Login successfully!");
             const { data: userData } = await getCurrentLoginUser();
             this.setUser(userData);
@@ -30,6 +32,11 @@ class AuthStore {
             }
             throw new Error(error);
         }
+    }
+
+    connectToSocket = async () => {
+        let Sock = new SockJS('http://localhost:8000/ws');
+        console.log("checking sock: ", Sock);
     }
 
     signUpUser = async (user: any) => {
@@ -56,11 +63,9 @@ class AuthStore {
 
     setSession(token: any) {
         if (token) {
-            console.log("reseted token!");
             LocalStorage.setItem("jwt_token", token);
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         } else {
-            console.log("uncatched token!");
             LocalStorage.removeItem("jwt_token");
             delete axios.defaults.headers.common["Authorization"];
         }

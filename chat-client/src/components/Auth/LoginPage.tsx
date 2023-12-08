@@ -4,6 +4,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; // Import icons
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useStore } from 'src/stores';
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client';
 
 function LoginPage({ handleChangeTab, navigate }: any) {
     const paperStyle = { padding: 20, margin: 'auto 0px', borderRadius: '0px 0px 15px 15px' };
@@ -23,13 +25,13 @@ function LoginPage({ handleChangeTab, navigate }: any) {
         password: Yup.string().required('This field is required'),
     });
 
-    const { authStore } = useStore();
+    const { authStore, chatStore } = useStore();
     const { authenticateUser } = authStore;
 
     const onSubmit = (values: any, props: any) => {
         authenticateUser(values)
             .then(function () {
-                
+               
                 navigate("/chat");
             })
             .catch(function (error) {
@@ -88,14 +90,6 @@ function LoginPage({ handleChangeTab, navigate }: any) {
                                     <div style={{ color: 'red' }}>
                                         <ErrorMessage name="password" />
                                     </div>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field
-                                        as={FormControlLabel}
-                                        name="remember"
-                                        control={<Checkbox color="primary" />}
-                                        label="Remember me"
-                                    />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button

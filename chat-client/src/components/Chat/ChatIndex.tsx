@@ -4,36 +4,33 @@ import { observer } from 'mobx-react';
 import LocalStorage from "src/common/LocalStorage";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router";
+import 'src/index.css';
 
 function ChatIndex() {
+    const { chatStore } = useStore();
+
+    const { publicMessageStack, registerUser } = chatStore;
+    console.log("publicMessageStack: ", publicMessageStack);
+
     const navigate = useNavigate();
     useEffect(function () {
         if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
+        else {
+            registerUser();
+        }
     }, []);
 
-    const { authStore, chatStore } = useStore();
     const {
-        // currentUser
-    } = authStore;
-
-    const userData = {
-        connected: true,
-        username: "diayti",
-    };
-
-    const {
-        setTab,
         sendPrivateValue,
         sendValue,
-        tab,
-        privateMessage,
-        publicMessage,
-        setPrivateMessage,
-        setPublicMessage
     } = chatStore;
+
+    const [tab, setTab] = useState("ChatIndex");
+    const [publicMessage, setPublicMessage] = useState("");
+    const [privateMessage, setPrivateMessage] = useState("");
 
     function handleChangePrivateMessage(event: any) {
         const { value } = event.target;
@@ -42,16 +39,18 @@ function ChatIndex() {
 
     function handleChangePublicMessage(event: any) {
         const { value } = event.target;
-        setPublicMessage(value);
+            setPublicMessage(value);
     }
 
     function handleSendPublicMessage() {
-        sendValue(authStore);
+        sendValue(publicMessage);
     }
 
     function handleSendPrivateMessage() {
-        sendPrivateValue(authStore);
+        sendPrivateValue(privateMessage);
     }
+
+    const currentUser = LocalStorage.getLoginUser();
 
     return (
         <div className="container">
@@ -66,11 +65,11 @@ function ChatIndex() {
                 </div>
                 {tab === "ChatIndex" && <div className="chat-content">
                     <ul className="chat-messages">
-                        {[].map((chat, index) => (
-                            <li className={`message ${chat.senderName === userData?.username && "self"}`} key={index}>
-                                {chat.senderName !== userData?.username && <div className="avatar">{chat.senderName}</div>}
+                        {publicMessageStack.map((chat, index) => (
+                            <li className={`message ${chat.senderName === currentUser?.username && "self"}`} key={index}>
+                                {chat.senderName !== currentUser?.username && <div className="avatar">{chat.senderName}</div>}
                                 <div className="message-data">{chat.messageBody}</div>
-                                {chat.senderName === userData?.username && <div className="avatar self">{chat.senderName}</div>}
+                                {chat.senderName === currentUser?.username && <div className="avatar self">{chat.senderName}</div>}
                             </li>
                         ))}
                     </ul>
@@ -83,10 +82,10 @@ function ChatIndex() {
                 {tab !== "ChatIndex" && <div className="chat-content">
                     <ul className="chat-messages">
                         {[].map((chat, index) => (
-                            <li className={`message ${chat.senderName === userData?.username && "self"}`} key={index}>
-                                {chat.senderName !== userData?.username && <div className="avatar">{chat.senderName}</div>}
+                            <li className={`message ${chat.senderName === currentUser?.username && "self"}`} key={index}>
+                                {chat.senderName !== currentUser?.username && <div className="avatar">{chat.senderName}</div>}
                                 <div className="message-data">{chat.messageBody}</div>
-                                {chat.senderName === userData?.username && <div className="avatar self">{chat.senderName}</div>}
+                                {chat.senderName === currentUser?.username && <div className="avatar self">{chat.senderName}</div>}
                             </li>
                         ))}
                     </ul>

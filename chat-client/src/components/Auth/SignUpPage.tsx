@@ -111,14 +111,6 @@ function SignUpUser({ navigate, handleChangeTab }: any) {
                                             </div>
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <Field
-                                                as={FormControlLabel}
-                                                name="remember"
-                                                control={<Checkbox color="primary" />}
-                                                label="Remember me"
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
                                             <Button
                                                 type="submit"
                                                 color="primary"

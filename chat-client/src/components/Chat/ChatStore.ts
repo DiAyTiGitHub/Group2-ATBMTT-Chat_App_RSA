@@ -2,55 +2,53 @@ import { makeAutoObservable } from 'mobx';
 import { toast } from "react-toastify";
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
+import LocalStorage from 'src/common/LocalStorage';
 
 class ChatStore {
-    privateMessage = "";
-    publicMessage = "";
-    tab = "ChatIndex";
+    stompClient = null;
+
+    setStompClient = (stompClient: any) => {
+        this.stompClient = stompClient;
+    }
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    setTab = (tab: any) => {
-        this.tab = tab;
-    }
+    sendValue = (publicMessage: string) => {
+        if (!publicMessage || publicMessage.length === 0) {
+            return;
+        }
+        try {
+            const currentUser = LocalStorage.getLoginUser();
 
-    setPrivateMessage = (chats: any) => {
-        this.privateMessage = chats;
-    }
-
-    setPublicMessage = (chats: any) => {
-        this.publicMessage = chats;
-    }
-
-    sendValue = (authStore: any) => {
-        const { stompClient, userData } = authStore;
-
-        if (stompClient) {
             const chatMessage = {
-                senderName: userData?.username,
+                senderName: currentUser.username,
                 receiverName: "public",
-                messageBody: this.publicMessage,
+                messageBody: publicMessage,
                 status: "MESSAGE"
             };
             // console.log(chatMessage);
-            stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
-            this.setPublicMessage("");
+            this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
         }
-        else {
-            toast.error("Bạn phải đăng nhập trước!");
+        catch (err) {
+            console.log(err);
+            toast.error("Error occured when sending message, please try again :(");
+            throw new Error(err);
         }
     }
 
-    sendPrivateValue = (authStore: any) => {
-        const { stompClient, userData } = authStore;
+    sendPrivateValue = (privateMessage: string) => {
+        if (!privateMessage || privateMessage.length === 0) {
+            return;
+        }
+        try {
+            const currentUser = LocalStorage.getLoginUser();
 
-        if (stompClient) {
-            var chatMessage = {
-                senderName: userData?.username,
+            const chatMessage = {
+                senderName: currentUser?.username,
                 receiverName: "",
-                messageBody: userData.messageBody,
+                messageBody: privateMessage,
                 status: "MESSAGE"
             };
 
@@ -59,11 +57,12 @@ class ChatStore {
             //     setPrivateMessage(new Map(privateMessage));
             // }
 
-            stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
-            this.setPrivateMessage("");
+            this.stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
         }
-        else {
-            toast.error("Bạn phải đăng nhập trước!");
+        catch (err) {
+            console.log(err);
+            toast.error("Error occured when sending message, please try again :(");
+            throw new Error(err);
         }
     }
 
@@ -72,72 +71,76 @@ class ChatStore {
 
 
 
-    // stompClient = null;
-    
-    // registerUser = () => {
-    //     this.connect();
-    // }
 
-    // connect = () => {
-    //     let Sock = new SockJS('http://localhost:8080/ws');
-    //     this.stompClient = over(Sock);
-    //     this.stompClient.connect({}, this.onConnected, this.onError);
-    // }
 
-    // onConnected = () => {
-    //     this.setUserData({ ...this.userData, connected: true });
-    //     this.stompClient.subscribe('/chatroom/public', this.onMessageReceived);
-    //     this.stompClient.subscribe('/user/' + this.userData?.username + '/private', this.onPrivateMessage);
-    //     this.userJoin();
-    //     toast.success("Tạo tài khoản thành công, quay lại tab Chat!");
-    //     console.dir("checking userData: " + this.userData);
+    registerUser = () => {
+        this.connect();
+    }
 
-    // }
+    connect = () => {
+        let Sock = new SockJS('http://localhost:8000/ws');
+        this.stompClient = over(Sock);
+        this.stompClient.connect({}, this.onConnected, this.onError);
+    }
 
-    // onError = (err: any) => {
-    //     console.log(err);
-    //     toast.error("Connect to chat server error, please try again!");
-    // }
+    onConnected = () => {
+        this.stompClient.subscribe('/chatroom/public', this.onReceivedPublicMessage);
+        // this.stompClient.subscribe('/user/' + this.userData?.username + '/private', this.onReceivedPrivateMessage);
+        this.userJoin();
+        toast.success("Start enjoy chatting!");
+    }
 
-    // userJoin = () => {
-    //     var chatMessage = {
-    //         senderName: this.userData?.username,
-    //         status: "JOIN"
-    //     };
-    //     this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
-    // }
+    onError = (err: any) => {
+        console.log(err);
+        toast.error("Connect to chat server error, please try again!");
+    }
 
-    // onMessageReceived = (payload: any) => {
-    //     var payloadData = JSON.parse(payload.body);
-    //     switch (payloadData.status) {
-    //         case "JOIN":
-    //             if (!this.privateChats.get(payloadData.senderName)) {
-    //                 this.privateChats.set(payloadData.senderName, []);
-    //                 this.setPrivateChats(new Map(this.privateChats));
-    //             }
-    //             break;
-    //         case "MESSAGE":
-    //             this.publicChats.push(payloadData);
-    //             this.setPublicChats([...this.publicChats]);
-    //             break;
-    //     }
-    // }
+    userJoin = () => {
+        const currentUser = LocalStorage.getLoginUser();
+        const chatMessage = {
+            senderName: currentUser?.username,
+            status: "JOIN"
+        };
+        this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
+    }
 
-    // onPrivateMessage = (payload: any) => {
-    //     console.log(payload);
-    //     var payloadData = JSON.parse(payload.body);
-    //     if (this.privateChats.get(payloadData.senderName)) {
-    //         this.privateChats.get(payloadData.senderName).push(payloadData);
-    //         this.setPrivateChats(new Map(this.privateChats));
-    //     } else {
-    //         let list = [];
-    //         list.push(payloadData);
-    //         this.privateChats.set(payloadData.senderName, list);
-    //         this.setPrivateChats(new Map(this.privateChats));
-    //     }
-    // }
+    publicMessageStack = [];
 
-    
+    onReceivedPublicMessage = (payload: any) => {
+        console.log(payload);
+        const payloadData = JSON.parse(payload.body);
+        this.publicMessageStack.push(payloadData);
+        this.publicMessageStack = [...this.publicMessageStack];
+        console.log("chekc message stack: ", this.publicMessageStack);
+        // switch (payloadData.status) {
+        //     case "JOIN":
+        //         if (!this.privateChats.get(payloadData.senderName)) {
+        //             this.privateChats.set(payloadData.senderName, []);
+        //             this.setPrivateChats(new Map(this.privateChats));
+        //         }
+        //         break;
+        //     case "MESSAGE":
+        //         this.publicChats.push(payloadData);
+        //         this.setPublicChats([...this.publicChats]);
+        //         break;
+        // }
+    }
+
+    onReceivedPrivateMessage = (payload: any) => {
+        console.log(payload);
+        var payloadData = JSON.parse(payload.body);
+        // if (this.privateChats.get(payloadData.senderName)) {
+        //     this.privateChats.get(payloadData.senderName).push(payloadData);
+        //     this.setPrivateChats(new Map(this.privateChats));
+        // } else {
+        //     let list = [];
+        //     list.push(payloadData);
+        //     this.privateChats.set(payloadData.senderName, list);
+        //     this.setPrivateChats(new Map(this.privateChats));
+        // }
+    }
+
+
 }
 
 export default ChatStore;

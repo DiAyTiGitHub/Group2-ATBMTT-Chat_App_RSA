@@ -117,7 +117,7 @@ ul {
     margin-top: -16px;
 }
 
-/* .sender-name{
+.sender-name{
     margin-left: 1em;
     font-size: .7em;
     color:#000;
@@ -131,33 +131,33 @@ ul {
     height: 2em;
     object-fit: cover;
     border-radius: 50%;
-} */
+}
 
-/* .avatar.self{
+.avatar.self{
     color:#000;
     background-color: greenyellow;
-} */
+}
 
-/* .message{
+.message{
     padding:5px;
     width: auto;
     display: flex;
     flex-direction: row;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     margin: 5px 10px;
-} */
+}
 
-/* .message-data{
+.message-data{
     padding: .7rem ;
     max-width: 40em;
     border-radius: 20px;
     background-color: rgb(43, 43, 216);
     color: white;
-} */
+}
 
-/* .self{
+.self{
     justify-content: flex-end;
-} */
+}
 
 
 ::-webkit-scrollbar {

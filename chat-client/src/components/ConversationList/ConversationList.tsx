@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ConversationSearch from '../ConversationSearch/ConversationSearch';
 import ConversationListItem from '../ConversationListItem/ConversationListItem';
 import Toolbar from '../Toolbar/Toolbar';
@@ -9,7 +9,7 @@ export default function ConversationList(props) {
   const [conversations, setConversations] = useState([]);
   useEffect(() => {
     getConversations()
-  },[])
+  }, [])
 
   const getConversations = () => {
     var tempData = [
@@ -134,23 +134,24 @@ export default function ConversationList(props) {
         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.'
       },
     ]
-          setConversations([...conversations, ...tempData]); 
-    };
-  
-    console.log(conversations)
+    setConversations([...conversations, ...tempData]);
+  };
 
-    return (
-      <div className="conversation-list">
-        <Toolbar title="Chat"/>
-        <ConversationSearch />
-        {
-          conversations.map(conversation =>
+  return (
+    <div className="conversation-list">
+      <Toolbar title="Chat" />
+      <ConversationSearch />
+      {
+        conversations.map(function (conversation, index) {
+          return (
             <ConversationListItem
-              key={conversation.name}
+              key={index}
               data={conversation}
             />
-          )
-        }
-      </div>
-    );
-  }
+
+          );
+        })
+      }
+    </div>
+  );
+}
