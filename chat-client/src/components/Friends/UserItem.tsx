@@ -13,22 +13,33 @@ function UserItem({ userInfo }: any) {
         addFriendUsers,
         pendingFriendUsers,
         acceptFriend,
-        currentFriends
+        currentFriends,
+        unFriend
     } = friendsStore;
 
     function handleClickAddFriend() {
         addFriend(userInfo);
+        navigate("/friends");
+    }
+
+    function handleClickUnfriend() {
+        unFriend(userInfo);
     }
 
     function checkFriendStatus() {
         let message = "Kết bạn";
         addFriendUsers.forEach(function (request) {
-            console.log(request);
-            if (request?.requestSender?.id == userInfo?.id) message = "Chấp nhận kết bạn";
+            // console.log(request);
+            if (request?.requestSender?.id == userInfo?.id) {
+                message = "Chấp nhận kết bạn";
+            }
         });
         pendingFriendUsers.forEach(function (request) {
-            if (request?.receiver?.id == userInfo?.id) message = "Đang chờ phản hồi";
+            if (request?.receiver?.id == userInfo?.id) message = "Hủy gửi kết bạn";
         });
+        currentFriends.forEach(function (request){
+            if (request?.id == userInfo?.id) message = "Hủy kết bạn";
+        })
         return message;
     }
 
@@ -42,8 +53,8 @@ function UserItem({ userInfo }: any) {
             acceptFriend(relationship);
             navigate("/friends");
         }
-        else if (status == "Đang chờ phản hồi") {
-            console.log("unfriended")
+        else if (status == "Hủy gửi kết bạn" || status == "Hủy kết bạn") {
+            handleClickUnfriend();
         }
         else if (status == "Kết bạn") {
             handleClickAddFriend();

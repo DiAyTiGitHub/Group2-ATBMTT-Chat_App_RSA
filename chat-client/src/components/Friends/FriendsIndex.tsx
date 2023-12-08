@@ -39,7 +39,7 @@ function FriendsIndex() {
         pendingFriendUsers
     } = friendsStore;
 
-    console.log(addFriendUsers, pendingFriendUsers)
+    // console.log(addFriendUsers, pendingFriendUsers)
 
     const handleSubmit = (values: any, props: any) => {
         console.log("chekcing values :", values);
