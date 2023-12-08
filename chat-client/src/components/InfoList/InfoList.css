@@ -1,0 +1,19 @@
+.info-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+}
+
+.info-name {
+    margin-top: 10px;
+    font-size: 16;
+    font-weight: 500;
+}
