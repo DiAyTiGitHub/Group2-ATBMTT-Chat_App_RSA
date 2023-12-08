@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ConversationSearch from '../ConversationSearch/ConversationSearch';
-import ConversationListItem from '../ConversationListItem/ConversationListItem';
-import Toolbar from '../Toolbar/Toolbar';
+import ConversationListItem from './ConversationListItem/ConversationListItem';
+import Toolbar from '../MessageList/Toolbar/Toolbar';
 
 import './ConversationList.css';
 

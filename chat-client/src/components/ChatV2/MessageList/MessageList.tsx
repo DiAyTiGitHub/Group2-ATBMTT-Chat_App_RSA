@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import Compose from '../Compose/Compose';
-import Toolbar from '../Toolbar/Toolbar';
-import Message from '../Message/Message';
+import Compose from './Compose/Compose';
+import Toolbar from './Toolbar/Toolbar';
+import Message from './Message/Message';
 
 import './MessageList.css';
 

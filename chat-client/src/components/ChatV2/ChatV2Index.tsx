@@ -4,7 +4,10 @@ import { observer } from 'mobx-react';
 import LocalStorage from "src/common/LocalStorage";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router";
-import Messenger from '../Messenger/Messenger';
+import ConversationList from './ConversationList/ConversationList';
+import MessageList from './MessageList/MessageList';
+import InfoList from './InfoList/InfoList';
+import './ChatV2Index.css';
 
 function ChatIndex() {
     const navigate = useNavigate();
@@ -56,7 +59,17 @@ function ChatIndex() {
 
     return (
         <div className="app">
-            <Messenger />
+            <div className="messenger">
+                <div className="scrollable sidebar">
+                    <ConversationList />
+                </div>
+                <div className="scrollable content">
+                    <MessageList />
+                </div>
+                <div className="scrollable sidebar">
+                    <InfoList />
+                </div>
+            </div>
         </div>
     )
 }

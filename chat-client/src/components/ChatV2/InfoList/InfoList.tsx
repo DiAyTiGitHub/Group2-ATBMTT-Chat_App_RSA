@@ -1,4 +1,4 @@
-import Toolbar from "../Toolbar/Toolbar";
+import Toolbar from "../MessageList/Toolbar/Toolbar";
 import './InfoList.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import IconButton from '@mui/material/IconButton';
