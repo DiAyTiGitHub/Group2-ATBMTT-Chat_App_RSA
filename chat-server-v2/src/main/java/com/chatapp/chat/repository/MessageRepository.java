@@ -21,4 +21,7 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
 
     @Query("select new com.chatapp.chat.model.MessageDTO(m) from Message m where m.room.id = ?1 order by m.sendDate desc ")
     public Set<MessageDTO> getAllMessagesByRoomId(UUID roomId);
+
+    @Query(value = "select new com.chatapp.chat.model.MessageDTO(m) from Message m where m.room.id = ?1 order by m.sendDate desc ")
+    List<MessageDTO> get20LatestMessagesByRoomId(UUID roomId, Pageable pageable);
 }

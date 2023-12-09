@@ -12,4 +12,6 @@ public interface MessageService {
     public List<MessageDTO> findTop10PreviousByMileStone(MessageDTO mileStone);
 
     public Set<MessageDTO> getAllMessagesByRoomId(UUID roomId);
+
+    public List<MessageDTO> get20LatestMessagesByRoomId(UUID roomId);
 }

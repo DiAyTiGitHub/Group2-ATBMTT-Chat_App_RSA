@@ -9,6 +9,7 @@ import com.chatapp.chat.repository.MessageRepository;
 import com.chatapp.chat.repository.RoomRepository;
 import com.chatapp.chat.service.MessageService;
 import com.chatapp.chat.service.MessageTypeService;
+import com.chatapp.chat.service.SetupDataService;
 import com.chatapp.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,8 @@ public class MessageServiceImpl implements MessageService {
     private UserService userService;
     @Autowired
     private MessageTypeService messageTypeService;
+    @Autowired
+    private SetupDataService setupDataService;
 
     @Override
 
@@ -36,6 +39,8 @@ public class MessageServiceImpl implements MessageService {
         User currentUser = userService.getCurrentLoginUserEntity();
         if (currentUser == null) return null;
         MessageType messageType = messageTypeService.getMessageTypeEntityByName("chat");
+        if (messageType == null) setupDataService.setupData();
+        messageType = messageTypeService.getMessageTypeEntityByName("chat");
         if (messageType == null) return null;
 
         Message messageEntity = new Message();
@@ -50,7 +55,6 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageDTO> findTop10PreviousByMileStone(MessageDTO mileStone) {
-
         List<MessageDTO> data = messageRepository.findTop10ByRoomAndSendDateBeforeOrderBySendDateDesc(mileStone.getRoom().getId(), mileStone.getSendDate(), PageRequest.of(0, 10));
         List<MessageDTO> res = new ArrayList<>();
         for (int i = data.size() - 1; i >= 0; i--) {
@@ -61,7 +65,16 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Set<MessageDTO> getAllMessagesByRoomId(UUID roomId) {
-
         return messageRepository.getAllMessagesByRoomId(roomId);
+    }
+
+    @Override
+    public List<MessageDTO> get20LatestMessagesByRoomId(UUID roomId) {
+        List<MessageDTO> data = messageRepository.get20LatestMessagesByRoomId(roomId, PageRequest.of(0, 20));
+        List<MessageDTO> res = new ArrayList<>();
+        for (int i = data.size() - 1; i >= 0; i--) {
+            res.add(data.get(i));
+        }
+        return res;
     }
 }

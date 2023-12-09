@@ -10,11 +10,21 @@ import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.UserRepository;
 import com.chatapp.chat.service.RoomService;
 import com.chatapp.chat.service.UserService;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -254,5 +264,34 @@ public class UserServiceImpl implements UserService {
         if (entity == null) return null;
         entity.setAvatar(dto.getAvatar());
         return new UserDTO(userRepository.save(entity));
+    }
+
+    @Value("${app.upload.dir}") // Configured in application.properties or application.yml
+    private String uploadDir;
+
+    @Override
+    public String uploadAvatar(MultipartFile fileUpload) {
+        LocalDateTime myObj = LocalDateTime.now();
+        UserDTO loginUser = getCurrentLoginUser();
+
+        try {
+            Path pathImg = Paths.get(uploadDir);
+
+            InputStream inputStream = fileUpload.getInputStream();
+            String ext = FilenameUtils.getExtension(fileUpload.getOriginalFilename());
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyyHHmmss");
+
+            String formattedDate = myObj.format(myFormatObj);
+            String nameFile = loginUser.getUsername() + "_" + formattedDate + "." + ext;
+            Files.copy(inputStream, pathImg.resolve(nameFile),
+                    StandardCopyOption.REPLACE_EXISTING);
+            loginUser.setAvatar(nameFile);
+            UserDTO res = updateUserInfo(loginUser);
+            if (res == null) return null;
+            return uploadDir + res.getAvatar();
+        } catch (Exception e) {
+            System.err.println(e);
+            return null;
+        }
     }
 }

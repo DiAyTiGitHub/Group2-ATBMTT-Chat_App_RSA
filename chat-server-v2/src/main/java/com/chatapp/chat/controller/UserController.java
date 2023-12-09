@@ -107,33 +107,10 @@ public class UserController {
         return new ResponseEntity<Set<FriendDTO>>(res, HttpStatus.OK);
     }
 
-    @Value("${app.upload.dir}") // Configured in application.properties or application.yml
-    private String uploadDir;
-
-
     @PostMapping("/avatar")
     public ResponseEntity<String> uploadAvatar(@RequestParam("fileUpload") MultipartFile fileUpload) {
-        LocalDateTime myObj = LocalDateTime.now();
-        UserDTO loginUser = userService.getCurrentLoginUser();
-
-        try {
-            Path pathImg = Paths.get(uploadDir);
-
-            InputStream inputStream = fileUpload.getInputStream();
-            String ext = FilenameUtils.getExtension(fileUpload.getOriginalFilename());
-            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyyHHmmss");
-
-            String formattedDate = myObj.format(myFormatObj);
-            String nameFile = loginUser.getUsername() + "_" + formattedDate + "." + ext;
-            Files.copy(inputStream, pathImg.resolve(nameFile),
-                    StandardCopyOption.REPLACE_EXISTING);
-            loginUser.setAvatar(nameFile);
-            UserDTO res = userService.updateUserInfo(loginUser);
-            return new ResponseEntity<String>(res.getAvatar(), HttpStatus.OK);
-
-        } catch (Exception e) {
-            System.err.println(e);
-        }
+        String res = userService.uploadAvatar(fileUpload);
+        if (res != null) return new ResponseEntity<String>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

@@ -4,6 +4,7 @@ import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.FriendDTO;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -39,4 +40,6 @@ public interface UserService {
     public Set<UserDTO> searchUsersExcludeSelf(String searchString);
 
     public UserDTO updateUserInfo(UserDTO dto);
+
+    public String uploadAvatar(MultipartFile fileUpload);
 }

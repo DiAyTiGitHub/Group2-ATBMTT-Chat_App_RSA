@@ -60,7 +60,7 @@ function ChatIndex() {
                         <li onClick={() => { setTab("ChatIndex") }} className={`member ${tab === "ChatIndex" && "active"}`}>Public chat</li>
                         {[].map((name, index) => (
                             <li onClick={() => { setTab(name) }} className={`member ${tab === name && "active"}`} key={index}>{name}</li>
-                        ))}
+                        ))} 
                     </ul>
                 </div>
                 {tab === "ChatIndex" && <div className="chat-content">
