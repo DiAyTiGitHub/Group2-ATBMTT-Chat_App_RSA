@@ -17,6 +17,10 @@ function FriendsIndex() {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
+        allFriends();
+        getAddFriendRequests();
+        getPendingFriendRequests();
+        allUsers();
     }, []);
 
     const initialValues = {
@@ -52,13 +56,6 @@ function FriendsIndex() {
             });
 
     };
-
-    useEffect(function () {
-        allFriends();
-        getAddFriendRequests();
-        getPendingFriendRequests();
-        allUsers();
-    }, []);
 
     return (
         <Formik

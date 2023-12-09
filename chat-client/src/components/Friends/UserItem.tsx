@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useStore } from 'src/stores';
 import LocalStorage from 'src/common/LocalStorage';
 import { useNavigate } from 'react-router';
@@ -16,6 +16,34 @@ function UserItem({ userInfo }: any) {
         currentFriends,
         unFriend
     } = friendsStore;
+    const [friendstatus, setFriendStatus] = useState("Kết bạn");
+
+    useEffect(() => {
+        // setFriendStatus(checkFriendStatus());
+        checkFriendStatus();
+
+        console.log(friendstatus);
+        
+    }, [addFriendUsers, userInfo]);
+
+    function checkFriendStatus() {
+        // let message = "Kết bạn";
+        if (addFriendUsers) {
+            addFriendUsers.forEach(function (request) {
+                if (request?.requestSender?.id == userInfo?.id) {
+                    setFriendStatus("Chấp nhận kết bạn");
+                }
+            });
+        }
+        pendingFriendUsers.forEach(function (request) {
+            if (request?.receiver?.id == userInfo?.id) setFriendStatus("Hủy gửi kết bạn");
+        });
+        currentFriends.forEach(function (request) {
+            if (request?.id == userInfo?.id) setFriendStatus("Hủy kết bạn");
+        })
+
+        // return message;
+    }
 
     function handleClickAddFriend() {
         addFriend(userInfo);
@@ -26,26 +54,9 @@ function UserItem({ userInfo }: any) {
         unFriend(userInfo);
     }
 
-    function checkFriendStatus() {
-        let message = "Kết bạn";
-        addFriendUsers.forEach(function (request) {
-            // console.log(request);
-            if (request?.requestSender?.id == userInfo?.id) {
-                message = "Chấp nhận kết bạn";
-            }
-        });
-        pendingFriendUsers.forEach(function (request) {
-            if (request?.receiver?.id == userInfo?.id) message = "Hủy gửi kết bạn";
-        });
-        currentFriends.forEach(function (request){
-            if (request?.id == userInfo?.id) message = "Hủy kết bạn";
-        })
-        return message;
-    }
-
     function handleClickButton() {
-        const status = checkFriendStatus();
-        if (status == "Chấp nhận kết bạn") {
+        // const status = checkFriendStatus();
+        if (friendstatus == "Chấp nhận kết bạn") {
             let relationship = null;
             addFriendUsers.forEach(function (request) {
                 if (request?.requestSender?.id == userInfo?.id) relationship = request;
@@ -53,14 +64,13 @@ function UserItem({ userInfo }: any) {
             acceptFriend(relationship);
             navigate("/friends");
         }
-        else if (status == "Hủy gửi kết bạn" || status == "Hủy kết bạn") {
+        else if (friendstatus == "Hủy gửi kết bạn" || friendstatus == "Hủy kết bạn") {
             handleClickUnfriend();
         }
-        else if (status == "Kết bạn") {
+        else if (friendstatus == "Kết bạn") {
             handleClickAddFriend();
         }
     }
-
 
     return (
         <div className="appCard flex w-100 br-10  userItem over-hidden">
@@ -90,7 +100,7 @@ function UserItem({ userInfo }: any) {
                         <button className='pointer br-10' onClick={handleClickButton} type='button'>
                             <h6 className='p-0 m-0'>
                                 {
-                                    checkFriendStatus()
+                                    friendstatus
                                 }
                             </h6>
                         </button>
