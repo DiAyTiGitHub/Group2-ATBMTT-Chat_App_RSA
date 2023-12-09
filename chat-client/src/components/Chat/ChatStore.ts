@@ -112,7 +112,6 @@ class ChatStore {
         const payloadData = JSON.parse(payload.body);
         this.publicMessageStack.push(payloadData);
         this.publicMessageStack = [...this.publicMessageStack];
-        console.log("chekc message stack: ", this.publicMessageStack);
         // switch (payloadData.status) {
         //     case "JOIN":
         //         if (!this.privateChats.get(payloadData.senderName)) {
@@ -152,6 +151,7 @@ class ChatStore {
         try {
             const { data } = await getAllJoinedRooms();
             this.joinedRooms = data;
+            console.log("joinedRooms data: ", data);
             this.chosenRoom = data[0];
         }
         catch (error) {

@@ -113,4 +113,14 @@ public class RoomDTO {
     public void setMessages(List<MessageDTO> messages) {
         this.messages = messages;
     }
+
+    @Override
+    public String toString() {
+        return "RoomDTO{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createDate=" + createDate +
+                '}';
+    }
 }

@@ -8,6 +8,7 @@ import { getCurrentLoginUser } from "../../services/UserService";
 import axios from "axios";
 
 class AuthStore {
+    authenticatedUser = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -22,6 +23,7 @@ class AuthStore {
             toast.success("Login successfully!");
             const { data: userData } = await getCurrentLoginUser();
             this.setUser(userData);
+            this.authenticatedUser = userData;
             return data;
         }
         catch (error) {

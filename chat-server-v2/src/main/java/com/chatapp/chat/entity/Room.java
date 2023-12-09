@@ -32,7 +32,7 @@ public class Room {
     @JoinColumn(name = "room_type_id")
     private RoomType roomType;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Message> messages;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)

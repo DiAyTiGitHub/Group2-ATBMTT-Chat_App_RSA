@@ -11,11 +11,35 @@ import { values } from "mobx";
 import UserItem from "./UserItem";
 
 function FriendsIndex() {
+    const { friendsStore, authStore } = useStore();
+    const {
+        searchUserByKeyword,
+        usersList,
+        allUsers,
+        getAddFriendRequests,
+        getPendingFriendRequests,
+        allFriends,
+        addFriendUsers,
+        pendingFriendUsers,
+
+    } = friendsStore;
+
+    const {
+        authenticatedUser
+    } = authStore;
+
     const navigate = useNavigate();
+    
     useEffect(function () {
-        if (!LocalStorage.getLoginUser()) {
+        if (!authenticatedUser) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
+        }
+        else{
+            allFriends();
+            getAddFriendRequests();
+            getPendingFriendRequests();
+            allUsers();
         }
     }, []);
 
@@ -26,18 +50,6 @@ function FriendsIndex() {
     const validationSchema = Yup.object().shape({
 
     });
-
-    const { friendsStore } = useStore();
-    const {
-        searchUserByKeyword,
-        usersList,
-        allUsers,
-        getAddFriendRequests,
-        getPendingFriendRequests,
-        allFriends,
-        addFriendUsers,
-        pendingFriendUsers
-    } = friendsStore;
 
     // console.log(addFriendUsers, pendingFriendUsers)
 
@@ -52,13 +64,6 @@ function FriendsIndex() {
             });
 
     };
-
-    useEffect(function () {
-        allFriends();
-        getAddFriendRequests();
-        getPendingFriendRequests();
-        allUsers();
-    }, []);
 
     return (
         <Formik

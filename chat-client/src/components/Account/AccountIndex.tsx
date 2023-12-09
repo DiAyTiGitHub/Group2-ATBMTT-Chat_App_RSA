@@ -9,21 +9,23 @@ import FriendsList from "./FriendsList";
 
 function AccountIndex() {
     const navigate = useNavigate();
-    
+
+    const { accountStore, authStore } = useStore();
+    const {
+        allFriends
+    } = accountStore;
+
+    const { authenticatedUser } = authStore;
+
     useEffect(function () {
-        AllFriends();
-        if (!AllFriends())
-            console.log('Calling AllFriends');
-        if (!LocalStorage.getLoginUser()) {
+        if (!authenticatedUser) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
-    }, [navigate]);
-
-    const { accountStore } = useStore();
-    const {
-        AllFriends
-    } = accountStore;
+        else {
+            allFriends();
+        }
+    }, []);
 
     return (
         <>

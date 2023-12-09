@@ -87,18 +87,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TreeSet<RoomDTO> getAllJoinedRooms() {
+    public List<RoomDTO> getAllJoinedRooms() {
         User currentUser = getCurrentLoginUserEntity();
         if (currentUser == null)
             return null;
         Set<UserRoom> userRooms = currentUser.getUserRooms();
         if (userRooms == null) return null;
-        TreeSet<RoomDTO> rooms = new TreeSet<>(new Comparator<RoomDTO>() {
-            @Override
-            public int compare(RoomDTO o1, RoomDTO o2) {
-                return 0;
-            }
-        });
+        List<RoomDTO> rooms = new ArrayList<>();
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
@@ -108,23 +103,36 @@ public class UserServiceImpl implements UserService {
             rooms.add(roomDto);
         }
 
+        sortRoomDTOInLastestMessagesOrder(rooms);
+
         return rooms;
     }
 
+    private void sortRoomDTOInLastestMessagesOrder(List<RoomDTO> rooms) {
+        Collections.sort(rooms, new Comparator<RoomDTO>() {
+            @Override
+            public int compare(RoomDTO o1, RoomDTO o2) {
+                if (o1.getMessages().size() == 0) return 1;
+                if (o2.getMessages().size() == 0) return -1;
+                Date lastMessageRoom1 = o1.getMessages().get(o1.getMessages().size() - 1).getSendDate();
+                Date lastMessageRoom2 = o2.getMessages().get(o2.getMessages().size() - 1).getSendDate();
+                int compareRes = lastMessageRoom1.compareTo(lastMessageRoom2);
+                if (compareRes == -1) return 1;
+                if (compareRes == 1) return -1;
+                return 0;
+            }
+        });
+    }
+
     @Override
-    public TreeSet<RoomDTO> getAllPrivateRooms() {
+    public List<RoomDTO> getAllPrivateRooms() {
         User currentUser = getCurrentLoginUserEntity();
         if (currentUser == null)
             return null;
 
         Set<UserRoom> userRooms = currentUser.getUserRooms();
         if (userRooms == null) return null;
-        TreeSet<RoomDTO> rooms = new TreeSet<>(new Comparator<RoomDTO>() {
-            @Override
-            public int compare(RoomDTO o1, RoomDTO o2) {
-                return 0;
-            }
-        });
+        List<RoomDTO> rooms = new ArrayList<>();
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
@@ -136,23 +144,20 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        sortRoomDTOInLastestMessagesOrder(rooms);
+
         return rooms;
     }
 
     @Override
-    public TreeSet<RoomDTO> getAllPublicRooms() {
+    public List<RoomDTO> getAllPublicRooms() {
         User currentUser = getCurrentLoginUserEntity();
         if (currentUser == null)
             return null;
 
         Set<UserRoom> userRooms = currentUser.getUserRooms();
         if (userRooms == null) return null;
-        TreeSet<RoomDTO> rooms = new TreeSet<>(new Comparator<RoomDTO>() {
-            @Override
-            public int compare(RoomDTO o1, RoomDTO o2) {
-                return 0;
-            }
-        });
+        List<RoomDTO> rooms = new ArrayList<>();
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
@@ -163,6 +168,9 @@ public class UserServiceImpl implements UserService {
                 rooms.add(roomDto);
             }
         }
+
+        sortRoomDTOInLastestMessagesOrder(rooms);
+
 
         return rooms;
     }

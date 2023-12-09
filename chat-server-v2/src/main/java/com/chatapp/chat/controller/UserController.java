@@ -10,14 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -52,24 +45,24 @@ public class UserController {
     }
 
     @GetMapping("/joinedRoom")
-    public ResponseEntity<Set<RoomDTO>> getAllJoinedRooms() {
-        Set<RoomDTO> rooms = userService.getAllJoinedRooms();
+    public ResponseEntity<List<RoomDTO>> getAllJoinedRooms() {
+        List<RoomDTO> rooms = userService.getAllJoinedRooms();
         if (rooms == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Set<RoomDTO>>(rooms, HttpStatus.OK);
+        return new ResponseEntity<List<RoomDTO>>(rooms, HttpStatus.OK);
     }
 
     @GetMapping("/privateRooms")
-    public ResponseEntity<Set<RoomDTO>> getAllPrivateRooms() {
-        Set<RoomDTO> rooms = userService.getAllPrivateRooms();
+    public ResponseEntity<List<RoomDTO>> getAllPrivateRooms() {
+        List<RoomDTO> rooms = userService.getAllPrivateRooms();
         if (rooms == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Set<RoomDTO>>(rooms, HttpStatus.OK);
+        return new ResponseEntity<List<RoomDTO>>(rooms, HttpStatus.OK);
     }
 
     @GetMapping("/publicRooms")
-    public ResponseEntity<Set<RoomDTO>> getAllPublicRooms() {
-        Set<RoomDTO> rooms = userService.getAllPublicRooms();
+    public ResponseEntity<List<RoomDTO>> getAllPublicRooms() {
+        List<RoomDTO> rooms = userService.getAllPublicRooms();
         if (rooms == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Set<RoomDTO>>(rooms, HttpStatus.OK);
+        return new ResponseEntity<List<RoomDTO>>(rooms, HttpStatus.OK);
     }
 
     @PostMapping("/search")

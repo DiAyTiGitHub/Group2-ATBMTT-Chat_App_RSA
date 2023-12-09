@@ -6,6 +6,7 @@ import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -23,11 +24,11 @@ public interface UserService {
 
     public Set<FriendDTO> getPendingFriendRequests();
 
-    public TreeSet<RoomDTO> getAllJoinedRooms();
+    public List<RoomDTO> getAllJoinedRooms();
 
-    public TreeSet<RoomDTO> getAllPrivateRooms();
+    public List<RoomDTO> getAllPrivateRooms();
 
-    public TreeSet<RoomDTO> getAllPublicRooms();
+    public List<RoomDTO> getAllPublicRooms();
 
     public User getCurrentLoginUserEntity();
 
