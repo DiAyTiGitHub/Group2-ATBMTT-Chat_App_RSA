@@ -4,20 +4,59 @@ import './InfoList.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import IconButton from '@mui/material/IconButton';
 import { observer } from "mobx-react";
+import { useStore } from "src/stores";
+import LocalStorage from "src/common/LocalStorage";
 
 function InfoList() {
-    var name = "LOREM"
+    const { chatStore } = useStore();
+
+    const {
+        chosenRoom
+    } = chatStore;
+
+    console.log(chosenRoom);
+
+    function renderRoomName() {
+        if (!chosenRoom) return "No info";
+        if (!chosenRoom?.name || chosenRoom?.name.length === 0 || chosenRoom.trim() === '') {
+            const currentUser = LocalStorage.getLoginUser();
+            for (let i = 0; i < chosenRoom.participants.length; i++) {
+                const participant = chosenRoom.participants[i];
+                if (participant.id !== currentUser.id) {
+                    return "Conversation with " + participant.username;
+                }
+            }
+            return "No name conversation";
+        }
+        return chosenRoom.name;
+    }
+
+    function renderAvatar() {
+        if (!chosenRoom || !chosenRoom?.avatar || chosenRoom?.avatar.trim() === '') {
+            return "https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg";
+        }
+        return chosenRoom?.avatar;
+    }
 
     return (
         <div className="info-list">
-            <Toolbar title="Info"></Toolbar>
-            <img className="info-photo" src="https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg" alt=""></img>
-            <div className="info-name"> {name} </div>
-            <div className="info-icons">
-                <IconButton>
-                    <AccountCircleIcon />
-                </IconButton>
-            </div>
+            {!chosenRoom && (
+                <>
+                    No conversation chosen
+                </>
+            )}
+            {chosenRoom && (
+                <>
+                    <Toolbar title="Info"></Toolbar>
+                    <img className="info-photo" src={renderAvatar()} alt=""></img>
+                    <div className="info-name"> {renderRoomName()} </div>
+                    <div className="info-icons">
+                        <IconButton>
+                            <AccountCircleIcon />
+                        </IconButton>
+                    </div>
+                </>
+            )}
         </div>
     )
 }
