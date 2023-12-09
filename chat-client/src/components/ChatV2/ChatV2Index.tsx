@@ -10,18 +10,19 @@ import InfoList from './InfoList/InfoList';
 import './ChatV2Index.css';
 
 function ChatIndex() {
-    const { chatStore } = useStore();
+    const { chatStore, authStore } = useStore();
 
-    const { 
-        publicMessageStack, 
+    const { authenticatedUser } = authStore;
+    
+    const {
         registerUser,
-        getAllJoinedRooms
+        getAllJoinedRooms,
+        chosenRoom
     } = chatStore;
-    console.log("publicMessageStack: ", publicMessageStack);
 
     const navigate = useNavigate();
     useEffect(function () {
-        if (!LocalStorage.getLoginUser()) {
+        if (!authenticatedUser) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }

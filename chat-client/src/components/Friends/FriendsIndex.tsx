@@ -11,16 +11,43 @@ import { values } from "mobx";
 import UserItem from "./UserItem";
 
 function FriendsIndex() {
+    const { friendsStore, authStore } = useStore();
+    const {
+        searchUserByKeyword,
+        usersList,
+        allUsers,
+        getAddFriendRequests,
+        getPendingFriendRequests,
+        allFriends,
+        addFriendUsers,
+        pendingFriendUsers,
+
+    } = friendsStore;
+
+    const {
+        authenticatedUser
+    } = authStore;
+
     const navigate = useNavigate();
+    
     useEffect(function () {
-        if (!LocalStorage.getLoginUser()) {
+        if (!authenticatedUser) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
+<<<<<<< HEAD
         allFriends();
         getAddFriendRequests();
         getPendingFriendRequests();
         allUsers();
+=======
+        else{
+            allFriends();
+            getAddFriendRequests();
+            getPendingFriendRequests();
+            allUsers();
+        }
+>>>>>>> 8d0c890cdd74756b93a17c323a2abbd744d5f84d
     }, []);
 
     const initialValues = {
@@ -30,18 +57,6 @@ function FriendsIndex() {
     const validationSchema = Yup.object().shape({
 
     });
-
-    const { friendsStore } = useStore();
-    const {
-        searchUserByKeyword,
-        usersList,
-        allUsers,
-        getAddFriendRequests,
-        getPendingFriendRequests,
-        allFriends,
-        addFriendUsers,
-        pendingFriendUsers
-    } = friendsStore;
 
     // console.log(addFriendUsers, pendingFriendUsers)
 

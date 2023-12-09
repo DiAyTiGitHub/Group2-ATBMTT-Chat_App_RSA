@@ -7,14 +7,14 @@ import { useNavigate } from "react-router";
 import 'src/index.css';
 
 function ChatIndex() {
-    const { chatStore } = useStore();
+    const { chatStore, authStore } = useStore();
 
     const { publicMessageStack, registerUser } = chatStore;
-    console.log("publicMessageStack: ", publicMessageStack);
+    const {authenticatedUser} = authStore;
 
     const navigate = useNavigate();
     useEffect(function () {
-        if (!LocalStorage.getLoginUser()) {
+        if (!authenticatedUser) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }

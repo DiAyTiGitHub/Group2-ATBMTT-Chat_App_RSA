@@ -9,7 +9,7 @@ class AccountStore {
         makeAutoObservable(this);
     }
 
-    AllFriends = async () => {
+    allFriends = async () => {
         try {
             const { data } = await getAllFriend();
             this.friendList = data;

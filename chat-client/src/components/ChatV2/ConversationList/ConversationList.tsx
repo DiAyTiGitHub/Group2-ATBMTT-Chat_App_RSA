@@ -147,7 +147,6 @@ function ConversationList() {
       <ConversationSearch />
       {
         joinedRooms.map(function (room, index) {
-          console.log(room, index);
           return (
             <ConversationListItem
               key={index}

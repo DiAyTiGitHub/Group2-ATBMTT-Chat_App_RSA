@@ -9,9 +9,7 @@ import com.chatapp.chat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class FriendServiceImpl implements FriendService {
@@ -119,6 +117,36 @@ public class FriendServiceImpl implements FriendService {
         if (relationship == null) return;
 
         friendRepository.delete(relationship);
+
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return;
+        User friendUser = userService.getUserEntityById(userId);
+        if (friendUser == null) return;
+
+        Set<UserRoom> userRoomsOfCurrentUser = currentUser.getUserRooms();
+        Room willDeleteRoom = null;
+        for (UserRoom userRoom : userRoomsOfCurrentUser) {
+            Room currentRoom = userRoom.getRoom();
+            if (currentRoom.getUserRooms().size() == 2) {
+                for (UserRoom joinedUserRoom : currentRoom.getUserRooms()) {
+                    User inUseUser = joinedUserRoom.getUser();
+                    if (inUseUser.getId().compareTo(friendUser.getId()) == 0) {
+                        willDeleteRoom = currentRoom;
+                        break;
+                    }
+                }
+            }
+            if (willDeleteRoom != null) break;
+        }
+
+        if (willDeleteRoom == null) return;
+        UserRoom userRoom1 = userRoomRepository.findByUserIdAndRoomId(currentUser.getId(), willDeleteRoom.getId());
+        UserRoom userRoom2 = userRoomRepository.findByUserIdAndRoomId(friendUser.getId(), willDeleteRoom.getId());
+
+        userRoomRepository.delete(userRoom1);
+        userRoomRepository.delete(userRoom2);
+
+        roomRepository.delete(willDeleteRoom);
     }
 
     @Override
