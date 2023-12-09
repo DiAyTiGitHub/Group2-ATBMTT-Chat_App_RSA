@@ -35,19 +35,12 @@ function FriendsIndex() {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
-<<<<<<< HEAD
-        allFriends();
-        getAddFriendRequests();
-        getPendingFriendRequests();
-        allUsers();
-=======
         else{
             allFriends();
             getAddFriendRequests();
             getPendingFriendRequests();
             allUsers();
         }
->>>>>>> 8d0c890cdd74756b93a17c323a2abbd744d5f84d
     }, []);
 
     const initialValues = {
