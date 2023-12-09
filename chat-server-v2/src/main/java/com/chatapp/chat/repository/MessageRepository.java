@@ -24,4 +24,10 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
 
     @Query(value = "select new com.chatapp.chat.model.MessageDTO(m) from Message m where m.room.id = ?1 order by m.sendDate desc ")
     List<MessageDTO> get20LatestMessagesByRoomId(UUID roomId, Pageable pageable);
+
+    @Query(value = "select new com.chatapp.chat.model.MessageDTO(m) from Message m where m.user.id = ?1 and m.messageType.name like 'notification' order by m.sendDate desc ")
+    List<MessageDTO> getTop20LatestNotifications(UUID userId, Pageable pageable);
+
+    @Query(value = "select new com.chatapp.chat.model.MessageDTO(m) from Message m where m.user.id = ?1 and m.messageType.name like 'notification' order by m.sendDate desc ")
+    List<MessageDTO> getAllNotificationsByUserId(UUID userId);
 }

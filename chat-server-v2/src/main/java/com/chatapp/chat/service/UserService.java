@@ -2,6 +2,7 @@ package com.chatapp.chat.service;
 
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.FriendDTO;
+import com.chatapp.chat.model.MessageDTO;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,4 +44,8 @@ public interface UserService {
     public UserDTO updateUserInfo(UserDTO dto);
 
     public String uploadAvatar(MultipartFile fileUpload);
+
+    public List<MessageDTO> getTop20LatestNotifications();
+
+    public List<MessageDTO> getAllNotifications();
 }

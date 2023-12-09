@@ -8,7 +8,7 @@ import { getCurrentLoginUser } from "../../services/UserService";
 import axios from "axios";
 
 class AuthStore {
-    authenticatedUser = null;
+    currentLoginUser = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -18,12 +18,12 @@ class AuthStore {
         try {
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
-            // this.connectToSocket();
 
             toast.success("Login successfully!");
             const { data: userData } = await getCurrentLoginUser();
             this.setUser(userData);
-            this.authenticatedUser = userData;
+            this.currentLoginUser = userData;
+            this.connectToSocket();
             return data;
         }
         catch (error) {
@@ -36,9 +36,51 @@ class AuthStore {
         }
     }
 
+    stompClient = null;
     connectToSocket = async () => {
         let Sock = new SockJS('http://localhost:8000/ws');
-        console.log("checking sock: ", Sock);
+        this.stompClient = over(Sock);
+        this.stompClient.connect({}, this.onConnected, this.onError);
+    }
+
+    onConnected = () => {
+        // this.stompClient.subscribe('/chatroom/public', this.onReceivedNotification);
+        this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/notification', this.onReceivedNotification);
+        this.userJoin();
+        toast.success("Connected to stream notification!");
+    }
+
+    onError = (err: any) => {
+        console.log(err);
+        toast.error("Connect to chat server error, please try again!");
+    }
+
+    onReceivedNotification = (payload: any) => {
+        console.log(payload);
+        const payloadData = JSON.parse(payload.body);
+        toast.info(payloadData?.content);
+    }
+
+    createNotificationForUserByUserId = (message: any) => {
+        try{
+            if(!message){
+                throw new Error("Message is empty!");
+            }
+            this.stompClient.send("/app/notification", {}, JSON.stringify(message));
+        }
+        catch(err){
+            console.log(err);
+            toast.error("Create notification for this user error :(");
+        }
+    }
+
+    userJoin = () => {
+        const currentUser = LocalStorage.getLoginUser();
+        const chatMessage = {
+            senderName: currentUser?.username,
+            status: "JOIN"
+        };
+        this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
     }
 
     signUpUser = async (user: any) => {

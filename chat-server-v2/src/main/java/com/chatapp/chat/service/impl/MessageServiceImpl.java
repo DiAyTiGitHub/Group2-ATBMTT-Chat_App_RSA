@@ -5,6 +5,8 @@ import com.chatapp.chat.entity.MessageType;
 import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.MessageDTO;
+import com.chatapp.chat.model.MessageTypeDTO;
+import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.MessageRepository;
 import com.chatapp.chat.repository.RoomRepository;
 import com.chatapp.chat.service.MessageService;
@@ -78,5 +80,24 @@ public class MessageServiceImpl implements MessageService {
             res.add(data.get(i));
         }
         return res;
+    }
+
+    @Override
+    public MessageDTO handlerForNotification(MessageDTO dto) {
+        MessageType typeEntity = messageTypeService.getMessageTypeEntityByName("notification");
+        if (typeEntity == null) setupDataService.setupData();
+        typeEntity = messageTypeService.getMessageTypeEntityByName("notification");
+        if (typeEntity == null) return null;
+        User userEntity = userService.getUserEntityById(dto.getUser().getId());
+        if (userEntity == null) return null;
+
+        Message message = new Message();
+        message.setSendDate(new Date());
+        message.setUser(userEntity);
+        message.setMessageType(typeEntity);
+
+        Message res = messageRepository.saveAndFlush(message);
+
+        return new MessageDTO(res);
     }
 }

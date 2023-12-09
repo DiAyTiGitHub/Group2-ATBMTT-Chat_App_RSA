@@ -10,11 +10,12 @@ function ChatIndex() {
     const { chatStore, authStore } = useStore();
 
     const { publicMessageStack, registerUser } = chatStore;
-    const {authenticatedUser} = authStore;
+    const { currentLoginUser } = authStore;
 
     const navigate = useNavigate();
     useEffect(function () {
-        if (!authenticatedUser) {
+        // if (!currentLoginUser) {
+        if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
@@ -39,7 +40,7 @@ function ChatIndex() {
 
     function handleChangePublicMessage(event: any) {
         const { value } = event.target;
-            setPublicMessage(value);
+        setPublicMessage(value);
     }
 
     function handleSendPublicMessage() {
@@ -60,7 +61,7 @@ function ChatIndex() {
                         <li onClick={() => { setTab("ChatIndex") }} className={`member ${tab === "ChatIndex" && "active"}`}>Public chat</li>
                         {[].map((name, index) => (
                             <li onClick={() => { setTab(name) }} className={`member ${tab === name && "active"}`} key={index}>{name}</li>
-                        ))} 
+                        ))}
                     </ul>
                 </div>
                 {tab === "ChatIndex" && <div className="chat-content">

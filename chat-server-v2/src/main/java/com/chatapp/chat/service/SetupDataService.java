@@ -1,6 +1,7 @@
 package com.chatapp.chat.service;
 
 import com.chatapp.chat.entity.MessageType;
+import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.RoomType;
 import com.chatapp.chat.model.MessageTypeDTO;
 import com.chatapp.chat.model.RoomTypeDTO;
@@ -43,6 +44,15 @@ public class SetupDataService {
             dto.setDescription("public room is for multiple people chatting");
             roomTypeService.createRoomType(dto);
         }
+
+        RoomType group = roomTypeService.getRoomTypeEntityByName("group");
+        if(group == null){
+            RoomTypeDTO dto = new RoomTypeDTO();
+            dto.setCode("003");
+            dto.setName("group");
+            dto.setDescription("is private room chat for at least 3 people");
+            roomTypeService.createRoomType(dto);
+        }
     }
 
     private void setupMessageType(){
@@ -70,6 +80,15 @@ public class SetupDataService {
             dto.setCode("003");
             dto.setName("chat");
             dto.setDescription("a common message in the conversation");
+            messageTypeService.createMessageType(dto);
+        }
+
+        MessageType notification = messageTypeService.getMessageTypeEntityByName("notification");
+        if (notification == null){
+            MessageTypeDTO dto = new MessageTypeDTO();
+            dto.setCode("004");
+            dto.setName("notification");
+            dto.setDescription("is a notification");
             messageTypeService.createMessageType(dto);
         }
     }

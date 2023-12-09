@@ -15,6 +15,8 @@ public class FriendDTO {
 
     private Boolean state; // 0 - is not friend yet, 1 - is friend
 
+    private RoomDTO room;
+
     public FriendDTO() {
     }
 
@@ -64,5 +66,13 @@ public class FriendDTO {
 
     public void setState(Boolean state) {
         this.state = state;
+    }
+
+    public RoomDTO getRoom() {
+        return room;
+    }
+
+    public void setRoom(RoomDTO room) {
+        this.room = room;
     }
 }

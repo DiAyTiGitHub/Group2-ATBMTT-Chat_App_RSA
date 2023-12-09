@@ -38,6 +38,17 @@ public class Room {
     @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
     private Set<UserRoom> userRooms;
 
+    @OneToOne(mappedBy = "room")
+    private Friend relationship;
+
+    public Friend getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(Friend relationship) {
+        this.relationship = relationship;
+    }
+
     public Set<Message> getMessages() {
         return messages;
     }

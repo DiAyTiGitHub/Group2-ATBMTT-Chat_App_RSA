@@ -21,21 +21,21 @@ function FriendsIndex() {
         allFriends,
         addFriendUsers,
         pendingFriendUsers,
-
     } = friendsStore;
 
     const {
-        authenticatedUser
+        currentLoginUser
     } = authStore;
 
     const navigate = useNavigate();
-    
+
     useEffect(function () {
-        if (!authenticatedUser) {
+        // if (!currentLoginUser) {
+        if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
-        else{
+        else {
             allFriends();
             getAddFriendRequests();
             getPendingFriendRequests();

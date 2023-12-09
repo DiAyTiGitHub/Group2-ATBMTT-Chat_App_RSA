@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 function UserItem({ userInfo }: any) {
     const navigate = useNavigate();
 
-    const { friendsStore } = useStore();
+    const { friendsStore, authStore } = useStore();
     const {
         addFriend,
         addFriendUsers,
@@ -17,9 +17,33 @@ function UserItem({ userInfo }: any) {
         unFriend
     } = friendsStore;
 
+    const {
+        createNotificationForUserByUserId,
+        currentLoginUser
+    } = authStore
+
     function handleClickAddFriend() {
         addFriend(userInfo);
-        navigate("/friends");
+        const notification = {
+            content: currentLoginUser?.username + " sended you an add friend request!",
+            user: userInfo
+        };
+        console.log("checking notification: ", notification);
+        createNotificationForUserByUserId(notification);
+    }
+
+    function handleClickAcceptFriendRequest() {
+        let relationship = null;
+        addFriendUsers.forEach(function (request) {
+            if (request?.requestSender?.id == userInfo?.id) relationship = request;
+        });
+        acceptFriend(relationship);
+        const notification = {
+            content: currentLoginUser?.username + " accepted your add friend request!",
+            user: userInfo
+        };
+        console.log("checking notification: ", notification);
+        createNotificationForUserByUserId(notification);
     }
 
     function handleClickUnfriend() {
@@ -37,7 +61,7 @@ function UserItem({ userInfo }: any) {
         pendingFriendUsers.forEach(function (request) {
             if (request?.receiver?.id == userInfo?.id) message = "Hủy gửi kết bạn";
         });
-        currentFriends.forEach(function (request){
+        currentFriends.forEach(function (request) {
             if (request?.id == userInfo?.id) message = "Hủy kết bạn";
         })
         return message;
@@ -46,12 +70,7 @@ function UserItem({ userInfo }: any) {
     function handleClickButton() {
         const status = checkFriendStatus();
         if (status == "Chấp nhận kết bạn") {
-            let relationship = null;
-            addFriendUsers.forEach(function (request) {
-                if (request?.requestSender?.id == userInfo?.id) relationship = request;
-            });
-            acceptFriend(relationship);
-            navigate("/friends");
+            handleClickAcceptFriendRequest();
         }
         else if (status == "Hủy gửi kết bạn" || status == "Hủy kết bạn") {
             handleClickUnfriend();

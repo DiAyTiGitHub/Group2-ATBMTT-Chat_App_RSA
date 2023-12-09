@@ -30,12 +30,12 @@ public class ChatController {
         return message;
     }
 
-    @MessageMapping("/private-message")
-    public Message recievePrivateMessage(@Payload Message message) {
-        System.out.println("Mesage: " + message);
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
-        System.out.println(message.toString());
-        return message;
+    @MessageMapping("/notification")
+    public ResponseEntity<MessageDTO> receiveNotification(@Payload MessageDTO message) {
+        if (message == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        message = messageService.handlerForNotification(message);
+        simpMessagingTemplate.convertAndSendToUser(message.getUser().getId().toString(), "/notification", message);
+        return new ResponseEntity<MessageDTO>(message, HttpStatus.OK);
     }
 
     @MessageMapping("/room")

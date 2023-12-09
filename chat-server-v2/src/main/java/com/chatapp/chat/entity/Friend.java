@@ -29,6 +29,18 @@ public class Friend {
     @Column
     private Boolean state; // 0 - is not friend yet, 1 - is friend
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "roomId")
+    private Room room;
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     public UUID getId() {
         return id;
     }

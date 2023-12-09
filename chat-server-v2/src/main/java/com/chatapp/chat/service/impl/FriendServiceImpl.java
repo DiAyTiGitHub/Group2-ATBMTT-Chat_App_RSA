@@ -101,6 +101,7 @@ public class FriendServiceImpl implements FriendService {
             UserRoom urReceiver = userRoomService.createUserRoomEntity(urReceiverDto);
             userRoomRepository.save(urReceiver);
 
+            relationship.setRoom(room);
 
             Friend updatedRelationship = friendRepository.save(relationship);
             if (updatedRelationship == null) return null;
@@ -123,23 +124,9 @@ public class FriendServiceImpl implements FriendService {
         User friendUser = userService.getUserEntityById(userId);
         if (friendUser == null) return;
 
-        Set<UserRoom> userRoomsOfCurrentUser = currentUser.getUserRooms();
-        Room willDeleteRoom = null;
-        for (UserRoom userRoom : userRoomsOfCurrentUser) {
-            Room currentRoom = userRoom.getRoom();
-            if (currentRoom.getUserRooms().size() == 2) {
-                for (UserRoom joinedUserRoom : currentRoom.getUserRooms()) {
-                    User inUseUser = joinedUserRoom.getUser();
-                    if (inUseUser.getId().compareTo(friendUser.getId()) == 0) {
-                        willDeleteRoom = currentRoom;
-                        break;
-                    }
-                }
-            }
-            if (willDeleteRoom != null) break;
-        }
-
+        Room willDeleteRoom = roomRepository.findById(relationship.getRoom().getId()).orElse(null);
         if (willDeleteRoom == null) return;
+
         UserRoom userRoom1 = userRoomRepository.findByUserIdAndRoomId(currentUser.getId(), willDeleteRoom.getId());
         UserRoom userRoom2 = userRoomRepository.findByUserIdAndRoomId(friendUser.getId(), willDeleteRoom.getId());
 

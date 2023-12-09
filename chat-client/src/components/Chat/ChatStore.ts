@@ -67,13 +67,6 @@ class ChatStore {
         }
     }
 
-
-
-
-
-
-
-
     registerUser = () => {
         this.connect();
     }

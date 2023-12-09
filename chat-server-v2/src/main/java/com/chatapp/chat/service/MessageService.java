@@ -14,4 +14,6 @@ public interface MessageService {
     public Set<MessageDTO> getAllMessagesByRoomId(UUID roomId);
 
     public List<MessageDTO> get20LatestMessagesByRoomId(UUID roomId);
+
+    public MessageDTO handlerForNotification(MessageDTO dto);
 }

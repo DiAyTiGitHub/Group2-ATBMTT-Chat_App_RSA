@@ -106,4 +106,25 @@ public class UserController {
         if (res != null) return new ResponseEntity<String>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
+    @PutMapping("/info")
+    public ResponseEntity<UserDTO> updateUserInfo(UserDTO dto) {
+        UserDTO res = userService.updateUserInfo(dto);
+        if (res != null) return new ResponseEntity<UserDTO>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/notification/latest20")
+    public ResponseEntity<List<MessageDTO>> getTop20LatestNotifications() {
+        List<MessageDTO> res = userService.getTop20LatestNotifications();
+        if (res != null) return new ResponseEntity<List<MessageDTO>>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/notification/all")
+    public ResponseEntity<List<MessageDTO>> getAllNotifications() {
+        List<MessageDTO> res = userService.getAllNotifications();
+        if (res != null) return new ResponseEntity<List<MessageDTO>>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
 }

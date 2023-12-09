@@ -15,10 +15,11 @@ function AccountIndex() {
         allFriends
     } = accountStore;
 
-    const { authenticatedUser } = authStore;
+    const { currentLoginUser } = authStore;
 
     useEffect(function () {
-        if (!authenticatedUser) {
+        // if (!currentLoginUser) {
+        if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }

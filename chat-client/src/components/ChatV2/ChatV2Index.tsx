@@ -12,8 +12,8 @@ import './ChatV2Index.css';
 function ChatIndex() {
     const { chatStore, authStore } = useStore();
 
-    const { authenticatedUser } = authStore;
-    
+    const { currentLoginUser } = authStore;
+
     const {
         registerUser,
         getAllJoinedRooms,
@@ -22,7 +22,8 @@ function ChatIndex() {
 
     const navigate = useNavigate();
     useEffect(function () {
-        if (!authenticatedUser) {
+        // if (!currentLoginUser) {
+        if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }

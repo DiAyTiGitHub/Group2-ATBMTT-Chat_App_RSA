@@ -4,10 +4,8 @@ import com.chatapp.chat.entity.Friend;
 import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.entity.UserRoom;
-import com.chatapp.chat.model.FriendDTO;
-import com.chatapp.chat.model.MessageDTO;
-import com.chatapp.chat.model.RoomDTO;
-import com.chatapp.chat.model.UserDTO;
+import com.chatapp.chat.model.*;
+import com.chatapp.chat.repository.MessageRepository;
 import com.chatapp.chat.repository.UserRepository;
 import com.chatapp.chat.service.MessageService;
 import com.chatapp.chat.service.RoomService;
@@ -15,6 +13,7 @@ import com.chatapp.chat.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -37,6 +36,8 @@ public class UserServiceImpl implements UserService {
     private RoomService roomService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private MessageRepository messageRepository;
 
     @Override
     public UserDTO getCurrentLoginUser() {
@@ -284,6 +285,10 @@ public class UserServiceImpl implements UserService {
         User entity = getCurrentLoginUserEntity();
         if (entity == null) return null;
         entity.setAvatar(dto.getAvatar());
+        entity.setAddress(dto.getAddress());
+        entity.setBirthDate(dto.getBirthDate());
+        entity.setFullname(dto.getFullname());
+        entity.setGender(dto.getGender());
         return new UserDTO(userRepository.save(entity));
     }
 
@@ -314,5 +319,21 @@ public class UserServiceImpl implements UserService {
             System.err.println(e);
             return null;
         }
+    }
+
+    @Override
+    public List<MessageDTO> getTop20LatestNotifications() {
+        User currentUser = getCurrentLoginUserEntity();
+        if(currentUser == null) return null;
+        List<MessageDTO> data = messageRepository.getTop20LatestNotifications(currentUser.getId(), PageRequest.of(0, 20));
+        return data;
+    }
+
+    @Override
+    public List<MessageDTO> getAllNotifications() {
+        User currentUser = getCurrentLoginUserEntity();
+        if(currentUser == null) return null;
+        List<MessageDTO> data = messageRepository.getAllNotificationsByUserId(currentUser.getId());
+        return data;
     }
 }
