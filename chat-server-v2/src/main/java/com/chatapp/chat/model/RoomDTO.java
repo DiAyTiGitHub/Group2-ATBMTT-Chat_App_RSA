@@ -3,6 +3,7 @@ package com.chatapp.chat.model;
 import com.chatapp.chat.entity.Room;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +25,8 @@ public class RoomDTO {
     public void setParticipants(Set<UserDTO> participants) {
         this.participants = participants;
     }
+
+    public List<MessageDTO> messages;
 
     public RoomDTO() {
     }
@@ -101,5 +104,13 @@ public class RoomDTO {
 
     public void setRoomType(RoomTypeDTO roomType) {
         this.roomType = roomType;
+    }
+
+    public List<MessageDTO> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageDTO> messages) {
+        this.messages = messages;
     }
 }

@@ -12,7 +12,11 @@ import './ChatV2Index.css';
 function ChatIndex() {
     const { chatStore } = useStore();
 
-    const { publicMessageStack, registerUser } = chatStore;
+    const { 
+        publicMessageStack, 
+        registerUser,
+        getAllJoinedRooms
+    } = chatStore;
     console.log("publicMessageStack: ", publicMessageStack);
 
     const navigate = useNavigate();
@@ -23,37 +27,9 @@ function ChatIndex() {
         }
         else {
             registerUser();
+            getAllJoinedRooms();
         }
     }, []);
-
-    const {
-        sendPrivateValue,
-        sendValue,
-    } = chatStore;
-
-    const [tab, setTab] = useState("ChatIndex");
-    const [publicMessage, setPublicMessage] = useState("");
-    const [privateMessage, setPrivateMessage] = useState("");
-
-    function handleChangePrivateMessage(event: any) {
-        const { value } = event.target;
-        setPrivateMessage(value);
-    }
-
-    function handleChangePublicMessage(event: any) {
-        const { value } = event.target;
-        setPublicMessage(value);
-    }
-
-    function handleSendPublicMessage() {
-        sendValue(publicMessage);
-    }
-
-    function handleSendPrivateMessage() {
-        sendPrivateValue(privateMessage);
-    }
-
-    const currentUser = LocalStorage.getLoginUser();
 
     return (
         <div className="app">

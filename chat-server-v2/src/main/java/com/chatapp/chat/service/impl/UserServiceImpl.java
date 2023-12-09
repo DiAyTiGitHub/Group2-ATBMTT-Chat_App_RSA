@@ -5,9 +5,11 @@ import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.entity.UserRoom;
 import com.chatapp.chat.model.FriendDTO;
+import com.chatapp.chat.model.MessageDTO;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.UserRepository;
+import com.chatapp.chat.service.MessageService;
 import com.chatapp.chat.service.RoomService;
 import com.chatapp.chat.service.UserService;
 import org.apache.commons.io.FilenameUtils;
@@ -33,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public UserDTO getCurrentLoginUser() {
@@ -98,7 +102,10 @@ public class UserServiceImpl implements UserService {
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
-            rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
+            RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
+            List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+            roomDto.setMessages(messages);
+            rooms.add(roomDto);
         }
 
         return rooms;
@@ -122,7 +129,10 @@ public class UserServiceImpl implements UserService {
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
             if (room.getRoomType().getName().trim().toLowerCase().equals("private")) {
-                rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
+                RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
+                List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+                roomDto.setMessages(messages);
+                rooms.add(roomDto);
             }
         }
 
@@ -147,7 +157,10 @@ public class UserServiceImpl implements UserService {
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
             if (room.getRoomType().getName().trim().toLowerCase().equals("public")) {
-                rooms.add(roomService.handleAddJoinedUserIntoRoomDTO(room));
+                RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
+                List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+                roomDto.setMessages(messages);
+                rooms.add(roomDto);
             }
         }
 

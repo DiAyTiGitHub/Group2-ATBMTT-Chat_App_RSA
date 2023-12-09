@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import LocalStorage from 'src/common/LocalStorage';
+import { getAllJoinedRooms } from 'src/services/UserService';
 
 class ChatStore {
     stompClient = null;
@@ -138,6 +139,25 @@ class ChatStore {
         //     this.privateChats.set(payloadData.senderName, list);
         //     this.setPrivateChats(new Map(this.privateChats));
         // }
+    }
+
+    chosenRoom = null;
+
+    setChosenRoom = (chosenRoom: any) => {
+        this.chosenRoom = chosenRoom;
+    }
+
+    joinedRooms = [];
+    getAllJoinedRooms = async () => {
+        try {
+            const { data } = await getAllJoinedRooms();
+            this.joinedRooms = data;
+            this.chosenRoom = data[0];
+        }
+        catch (error) {
+            console.log(error);
+            toast.error("Load conversation fail, please try again!");
+        }
     }
 
 

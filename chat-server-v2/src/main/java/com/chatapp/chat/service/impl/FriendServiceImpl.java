@@ -4,15 +4,13 @@ import com.chatapp.chat.entity.*;
 import com.chatapp.chat.model.*;
 import com.chatapp.chat.repository.FriendRepository;
 import com.chatapp.chat.repository.RoomRepository;
-import com.chatapp.chat.repository.UserRepository;
 import com.chatapp.chat.repository.UserRoomRepository;
 import com.chatapp.chat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -121,7 +119,6 @@ public class FriendServiceImpl implements FriendService {
         if (relationship == null) return;
 
         friendRepository.delete(relationship);
-
     }
 
     @Override
@@ -140,6 +137,8 @@ public class FriendServiceImpl implements FriendService {
         User friend = userService.getUserEntityById(friendId);
         if (friend == null) return null;
 
-        return friendRepository.getRelationShipBy2Id(currentUser.getId(), friend.getId());
+        List<Friend> relationships = friendRepository.getRelationShipBy2Id(currentUser.getId(), friend.getId());
+        if (relationships == null || relationships.size() == 0) return null;
+        return relationships.get(0);
     }
 }

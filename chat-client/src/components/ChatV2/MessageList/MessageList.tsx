@@ -1,123 +1,129 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import Compose from './Compose/Compose';
-import Toolbar from './Toolbar/Toolbar';
+import Toolbar from '../Toolbar/Toolbar';
 import Message from './Message/Message';
 
 import './MessageList.css';
+import { object } from 'yup';
+import { observer } from 'mobx-react';
+import { useStore } from 'src/stores';
 
 const MY_USER_ID = 'Lorem';
 
-export default function MessageList(props) {
-  const [messages, setMessages] = useState([])
+function MessageList(props: any) {
+  const { chatStore } = useStore();
+  const { chosenRoom } = chatStore;
+
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     getMessages();
-  },[])
+  }, [])
 
-    const getMessages = () => {
+  const getMessages = () => {
     var tempMessages = [
-        {
-          id: 1,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-        {
-          id: 2,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
-        },
-        {
-          id: 3,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed',
-        },
-        {
-          id: 4,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
-        },
-        {
-          id: 5,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
-        },
-        {
-          id: 6,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-          id: 7,
-          author: 'Ipsum',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-        },
-        {
-          id: 8,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
-        },
-        {
-          id: 9,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
-        },
-        {
-          id: 10,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-          id: 11,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-        {
-          id: 12,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
-        },
-        {
-          id: 13,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed',
-        },
-        {
-          id: 14,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
-        },
-        {
-          id: 15,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
-        },
-        {
-          id: 16,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        },
-        {
-          id: 17,
-          author: 'Ipsum',
-          message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-        },
-        {
-          id: 18,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
-        },
-        {
-          id: 19,
-          author: 'Lorem',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
-        },
-        {
-          id: 20,
-          author: 'Ipsum',
-          message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        }
-      ]
-      setMessages([...messages, ...tempMessages])
+      {
+        id: 1,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      },
+      {
+        id: 2,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
+      },
+      {
+        id: 3,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed',
+      },
+      {
+        id: 4,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
+      },
+      {
+        id: 5,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
+      },
+      {
+        id: 6,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+      },
+      {
+        id: 7,
+        author: 'Ipsum',
+        message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+      },
+      {
+        id: 8,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
+      },
+      {
+        id: 9,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
+      },
+      {
+        id: 10,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+      },
+      {
+        id: 11,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      },
+      {
+        id: 12,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
+      },
+      {
+        id: 13,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed',
+      },
+      {
+        id: 14,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
+      },
+      {
+        id: 15,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
+      },
+      {
+        id: 16,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+      },
+      {
+        id: 17,
+        author: 'Ipsum',
+        message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+      },
+      {
+        id: 18,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam,',
+      },
+      {
+        id: 19,
+        author: 'Lorem',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor laoreet quam, dignissim ullamcorper lacus tempor nec. Sed scelerisque augue libero, bibendum finibus neque imperdiet sit amet.',
+      },
+      {
+        id: 20,
+        author: 'Ipsum',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+      }
+    ]
+    setMessages([...messages, ...tempMessages])
   }
 
   const renderMessages = () => {
@@ -133,14 +139,14 @@ export default function MessageList(props) {
       let startsSequence = true;
       let endsSequence = false;
       let photo = "test";
-      if(previous && previous.author === current.author) {
+      if (previous && previous.author === current.author) {
         startsSequence = false
       }
 
-      if(next && next.author !== current.author) {
+      if (next && next.author !== current.author) {
         endsSequence = true
       }
-      
+
       tempMessages.push(
         <Message
           key={i}
@@ -148,21 +154,28 @@ export default function MessageList(props) {
           startsSequence={startsSequence}
           endsSequence={endsSequence}
           data={current}
-          author = {current.author}
+          author={current.author}
           photo
         />
       );
       i += 1;
     }
-        return tempMessages;
+    return tempMessages;
   }
 
-    return(
-      <div className="message-list">
-        <Toolbar title="Conversation Title" />
-          <div className="message-list-container">{renderMessages()}</div>
-        <Compose></Compose>
-      </div>
-      
-    );
+  return (
+    <div className="message-list">
+      <Toolbar title="Conversation Title" />
+      {!chosenRoom && (
+        <>
+          No conversation was chosen
+        </>
+      )}
+      <div className="message-list-container">{renderMessages()}</div>
+      <Compose></Compose>
+    </div>
+
+  );
 }
+
+export default memo(observer(MessageList));

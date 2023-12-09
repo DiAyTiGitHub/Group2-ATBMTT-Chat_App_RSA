@@ -141,7 +141,6 @@ ul {
 .message:hover{
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     background-color: #dde4e6;
-    padding: 5px;
 }
 
 .message-data{
