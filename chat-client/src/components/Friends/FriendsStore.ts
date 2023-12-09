@@ -92,7 +92,7 @@ class FriendsStore {
     unFriend = async (userInfo: any) => {
         try {
             console.log('userInfo: ', userInfo);
-            const response = await unfriendUser(userInfo?.id);
+            await unfriendUser(userInfo?.id);
             console.log('2');
             toast.success("Hủy kết bạn thành công với người dùng " + userInfo?.username);
         } catch (error) {

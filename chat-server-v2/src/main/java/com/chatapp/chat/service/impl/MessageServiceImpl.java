@@ -42,6 +42,8 @@ public class MessageServiceImpl implements MessageService {
         if (messageType == null) setupDataService.setupData();
         messageType = messageTypeService.getMessageTypeEntityByName("chat");
         if (messageType == null) return null;
+        if (dto.getMessageType() != null)
+            messageType = messageTypeService.getMessageTypeEntityByName(dto.getMessageType().getName());
 
         Message messageEntity = new Message();
         messageEntity.setMessageType(messageType);

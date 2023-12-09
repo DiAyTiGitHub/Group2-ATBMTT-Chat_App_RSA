@@ -35,7 +35,7 @@ public class FriendController {
 
     @DeleteMapping("/{userId}")
     public void unfriendUser(@PathVariable UUID userId) {
-        friendService.unfriend(userId);
+        friendService.unfriend(userId); 
     }
 
     @GetMapping("/relationship/{friendId}")
