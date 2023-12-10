@@ -77,9 +77,14 @@ class ChatStore {
         this.stompClient.connect({}, this.onConnected, this.onError);
     }
 
-    onConnected = () => {
+    onConnected = async () => {
         this.stompClient.subscribe('/chatroom/public', this.onReceivedPublicMessage);
-        // this.stompClient.subscribe('/user/' + this.userData?.username + '/private', this.onReceivedPrivateMessage);
+        await getAllJoinedRooms();
+        console.log("checking joinedRooms", this.joinedRooms);
+        
+        this.joinedRooms.forEach(function (room) {
+            console.log("catched room: ", room);
+        });
         this.userJoin();
         toast.success("Start enjoy chatting!");
     }
@@ -105,32 +110,12 @@ class ChatStore {
         const payloadData = JSON.parse(payload.body);
         this.publicMessageStack.push(payloadData);
         this.publicMessageStack = [...this.publicMessageStack];
-        // switch (payloadData.status) {
-        //     case "JOIN":
-        //         if (!this.privateChats.get(payloadData.senderName)) {
-        //             this.privateChats.set(payloadData.senderName, []);
-        //             this.setPrivateChats(new Map(this.privateChats));
-        //         }
-        //         break;
-        //     case "MESSAGE":
-        //         this.publicChats.push(payloadData);
-        //         this.setPublicChats([...this.publicChats]);
-        //         break;
-        // }
     }
 
     onReceivedPrivateMessage = (payload: any) => {
         console.log(payload);
         var payloadData = JSON.parse(payload.body);
-        // if (this.privateChats.get(payloadData.senderName)) {
-        //     this.privateChats.get(payloadData.senderName).push(payloadData);
-        //     this.setPrivateChats(new Map(this.privateChats));
-        // } else {
-        //     let list = [];
-        //     list.push(payloadData);
-        //     this.privateChats.set(payloadData.senderName, list);
-        //     this.setPrivateChats(new Map(this.privateChats));
-        // }
+        console.log("recieved message: ", payloadData);
     }
 
     chosenRoom = null;

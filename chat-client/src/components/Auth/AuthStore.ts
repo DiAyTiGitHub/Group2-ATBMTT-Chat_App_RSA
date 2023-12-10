@@ -44,9 +44,7 @@ class AuthStore {
     }
 
     onConnected = () => {
-        // this.stompClient.subscribe('/chatroom/public', this.onReceivedNotification);
         this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/notification', this.onReceivedNotification);
-        this.userJoin();
         toast.success("Connected to stream notification!");
     }
 
@@ -72,15 +70,6 @@ class AuthStore {
             console.log(err);
             toast.error("Create notification for this user error :(");
         }
-    }
-
-    userJoin = () => {
-        const currentUser = LocalStorage.getLoginUser();
-        const chatMessage = {
-            senderName: currentUser?.username,
-            status: "JOIN"
-        };
-        this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
     }
 
     signUpUser = async (user: any) => {

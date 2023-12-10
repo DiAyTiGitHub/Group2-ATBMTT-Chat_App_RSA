@@ -16,8 +16,6 @@ function ChatIndex() {
 
     const {
         registerUser,
-        getAllJoinedRooms,
-        chosenRoom
     } = chatStore;
 
     const navigate = useNavigate();
@@ -29,7 +27,6 @@ function ChatIndex() {
         }
         else {
             registerUser();
-            getAllJoinedRooms();
         }
     }, []);
 
