@@ -30,3 +30,9 @@
   grid-row-start: 1;
   grid-row-end: span 3;
 }
+
+@media (max-width: 992px) {
+  .messenger {
+    grid-template-columns: 350px auto;
+  }
+}

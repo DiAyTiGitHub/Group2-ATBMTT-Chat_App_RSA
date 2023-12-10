@@ -40,7 +40,7 @@ function InfoList() {
     }
 
     return (
-        <div className="info-list">
+        <div className="info-list d-lg-flex">
             {!chosenRoom && (
                 <>
                     No conversation chosen
