@@ -104,17 +104,31 @@ class ChatStore {
         try {
             const { data } = await getAllJoinedRooms();
             this.joinedRooms = data;
-            console.log("joinedRooms data: ", data);
             this.chosenRoom = data[0];
 
-            this.joinedRooms.forEach(function (room) {
+            if (!this.stompClient) {
+                toast.error("You haven't connected to chat server! Please login again!");
+                return;
+            }
+
+            for (let i = 0; i < this.joinedRooms.length; i++) {
+                const room = this.joinedRooms[i];
                 console.log("catched room: ", room);
-            });
+                console.log("stomp client: ", this.stompClient);
+                this.stompClient.subscribe('/user/' + room.id + '/room', this.onReceiveRoomMessage);
+            }
         }
         catch (error) {
             console.log(error);
             toast.error("Load conversation fail, please try again!");
         }
+    }
+
+    onReceiveRoomMessage = (payload: any) => {
+        const payloadData = JSON.parse(payload.body);
+        const messageContent = payloadData?.body?.content;
+        console.log("private payload data: ", payloadData);
+        console.log(messageContent);
     }
 
 

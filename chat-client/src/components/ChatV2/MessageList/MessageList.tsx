@@ -126,43 +126,44 @@ function MessageList(props: any) {
     setMessages([...messages, ...tempMessages])
   }
 
-  const renderMessages = () => {
-    let i = 0;
-    let messageCount = messages.length;
-    let tempMessages = [];
+  // const renderMessages = () => {
+  //   let i = 0;
+  //   let messageCount = messages.length;
+  //   let tempMessages = [];
 
-    while (i < messageCount) {
-      let previous = messages[i - 1];
-      let current = messages[i];
-      let next = messages[i + 1];
-      let isMine = current.author === MY_USER_ID;
-      let startsSequence = true;
-      let endsSequence = false;
-      let photo = "test";
-      if (previous && previous.author === current.author) {
-        startsSequence = false
-      }
+  //   while (i < messageCount) {
+  //     let previous = messages[i - 1];
+  //     let current = messages[i];
+  //     let next = messages[i + 1];
+  //     let isMine = current.author === MY_USER_ID;
+  //     let startsSequence = true;
+  //     let endsSequence = false;
+  //     let photo = "test";
+  //     if (previous && previous.author === current.author) {
+  //       startsSequence = false
+  //     }
 
-      if (next && next.author !== current.author) {
-        endsSequence = true
-      }
+  //     if (next && next.author !== current.author) {
+  //       endsSequence = true
+  //     }
 
-      tempMessages.push(
-        <Message
-          key={i}
-          isMine={isMine}
-          startsSequence={startsSequence}
-          endsSequence={endsSequence}
-          data={current}
-          author={current.author}
-          photo
-        />
-      );
-      i += 1;
-    }
-    return tempMessages;
-  }
+  //     tempMessages.push(
+  //       <Message
+  //         key={i}
+  //         isMine={isMine}
+  //         startsSequence={startsSequence}
+  //         endsSequence={endsSequence}
+  //         data={current}
+  //         author={current.author}
+  //         photo
+  //       />
+  //     );
+  //     i += 1;
+  //   }
+  //   return tempMessages;
+  // }
 
+  console.log(chosenRoom)
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
@@ -171,7 +172,8 @@ function MessageList(props: any) {
           No conversation was chosen
         </>
       )}
-      <div className="message-list-container">{renderMessages()}</div>
+      <div className="message-list-container">
+      </div>
       <Compose></Compose>
     </div>
 

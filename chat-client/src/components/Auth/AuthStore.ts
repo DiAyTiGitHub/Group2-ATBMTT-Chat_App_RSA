@@ -45,7 +45,6 @@ class AuthStore {
 
     onConnected = () => {
         this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/notification', this.onReceivedNotification);
-        toast.success("Connected to stream notification!");
         this.stompClient.subscribe('/chatroom/public', this.onReceivedPublicMessage);
         this.userJoin();
     }
@@ -61,7 +60,6 @@ class AuthStore {
     onReceivedPublicMessage = (payload: any) => {
         const currentUser = LocalStorage.getLoginUser();
         const payloadData = JSON.parse(payload.body);
-        console.log("public message: ", payloadData);
         const messageContent = payloadData?.body?.content;
         if (messageContent == currentUser?.username + " is online!") {
             toast.info("You are online!");
@@ -72,12 +70,11 @@ class AuthStore {
     }
 
     onError = (err: any) => {
-        console.log(err);
+        console.error(err);
         toast.error("Connect to chat server error, please try again!");
     }
 
     onReceivedNotification = (payload: any) => {
-        console.log(payload);
         const payloadData = JSON.parse(payload.body);
         toast.info(payloadData?.content);
     }
@@ -90,7 +87,7 @@ class AuthStore {
             this.stompClient.send("/app/notification", {}, JSON.stringify(message));
         }
         catch (err) {
-            console.log(err);
+            console.error(err);
             toast.error("Create notification for this user error :(");
         }
     }
