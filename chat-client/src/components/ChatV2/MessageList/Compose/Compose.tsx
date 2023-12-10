@@ -1,6 +1,7 @@
 import React from 'react';
 import './Compose.css';
 import Button from '@mui/material/Button';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
 
 export default function Compose() {
     return (
@@ -11,7 +12,7 @@ export default function Compose() {
           placeholder="Type a message, @name"
         />
         <Button variant="contained">
-          SEND
+          <SendRoundedIcon></SendRoundedIcon>
         </Button>
       </div>
     );

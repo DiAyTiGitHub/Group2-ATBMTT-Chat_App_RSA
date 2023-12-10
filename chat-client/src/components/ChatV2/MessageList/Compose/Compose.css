@@ -38,6 +38,10 @@
 .compose .toolbar-button:hover {
   color: #99999c;
 }
+.send {
+  width: 0.5em;
+  height: 0.5em;
+}
 
 @media (max-width: 992px) {
   .compose {
