@@ -1,5 +1,6 @@
 import { memo } from "react";
 import Toolbar from "../Toolbar/Toolbar";
+import Popup from "../Popup/Popup";
 import './InfoList.css';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import IconButton from '@mui/material/IconButton';
@@ -55,6 +56,7 @@ function InfoList() {
                             <AccountCircleIcon />
                         </IconButton>
                     </div>
+                    <Popup title="test title" content="lorem ipsum something something" confirmation="true"></Popup>
                 </>
             )}
         </div>
