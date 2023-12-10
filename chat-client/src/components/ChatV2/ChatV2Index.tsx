@@ -16,17 +16,19 @@ function ChatIndex() {
 
     const {
         registerUser,
+        getAllJoinedRooms,
     } = chatStore;
 
     const navigate = useNavigate();
     useEffect(function () {
         if (!currentLoginUser) {
-        // if (!LocalStorage.getLoginUser()) {
+            // if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
         else {
             registerUser();
+            getAllJoinedRooms();
         }
     }, []);
 

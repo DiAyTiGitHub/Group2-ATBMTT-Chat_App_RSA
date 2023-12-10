@@ -22,9 +22,9 @@ public class ChatController {
 
     @MessageMapping("/public-message")
     @SendTo("/chatroom/public")
-    public Message recievePublicMessage(@Payload Message message) {
-        System.out.println("Message from public chat: " + message.toString());
-        return message;
+    public ResponseEntity<MessageDTO> receivePublicMessage(@Payload MessageDTO message) {
+        if (message == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<MessageDTO>(message, HttpStatus.OK);
     }
 
     @MessageMapping("/notification")

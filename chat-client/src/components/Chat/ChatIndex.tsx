@@ -9,13 +9,18 @@ import 'src/index.css';
 function ChatIndex() {
     const { chatStore, authStore } = useStore();
 
-    const { publicMessageStack, registerUser } = chatStore;
+    const {
+        //  publicMessageStack, 
+        registerUser
+    } = chatStore;
     const { currentLoginUser } = authStore;
+
+    const publicMessageStack = [];
 
     const navigate = useNavigate();
     useEffect(function () {
         if (!currentLoginUser) {
-        // if (!LocalStorage.getLoginUser()) {
+            // if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }

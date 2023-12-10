@@ -32,7 +32,7 @@ function LoginPage({ handleChangeTab, navigate }: any) {
         authenticateUser(values)
             .then(function () {
                
-                navigate("/chat");
+                navigate("/chat-v2");
             })
             .catch(function (error) {
                 console.error(error);

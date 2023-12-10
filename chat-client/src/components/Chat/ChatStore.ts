@@ -78,38 +78,12 @@ class ChatStore {
     }
 
     onConnected = async () => {
-        this.stompClient.subscribe('/chatroom/public', this.onReceivedPublicMessage);
-        await getAllJoinedRooms();
-        console.log("checking joinedRooms", this.joinedRooms);
-        
-        this.joinedRooms.forEach(function (room) {
-            console.log("catched room: ", room);
-        });
-        this.userJoin();
-        toast.success("Start enjoy chatting!");
+        // toast.success("Start enjoy chatting!");
     }
 
     onError = (err: any) => {
         console.log(err);
         toast.error("Connect to chat server error, please try again!");
-    }
-
-    userJoin = () => {
-        const currentUser = LocalStorage.getLoginUser();
-        const chatMessage = {
-            senderName: currentUser?.username,
-            status: "JOIN"
-        };
-        this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
-    }
-
-    publicMessageStack = [];
-
-    onReceivedPublicMessage = (payload: any) => {
-        console.log(payload);
-        const payloadData = JSON.parse(payload.body);
-        this.publicMessageStack.push(payloadData);
-        this.publicMessageStack = [...this.publicMessageStack];
     }
 
     onReceivedPrivateMessage = (payload: any) => {
@@ -126,11 +100,16 @@ class ChatStore {
 
     joinedRooms = [];
     getAllJoinedRooms = async () => {
+        console.log("getAllJoinedRooms is called");
         try {
             const { data } = await getAllJoinedRooms();
             this.joinedRooms = data;
             console.log("joinedRooms data: ", data);
             this.chosenRoom = data[0];
+
+            this.joinedRooms.forEach(function (room) {
+                console.log("catched room: ", room);
+            });
         }
         catch (error) {
             console.log(error);
