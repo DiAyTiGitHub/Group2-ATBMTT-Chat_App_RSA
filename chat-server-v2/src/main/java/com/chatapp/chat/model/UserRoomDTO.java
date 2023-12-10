@@ -16,8 +16,10 @@ public class UserRoomDTO {
 
     public UserRoomDTO(UserRoom entity) {
         this.id = entity.getId();
-        this.user = new UserDTO(entity.getUser());
-        this.room = new RoomDTO(entity.getRoom());
+        if (entity.getUser() != null)
+            this.user = new UserDTO(entity.getUser());
+        if (entity.getRoom() != null)
+            this.room = new RoomDTO(entity.getRoom());
         this.role = entity.getRole();
         this.nickName = entity.getNickName();
     }

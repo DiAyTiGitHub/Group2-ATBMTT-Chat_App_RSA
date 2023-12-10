@@ -17,9 +17,6 @@ import java.util.List;
 
 @Controller
 public class ChatController {
-
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
     @Autowired
     private MessageService messageService;
 
@@ -34,7 +31,7 @@ public class ChatController {
     public ResponseEntity<MessageDTO> receiveNotification(@Payload MessageDTO message) {
         if (message == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         message = messageService.handlerForNotification(message);
-        simpMessagingTemplate.convertAndSendToUser(message.getUser().getId().toString(), "/notification", message);
+        messageService.sendMessageTo("/notification", message);
         return new ResponseEntity<MessageDTO>(message, HttpStatus.OK);
     }
 
@@ -42,7 +39,7 @@ public class ChatController {
     public ResponseEntity<MessageDTO> spreadMessageToRoomId(@Payload MessageDTO message) {
         MessageDTO res = messageService.createMessage(message);
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        simpMessagingTemplate.convertAndSendToUser(message.getRoom().getId().toString(), "/room", message);
+        messageService.sendMessageTo("/room", message);
         return new ResponseEntity<MessageDTO>(res, HttpStatus.OK);
     }
 

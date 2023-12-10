@@ -53,7 +53,7 @@ function UserItem({ userInfo }: any) {
             user: userInfo
         };
         console.log("checking notification: ", notification);
-        createNotificationForUserByUserId(notification);
+        // createNotificationForUserByUserId(notification);
     }
 
     function handleClickAcceptFriendRequest() {
@@ -67,7 +67,7 @@ function UserItem({ userInfo }: any) {
             user: userInfo
         };
         console.log("checking notification: ", notification);
-        createNotificationForUserByUserId(notification);
+        // createNotificationForUserByUserId(notification);
     }
 
     function handleClickUnfriend() {

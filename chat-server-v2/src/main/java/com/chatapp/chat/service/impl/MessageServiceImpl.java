@@ -9,12 +9,10 @@ import com.chatapp.chat.model.MessageTypeDTO;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.MessageRepository;
 import com.chatapp.chat.repository.RoomRepository;
-import com.chatapp.chat.service.MessageService;
-import com.chatapp.chat.service.MessageTypeService;
-import com.chatapp.chat.service.SetupDataService;
-import com.chatapp.chat.service.UserService;
+import com.chatapp.chat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,6 +29,10 @@ public class MessageServiceImpl implements MessageService {
     private MessageTypeService messageTypeService;
     @Autowired
     private SetupDataService setupDataService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private RoomService roomService;
 
     @Override
 
@@ -95,9 +97,22 @@ public class MessageServiceImpl implements MessageService {
         message.setSendDate(new Date());
         message.setUser(userEntity);
         message.setMessageType(typeEntity);
+        message.setContent(dto.getContent());
+
+        if (dto.getRoom() != null) {
+            Room roomEntity = roomRepository.findById(dto.getRoom().getId()).orElse(null);
+            if (roomEntity != null) {
+                message.setRoom(roomEntity);
+            }
+        }
 
         Message res = messageRepository.saveAndFlush(message);
 
         return new MessageDTO(res);
+    }
+
+    @Override
+    public void sendMessageTo(String destination, MessageDTO dto) {
+        simpMessagingTemplate.convertAndSendToUser(dto.getUser().getId().toString(), destination, dto);
     }
 }

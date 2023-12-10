@@ -39,7 +39,8 @@ public class RoomDTO {
         this.createDate = entity.getCreateDate();
         this.avatar = entity.getAvatar();
         this.color = entity.getColor();
-        this.roomType = new RoomTypeDTO(entity.getRoomType());
+        if (entity.getRoomType() != null)
+            this.roomType = new RoomTypeDTO(entity.getRoomType());
     }
 
     public UUID getId() {

@@ -22,9 +22,12 @@ public class MessageDTO implements Comparator<MessageDTO> {
         this.id = entity.getId();
         this.content = entity.getContent();
         this.sendDate = entity.getSendDate();
-        this.room = new RoomDTO(entity.getRoom());
-        this.user = new UserDTO(entity.getUser());
-        this.messageType = new MessageTypeDTO(entity.getMessageType());
+        if (entity.getRoom() != null)
+            this.room = new RoomDTO(entity.getRoom());
+        if (entity.getUser() != null)
+            this.user = new UserDTO(entity.getUser());
+        if (entity.getMessageType() != null)
+            this.messageType = new MessageTypeDTO(entity.getMessageType());
     }
 
     public UUID getId() {

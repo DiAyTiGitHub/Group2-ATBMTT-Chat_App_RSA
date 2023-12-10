@@ -33,8 +33,12 @@ public class FriendServiceImpl implements FriendService {
 
     @Autowired
     private UserRoomRepository userRoomRepository;
+
     @Autowired
     private SetupDataService setupDataService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public FriendDTO sendFriendRequest(UUID receiverId) {
@@ -52,8 +56,17 @@ public class FriendServiceImpl implements FriendService {
 
         Friend pendingRelationship = friendRepository.save(relationship);
 
-        if (pendingRelationship != null) return new FriendDTO(pendingRelationship);
-        return null;
+        if (pendingRelationship == null)
+            return null;
+
+        //notify receiver that they have received an add friend request
+        MessageDTO notification = new MessageDTO();
+        notification.setUser(new UserDTO(requestReceiver));
+        notification.setContent(currentUser.getUsername() + " sended you an add friend request!");
+        notification = messageService.handlerForNotification(notification);
+        messageService.sendMessageTo("/notification", notification);
+
+        return new FriendDTO(pendingRelationship);
     }
 
     @Override
@@ -101,10 +114,20 @@ public class FriendServiceImpl implements FriendService {
             UserRoom urReceiver = userRoomService.createUserRoomEntity(urReceiverDto);
             userRoomRepository.save(urReceiver);
 
+            // create room for private chatting
             relationship.setRoom(room);
 
             Friend updatedRelationship = friendRepository.save(relationship);
             if (updatedRelationship == null) return null;
+
+            //notify receiver that they have received an add friend request
+            MessageDTO notification = new MessageDTO();
+            notification.setUser(new UserDTO(relationship.getRequestSender()));
+            notification.setRoom(new RoomDTO(room));
+            notification.setContent(currentUser.getUsername() + " accepted your add friend request!");
+            notification = messageService.handlerForNotification(notification);
+            messageService.sendMessageTo("/notification", notification);
+
             return new FriendDTO(updatedRelationship);
         }
 
@@ -124,6 +147,7 @@ public class FriendServiceImpl implements FriendService {
         User friendUser = userService.getUserEntityById(userId);
         if (friendUser == null) return;
 
+        if(relationship.getRoom() == null) return;
         Room willDeleteRoom = roomRepository.findById(relationship.getRoom().getId()).orElse(null);
         if (willDeleteRoom == null) return;
 

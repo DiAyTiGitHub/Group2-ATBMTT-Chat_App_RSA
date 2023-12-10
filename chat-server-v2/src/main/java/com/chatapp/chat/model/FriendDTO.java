@@ -22,10 +22,14 @@ public class FriendDTO {
 
     public FriendDTO(Friend entity) {
         this.id = entity.getId();
-        this.requestSender = new UserDTO(entity.getRequestSender());
-        this.receiver = new UserDTO(entity.getReceiver());
+        if (entity.getRequestSender() != null)
+            this.requestSender = new UserDTO(entity.getRequestSender());
+        if (entity.getReceiver() != null)
+            this.receiver = new UserDTO(entity.getReceiver());
         this.lastModifyDate = entity.getLastModifyDate();
         this.state = entity.getState();
+        if (entity.getRoom() != null)
+            this.room = new RoomDTO(entity.getRoom());
     }
 
     public UUID getId() {

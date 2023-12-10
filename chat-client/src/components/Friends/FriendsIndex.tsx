@@ -30,8 +30,8 @@ function FriendsIndex() {
     const navigate = useNavigate();
 
     useEffect(function () {
-        // if (!currentLoginUser) {
-        if (!LocalStorage.getLoginUser()) {
+        if (!currentLoginUser) {
+        // if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
