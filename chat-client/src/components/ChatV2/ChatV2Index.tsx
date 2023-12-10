@@ -42,7 +42,7 @@ function ChatIndex() {
                 <div className="scrollable content">
                     <MessageList />
                 </div>
-                <div className="scrollable">
+                <div className="sidebar d-none d-lg-block">
                     <InfoList/>
                 </div>
             </div>
