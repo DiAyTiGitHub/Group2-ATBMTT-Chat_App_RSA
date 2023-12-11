@@ -77,8 +77,9 @@ class ChatStore {
         this.stompClient.connect({}, this.onConnected, this.onError);
     }
 
-    onConnected = async () => {
-        // toast.success("Start enjoy chatting!");
+    onConnected = () => {
+        const currenUser = LocalStorage.getLoginUser();
+        this.stompClient.subscribe('/user/' + currenUser.id + '/privateMessage', this.onReceiveRoomMessage);
     }
 
     onError = (err: any) => {
@@ -109,13 +110,6 @@ class ChatStore {
             if (!this.stompClient) {
                 toast.error("You haven't connected to chat server! Please login again!");
                 return;
-            }
-
-            for (let i = 0; i < this.joinedRooms.length; i++) {
-                const room = this.joinedRooms[i];
-                console.log("catched room: ", room);
-                console.log("stomp client: ", this.stompClient);
-                this.stompClient.subscribe('/user/' + room.id + '/room', this.onReceiveRoomMessage);
             }
         }
         catch (error) {

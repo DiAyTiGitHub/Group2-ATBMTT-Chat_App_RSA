@@ -20,7 +20,7 @@ public class ChatController {
     @Autowired
     private MessageService messageService;
 
-    @MessageMapping("/public-message")
+    @MessageMapping("/public-message") 
     @SendTo("/chatroom/public")
     public ResponseEntity<MessageDTO> receivePublicMessage(@Payload MessageDTO message) {
         if (message == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -35,7 +35,7 @@ public class ChatController {
         return new ResponseEntity<MessageDTO>(message, HttpStatus.OK);
     }
 
-    @MessageMapping("/room")
+    @MessageMapping("/privateMessage")
     public ResponseEntity<MessageDTO> spreadMessageToRoomId(@Payload MessageDTO message) {
         MessageDTO res = messageService.createMessage(message);
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
