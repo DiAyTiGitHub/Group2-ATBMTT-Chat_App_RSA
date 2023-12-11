@@ -47,13 +47,12 @@ class ChatStore {
             const currentUser = LocalStorage.getLoginUser();
 
             const chatMessage = {
-                user: currentUser,
                 content: messageContent,
-                room: this.chosenRoom,
+                room: { id: this.chosenRoom.id },
+                messageType: { name: "chat" },
+                user: currentUser
             };
 
-            // console.log(chatMessage);
-            this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
             this.stompClient.send("/app/privateMessage", {}, JSON.stringify(chatMessage));
         }
         catch (err) {

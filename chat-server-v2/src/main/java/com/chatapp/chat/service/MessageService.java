@@ -19,5 +19,5 @@ public interface MessageService {
 
     public void sendMessageTo(String destination, MessageDTO dto);
 
-    public MessageDTO sendPrivateMessage();
+    public MessageDTO sendPrivateMessage(MessageDTO messageDTO);
 }
