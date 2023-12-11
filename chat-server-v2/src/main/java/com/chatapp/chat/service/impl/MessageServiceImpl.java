@@ -1,9 +1,6 @@
 package com.chatapp.chat.service.impl;
 
-import com.chatapp.chat.entity.Message;
-import com.chatapp.chat.entity.MessageType;
-import com.chatapp.chat.entity.Room;
-import com.chatapp.chat.entity.User;
+import com.chatapp.chat.entity.*;
 import com.chatapp.chat.model.MessageDTO;
 import com.chatapp.chat.model.MessageTypeDTO;
 import com.chatapp.chat.model.UserDTO;
@@ -117,7 +114,40 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageDTO sendPrivateMessage() {
-        return null;
+    public MessageDTO sendPrivateMessage(MessageDTO messageDTO) {
+        if (messageDTO == null) return null;
+        if (messageDTO.getUser() == null) return null;
+        User currentUser = userService.getUserEntityById(messageDTO.getUser().getId());
+        if (currentUser == null) return null;
+        Room roomEntity = roomRepository.findById(messageDTO.getRoom().getId()).orElse(null);
+        if (roomEntity == null) return null;
+        Message messageEntity = new Message();
+        messageEntity.setRoom(roomEntity);
+        messageEntity.setContent(messageDTO.getContent());
+        if (messageDTO.getMessageType() == null) return null;
+        MessageType messageTypeEntity = messageTypeService.getMessageTypeEntityByName(messageDTO.getMessageType().getName());
+        if (messageTypeEntity == null) {
+            setupDataService.setupData();
+        }
+        messageTypeEntity = messageTypeService.getMessageTypeEntityByName(messageDTO.getMessageType().getName());
+        if (messageTypeEntity == null) return null;
+        messageEntity.setMessageType(messageTypeEntity);
+        messageEntity.setSendDate(new Date());
+        messageEntity.setUser(currentUser);
+        Message res = messageRepository.saveAndFlush(messageEntity);
+        MessageDTO resDto = new MessageDTO(res);
+        if (res == null) return null;
+
+        Set<UserRoom> userRooms = roomEntity.getUserRooms();
+        List<User> users = new ArrayList<>();
+        for (UserRoom ur : userRooms) {
+            users.add(ur.getUser());
+        }
+
+        for (User user : users) {
+            sendMessageTo("/privateMessage", resDto);
+        }
+
+        return resDto;
     }
 }

@@ -46,7 +46,14 @@ class AuthStore {
     onConnected = () => {
         this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/notification', this.onReceivedNotification);
         this.stompClient.subscribe('/chatroom/public', this.onReceivedPublicMessage);
+        this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/privateMessage', this.onReceivedNotificationPrivateMessage);
         this.userJoin();
+    }
+
+    onReceivedNotificationPrivateMessage = (payload: any) => {
+        const payloadData = JSON.parse(payload.body);
+        const senderName = payloadData?.user?.name;
+        toast.info(senderName + " sended you a message!");
     }
 
     userJoin = () => {
