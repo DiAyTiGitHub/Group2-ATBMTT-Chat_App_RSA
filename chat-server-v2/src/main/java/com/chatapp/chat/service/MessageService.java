@@ -18,4 +18,6 @@ public interface MessageService {
     public MessageDTO handlerForNotification(MessageDTO dto);
 
     public void sendMessageTo(String destination, MessageDTO dto);
+
+    public MessageDTO sendPrivateMessage();
 }

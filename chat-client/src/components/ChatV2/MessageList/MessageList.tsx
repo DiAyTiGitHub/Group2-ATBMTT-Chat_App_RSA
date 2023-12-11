@@ -163,7 +163,8 @@ function MessageList(props: any) {
   //   return tempMessages;
   // }
 
-  console.log(chosenRoom)
+  console.log("chosenRoom: ", chosenRoom);
+
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
@@ -172,8 +173,22 @@ function MessageList(props: any) {
           No conversation was chosen
         </>
       )}
-      <div className="message-list-container">
-      </div>
+
+      {
+        chosenRoom && (
+          <div className="message-list-container">
+            {chosenRoom?.messages?.map(function (message: any, index: number) {
+              console.log("current message: ", message);
+              const trashMessage = message.content;
+              return (
+                <p key={index}>
+                  {trashMessage}
+                </p>
+              );
+            })}
+          </div>
+        )
+      }
       <Compose></Compose>
     </div>
 
