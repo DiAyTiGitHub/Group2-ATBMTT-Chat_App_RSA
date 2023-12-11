@@ -73,7 +73,7 @@ function FriendsIndex() {
         >
             {(props) => (
                 <Form autoComplete='off' className="p-0 m-0">
-                    <Grid container spacing={2} className="px-4">
+                    <Grid container spacing={2} className="p-0 m-0 px-4">
                         <Grid item xs={12} sm={4} md={3}>
                             <div className="appCard p-3">
 

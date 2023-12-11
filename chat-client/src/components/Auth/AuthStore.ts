@@ -52,7 +52,9 @@ class AuthStore {
 
     onReceivedNotificationPrivateMessage = (payload: any) => {
         const payloadData = JSON.parse(payload.body);
-        const senderName = payloadData?.user?.name;
+        const senderName = payloadData?.user?.username;
+        const currentPage = window.location.pathname;
+        if (currentPage === "/chat-v2") return;
         toast.info(senderName + " sended you a message!");
     }
 

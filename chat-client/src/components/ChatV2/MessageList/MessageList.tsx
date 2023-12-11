@@ -16,9 +16,9 @@ function MessageList(props: any) {
 
   const [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    getMessages();
-  }, [])
+  // useEffect(() => {
+  //   getMessages();
+  // }, [])
 
   const getMessages = () => {
     var tempMessages = [
@@ -163,8 +163,6 @@ function MessageList(props: any) {
   //   return tempMessages;
   // }
 
-  console.log("chosenRoom: ", chosenRoom);
-
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
@@ -178,7 +176,6 @@ function MessageList(props: any) {
         chosenRoom && (
           <div className="message-list-container">
             {chosenRoom?.messages?.map(function (message: any, index: number) {
-              console.log("current message: ", message);
               const trashMessage = message.content;
               return (
                 <p key={index}>

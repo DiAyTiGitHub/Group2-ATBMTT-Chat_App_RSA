@@ -16,29 +16,6 @@ class ChatStore {
         makeAutoObservable(this);
     }
 
-    sendValue = (publicMessage: string) => {
-        if (!publicMessage || publicMessage.length === 0) {
-            return;
-        }
-        try {
-            const currentUser = LocalStorage.getLoginUser();
-
-            const chatMessage = {
-                senderName: currentUser.username,
-                receiverName: "public",
-                messageBody: publicMessage,
-                status: "MESSAGE"
-            };
-            // console.log(chatMessage);
-            this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
-        }
-        catch (err) {
-            console.log(err);
-            toast.error("Error occured when sending message, please try again :(");
-            throw new Error(err);
-        }
-    }
-
     sendMessage = (messageContent: string) => {
         if (!messageContent || messageContent.length === 0) {
             return;
@@ -54,34 +31,6 @@ class ChatStore {
             };
 
             this.stompClient.send("/app/privateMessage", {}, JSON.stringify(chatMessage));
-        }
-        catch (err) {
-            console.log(err);
-            toast.error("Error occured when sending message, please try again :(");
-            throw new Error(err);
-        }
-    }
-
-    sendPrivateValue = (privateMessage: string) => {
-        if (!privateMessage || privateMessage.length === 0) {
-            return;
-        }
-        try {
-            const currentUser = LocalStorage.getLoginUser();
-
-            const chatMessage = {
-                senderName: currentUser?.username,
-                receiverName: "",
-                messageBody: privateMessage,
-                status: "MESSAGE"
-            };
-
-            // if (userData?.username !== tab) {
-            //     privateMessage.get(tab).push(chatMessage);
-            //     setPrivateMessage(new Map(privateMessage));
-            // }
-
-            this.stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
         }
         catch (err) {
             console.log(err);
@@ -142,9 +91,32 @@ class ChatStore {
 
     onReceiveRoomMessage = (payload: any) => {
         const payloadData = JSON.parse(payload.body);
-        const messageContent = payloadData?.body?.content;
-        console.log("private payload data: ", payloadData);
-        console.log(messageContent);
+        const roomId = payloadData?.room?.id;
+        if (!roomId) {
+            toast.error("Received message errors!");
+            return;
+        }
+
+        let isExisted = false;
+        for (let i = 0; i < this.joinedRooms.length; i++) {
+            const currentRoom = this.joinedRooms[i];
+            if (currentRoom.id === roomId) {
+                currentRoom.messages.push(payloadData);
+                this.joinedRooms[i] = { ...currentRoom };
+                isExisted = true;
+
+                if (currentRoom.id === this.chosenRoom.id) {
+                    this.chosenRoom = { ...currentRoom };
+                }
+            }
+        }
+
+        if (!isExisted) {
+            const newRoom = payloadData.room;
+            this.joinedRooms.push(newRoom);
+            this.joinedRooms = [...this.joinedRooms];
+        }
+
     }
 
 
