@@ -7,7 +7,7 @@ import { useStore } from 'src/stores';
 
 function Compose() {
   const { chatStore } = useStore();
-  const { chosenRoom } = chatStore;
+  const { sendMessage } = chatStore;
   const [messageContent, setMessageContent] = useState("");
 
   function handleChangeMessageContent(event: any) {
@@ -16,7 +16,7 @@ function Compose() {
   }
 
   function handleSendMessage() {
-
+    sendMessage(messageContent);
   }
 
   return (

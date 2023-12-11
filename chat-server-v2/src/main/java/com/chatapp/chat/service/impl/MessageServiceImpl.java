@@ -115,4 +115,9 @@ public class MessageServiceImpl implements MessageService {
     public void sendMessageTo(String destination, MessageDTO dto) {
         simpMessagingTemplate.convertAndSendToUser(dto.getUser().getId().toString(), destination, dto);
     }
+
+    @Override
+    public MessageDTO sendPrivateMessage() {
+        return null;
+    }
 }

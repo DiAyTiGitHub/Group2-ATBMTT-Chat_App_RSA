@@ -39,6 +39,30 @@ class ChatStore {
         }
     }
 
+    sendMessage = (messageContent: string) => {
+        if (!messageContent || messageContent.length === 0) {
+            return;
+        }
+        try {
+            const currentUser = LocalStorage.getLoginUser();
+
+            const chatMessage = {
+                user: currentUser,
+                content: messageContent,
+                room: this.chosenRoom,
+            };
+
+            // console.log(chatMessage);
+            this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
+            this.stompClient.send("/app/privateMessage", {}, JSON.stringify(chatMessage));
+        }
+        catch (err) {
+            console.log(err);
+            toast.error("Error occured when sending message, please try again :(");
+            throw new Error(err);
+        }
+    }
+
     sendPrivateValue = (privateMessage: string) => {
         if (!privateMessage || privateMessage.length === 0) {
             return;
@@ -94,7 +118,6 @@ class ChatStore {
     }
 
     chosenRoom = null;
-
     setChosenRoom = (chosenRoom: any) => {
         this.chosenRoom = chosenRoom;
     }
