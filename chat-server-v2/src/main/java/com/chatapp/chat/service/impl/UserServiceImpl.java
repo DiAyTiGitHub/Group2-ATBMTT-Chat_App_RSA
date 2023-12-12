@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         return rooms;
     }
 
-    private void sortRoomDTOInLastestMessagesOrder(List<RoomDTO> rooms) {
+    public static void sortRoomDTOInLastestMessagesOrder(List<RoomDTO> rooms) {
         Collections.sort(rooms, new Comparator<RoomDTO>() {
             @Override
             public int compare(RoomDTO o1, RoomDTO o2) {
@@ -324,7 +324,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<MessageDTO> getTop20LatestNotifications() {
         User currentUser = getCurrentLoginUserEntity();
-        if(currentUser == null) return null;
+        if (currentUser == null) return null;
         List<MessageDTO> data = messageRepository.getTop20LatestNotifications(currentUser.getId(), PageRequest.of(0, 20));
         return data;
     }
@@ -332,7 +332,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<MessageDTO> getAllNotifications() {
         User currentUser = getCurrentLoginUserEntity();
-        if(currentUser == null) return null;
+        if (currentUser == null) return null;
         List<MessageDTO> data = messageRepository.getAllNotificationsByUserId(currentUser.getId());
         return data;
     }

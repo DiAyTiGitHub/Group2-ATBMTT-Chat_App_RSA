@@ -4,12 +4,13 @@ import com.chatapp.chat.entity.Room;
 import com.chatapp.chat.entity.RoomType;
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.entity.UserRoom;
-import com.chatapp.chat.model.MessageDTO;
-import com.chatapp.chat.model.RoomDTO;
-import com.chatapp.chat.model.UserDTO;
+import com.chatapp.chat.model.*;
 import com.chatapp.chat.repository.RoomRepository;
+import com.chatapp.chat.repository.UserRoomRepository;
+import com.chatapp.chat.service.MessageService;
 import com.chatapp.chat.service.RoomService;
 import com.chatapp.chat.service.RoomTypeService;
+import com.chatapp.chat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private RoomTypeService roomTypeService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRoomRepository userRoomRepository;
+
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public Set<UserDTO> getAllJoinedUsersByRoomId(UUID roomId) {
@@ -121,9 +131,44 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTO handleAddJoinedUserIntoRoomDTO(Room room){
+    public RoomDTO handleAddJoinedUserIntoRoomDTO(Room room) {
         RoomDTO data = new RoomDTO(room);
         data.setParticipants(this.getAllJoinedUsersByRoomId(data.getId()));
         return data;
+    }
+
+    @Override
+    public List<RoomDTO> searchRoom(SeachObject seachObject) {
+        User currenUser = userService.getCurrentLoginUserEntity();
+        if (currenUser == null) return null;
+        List<UserRoomDTO> userRooms = userRoomRepository.searchRoomByKeyword(seachObject.getKeyword().toLowerCase().trim());
+
+        if (userRooms == null) return null;
+        List<RoomDTO> rooms = new ArrayList<>();
+
+        Set<UUID> storedRoomIds = new HashSet<>();
+
+        for (UserRoomDTO userRoom : userRooms) {
+            Room room = roomRepository.findById(userRoom.getRoom().getId()).orElse(null);
+            if (room == null) continue;
+            if (storedRoomIds.contains(room.getId())) continue;
+            storedRoomIds.add(room.getId());
+            RoomDTO roomDto = handleAddJoinedUserIntoRoomDTO(room);
+            boolean containsCurrentUser = false;
+            for (UserDTO userDto : roomDto.getParticipants()) {
+                if (userDto.getId().equals(currenUser.getId())) {
+                    containsCurrentUser = true;
+                    break;
+                }
+            }
+            if (!containsCurrentUser) continue;
+            List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+            roomDto.setMessages(messages);
+            rooms.add(roomDto);
+        }
+
+        UserServiceImpl.sortRoomDTOInLastestMessagesOrder(rooms);
+
+        return rooms;
     }
 }

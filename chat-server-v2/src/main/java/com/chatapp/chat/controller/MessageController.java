@@ -48,4 +48,5 @@ public class MessageController {
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<Set<MessageDTO>>(res, HttpStatus.OK);
     }
+
 }

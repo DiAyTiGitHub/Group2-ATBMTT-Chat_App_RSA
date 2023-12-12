@@ -16,6 +16,21 @@ class ChatStore {
         makeAutoObservable(this);
     }
 
+    searchConversation = async (keyword: string) => {
+        try {
+            const searchObject = {
+                keyword: keyword
+            }
+
+            
+        }
+        catch (err) {
+            console.log(err);
+            toast.error("Find conversation errors :( Please try again!");
+            throw new Error(err);
+        }
+    }
+
     sendMessage = (messageContent: string) => {
         if (!messageContent || messageContent.length === 0) {
             return;
@@ -57,12 +72,6 @@ class ChatStore {
     onError = (err: any) => {
         console.log(err);
         toast.error("Connect to chat server error, please try again!");
-    }
-
-    onReceivedPrivateMessage = (payload: any) => {
-        console.log(payload);
-        var payloadData = JSON.parse(payload.body);
-        console.log("recieved message: ", payloadData);
     }
 
     chosenRoom = null;

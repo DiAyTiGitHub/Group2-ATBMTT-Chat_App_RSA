@@ -10,11 +10,12 @@ import { observer } from 'mobx-react';
 function ConversationList() {
   const { chatStore } = useStore();
   const { joinedRooms } = chatStore;
- 
+
   return (
     <div className="conversation-list flex-column">
-      <Toolbar title="Chat" />
-      <ConversationSearch />
+      <Toolbar title="Chat">
+        <ConversationSearch />
+      </Toolbar>
       {
         joinedRooms.map(function (room, index) {
           return (

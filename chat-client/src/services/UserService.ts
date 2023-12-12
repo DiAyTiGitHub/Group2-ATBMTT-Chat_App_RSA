@@ -47,3 +47,4 @@ export function getAllJoinedRooms() {
     const url = API_PATH + '/joinedRoom';
     return axios.get(url);
 }
+
