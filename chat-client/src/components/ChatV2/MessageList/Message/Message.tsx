@@ -5,12 +5,12 @@ export default function Message(props) {
     const {
       data,
       author,
+      type,
       isMine,
       startsSequence,
       endsSequence,
       photo
     } = props;
-    
     return (
       <div className={[
         'message',
@@ -18,6 +18,12 @@ export default function Message(props) {
         `${startsSequence ? 'start' : ''}`,
         `${endsSequence ? 'end' : ''}`
       ].join(' ')}>
+        {
+          type=="notification" &&
+            <div className="notification">
+              test
+            </div>
+        }
         {/* {
           !isMine && startsSequence && 
           <img className="conversation-photo" src={photo} alt="" />

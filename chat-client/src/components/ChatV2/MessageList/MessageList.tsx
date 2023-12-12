@@ -28,15 +28,15 @@ function MessageList(props: any) {
   const renderMessages = () => {
     const messages = chosenRoom.messages;
     console.log(messages)
-    
     let i = 0;
     let messageCount = messages.length;
     let tempArray = [];
-    console.log(tempArray)
     while (i < messageCount) {
       let previous = messages[i - 1];
       let current = messages[i];
       let next = messages[i + 1];
+      let type = current.messageType.name;
+      console.log(type)
       let isMine = current.user.username === MY_USER_ID;
       let startsSequence = true;
       let endsSequence = false;
@@ -55,6 +55,7 @@ function MessageList(props: any) {
         <Message
           key={i}
           isMine={isMine}
+          type={type}
           startsSequence={startsSequence}
           endsSequence={endsSequence}
           data={current.content}
