@@ -148,7 +148,7 @@ html {
 }
 
 .h-100vh {
-    height: 100vh;
+    height: 100vh !important;
 }
 
 .h-100vh-80 {
@@ -187,6 +187,10 @@ html {
     align-items: center;
     justify-content: center;
     display: flex;
+}
+
+.flex-1 {
+    flex: 1;
 }
 
 // display
@@ -300,6 +304,14 @@ html {
     overflow: hidden !important;
 }
 
-.flex-1 {
-    flex: 1;
+.over-scroll {
+    overflow: scroll !important;
+}
+
+.overx-hidden {
+    overflow-x: hidden !important;
+}
+
+.overy-hidden {
+    overflow-y: hidden !important;
 }

@@ -8,6 +8,8 @@ function ConversationListItem(props: any) {
   const { chatStore } = useStore();
   const { setChosenRoom } = chatStore;
 
+  console.log("current conversation: ", props.room);
+
   const { id, avatar, name, code, participants, messages } = props.room;
 
   function renderConversationName() {

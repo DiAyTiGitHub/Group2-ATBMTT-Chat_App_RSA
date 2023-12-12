@@ -97,13 +97,13 @@ class ChatStore {
             return;
         }
 
-        let isExisted = false;
+        let isExisted = null;
         for (let i = 0; i < this.joinedRooms.length; i++) {
             const currentRoom = this.joinedRooms[i];
             if (currentRoom.id === roomId) {
                 currentRoom.messages.push(payloadData);
                 this.joinedRooms[i] = { ...currentRoom };
-                isExisted = true;
+                isExisted = i;
 
                 if (currentRoom.id === this.chosenRoom.id) {
                     this.chosenRoom = { ...currentRoom };
@@ -111,9 +111,17 @@ class ChatStore {
             }
         }
 
-        if (!isExisted) {
+        if (isExisted || isExisted == 0) {
+            const temp = this.joinedRooms[isExisted];
+            for (let i = isExisted; i >= 1; i--) {
+                this.joinedRooms[i] = this.joinedRooms[i - 1];
+            }
+            this.joinedRooms[0] = temp;
+            this.joinedRooms = [...this.joinedRooms];
+        }
+        else {
             const newRoom = payloadData.room;
-            this.joinedRooms.push(newRoom);
+            this.joinedRooms.unshift(newRoom);
             this.joinedRooms = [...this.joinedRooms];
         }
 

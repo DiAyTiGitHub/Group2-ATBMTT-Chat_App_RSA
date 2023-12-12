@@ -16,11 +16,9 @@ function MainApp() {
   }
 
   return (
-    <Grid container spacing={0}>
-      <Grid item xs={12}>
+    <Grid container spacing={0} className='w-100 h-100 flex-column h-100vh'>
+      <Grid item xs={12} className='w-100 flex-column'>
         <Header />
-      </Grid>
-      <Grid item xs={12}>
         {content}
       </Grid>
     </Grid>

@@ -141,6 +141,7 @@ public class MessageServiceImpl implements MessageService {
         MessageDTO resDto = new MessageDTO(res);
         if (resDto == null) return null;
         resDto.getRoom().setMessages(latestMessages);
+        resDto.getRoom().setParticipants(roomService.getAllJoinedUsersByRoomId(resDto.getRoom().getId()));
 
         Set<UserRoom> userRooms = roomEntity.getUserRooms();
         List<User> users = new ArrayList<>();

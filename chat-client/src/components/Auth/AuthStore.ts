@@ -45,7 +45,6 @@ class AuthStore {
 
     onConnected = () => {
         this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/notification', this.onReceivedNotification);
-        this.stompClient.subscribe('/chatroom/public', this.onReceivedPublicMessage);
         this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/privateMessage', this.onReceivedNotificationPrivateMessage);
         this.userJoin();
     }
@@ -59,11 +58,11 @@ class AuthStore {
     }
 
     userJoin = () => {
-        const currentUser = LocalStorage.getLoginUser();
-        const chatMessage = {
-            content: currentUser?.username + " is online!"
-        };
-        this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
+        // const currentUser = LocalStorage.getLoginUser();
+        // const chatMessage = {
+        //     content: currentUser?.username + " is online!"
+        // };
+        // this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
     }
 
     onReceivedPublicMessage = (payload: any) => {

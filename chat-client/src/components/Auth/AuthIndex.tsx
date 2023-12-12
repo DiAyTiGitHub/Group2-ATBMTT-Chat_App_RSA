@@ -46,8 +46,8 @@ function AuthIndex() {
 
   return (
     <div
-      className="flex-center"
-      style={{ width: "auto", height: "100vh", paddingTop: "30px", padding: "0px", background: `url('https://marketplace.canva.com/EAD2962NKnQ/2/0/400w/canva-rainbow-gradient-pink-and-purple-virtual-background-LrNk7fAXxw8.jpg')`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%" }}
+      className="flex-center w-100 p-0 m-0 flex-1"
+      style={{ background: `url('https://marketplace.canva.com/EAD2962NKnQ/2/0/400w/canva-rainbow-gradient-pink-and-purple-virtual-background-LrNk7fAXxw8.jpg')`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%" }}
     >
       <Paper elevation={20} style={paperStyle}>
         <Tabs

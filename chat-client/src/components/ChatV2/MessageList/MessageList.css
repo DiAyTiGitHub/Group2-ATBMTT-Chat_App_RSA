@@ -1,6 +1,6 @@
 .message-list-container {
-  padding: 10px 0px 10px 10px; 
-  padding-bottom: 70px;
-  width: inherit;
-
+  overflow-y: scroll;
+  padding-left: 6px;
+  padding-bottom: 24px;
+  max-height: 80vh;
 }

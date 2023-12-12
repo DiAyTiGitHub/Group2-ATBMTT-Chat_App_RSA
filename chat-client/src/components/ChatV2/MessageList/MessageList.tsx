@@ -24,7 +24,7 @@ function MessageList(props: any) {
   // const getMessages = () => {
   //   setMessages([...messages, ...chosenRoom.messages])
   // }
-      
+
   const renderMessages = () => {
     const messages = chosenRoom.messages;
     console.log(messages)
@@ -72,7 +72,11 @@ function MessageList(props: any) {
     <div className="message-list">
       <Toolbar title="Conversation Title" />
       {!chosenRoom ? <> No conversation was chosen</>
-                   : <div className="message-list-container">{ renderMessages() }</div>
+        : <div className="message-list-container">
+          {
+            renderMessages() 
+          }
+        </div>
       }
       <Compose></Compose>
     </div>

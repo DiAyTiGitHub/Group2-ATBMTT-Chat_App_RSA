@@ -34,16 +34,18 @@ function ChatIndex() {
     }, []);
 
     return (
-        <div className="app">
+        <div
+            className="app flex-center w-100 p-0 m-0 flex-1"
+        >
             <div className="messenger">
                 <div className="scrollable sidebar">
                     <ConversationList />
                 </div>
-                <div className="scrollable content">
+                <div className="scrollable content p-0">
                     <MessageList />
                 </div>
                 <div className="sidebar d-none d-lg-block">
-                    <InfoList/>
+                    <InfoList />
                 </div>
             </div>
         </div>
