@@ -12,7 +12,7 @@ function ConversationList() {
   const { joinedRooms } = chatStore;
  
   return (
-    <div className="conversation-list">
+    <div className="conversation-list flex-column">
       <Toolbar title="Chat" />
       <ConversationSearch />
       {

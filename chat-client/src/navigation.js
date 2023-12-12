@@ -1,11 +1,7 @@
 const navigations = [
     {
-        name: 'Chats V2',
+        name: 'Messenger',
         path: '/chat-v2',
-    },
-    {
-        name: 'Chats',
-        path: '/chat',
     },
     {
         name: 'Friends',

@@ -17,6 +17,7 @@ function Compose() {
 
   function handleSendMessage() {
     sendMessage(messageContent);
+    setMessageContent("");
   }
 
   function handleOnKeyDownMessageContent(event: any) {

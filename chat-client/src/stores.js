@@ -1,6 +1,6 @@
 import AccountStore from "./components/Account/AccountStore";
 import AuthStore from "./components/Auth/AuthStore";
-import ChatStore from "./components/Chat/ChatStore";
+import ChatStore from "./components/ChatV2/ChatStore";
 import FriendsStore from "./components/Friends/FriendsStore";
 import { createContext, useContext } from "react";
 

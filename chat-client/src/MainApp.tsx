@@ -9,12 +9,6 @@ import { Grid, Paper, Avatar, TextField, Button, Typography, Link, Checkbox, For
 function MainApp() {
   const content = useRoutes(routes);
 
-  if (!LocalStorage.getLoginUser()) {
-    return <>
-      {content}
-    </>;
-  }
-
   return (
     <Grid container spacing={0} className='w-100 h-100 flex-column h-100vh'>
       <Grid item xs={12} className='w-100 flex-column'>

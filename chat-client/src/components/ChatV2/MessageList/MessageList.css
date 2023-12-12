@@ -1,6 +1,32 @@
 .message-list-container {
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-left: 6px;
   padding-bottom: 24px;
   max-height: 80vh;
+}
+
+/* Define a style for the track */
+.message-list-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Define a style for the handle or thumb */
+.message-list-container::-webkit-scrollbar-thumb {
+  background-color: #43a4ff; /* Change the color as needed */
+  border-radius: 4px;
+}
+
+/* Define a style for the track */
+.message-list-container::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Change the color as needed */
+}
+
+/* Optional: Change the appearance on hover */
+.message-list-container::-webkit-scrollbar-thumb:hover {
+  background-color: #006bb3; /* Change the color as needed */
+}
+
+/* Optional: Change the appearance when dragging */
+.message-list-container::-webkit-scrollbar-thumb:active {
+  background-color: #2574c3; /* Change the color as needed */
 }
