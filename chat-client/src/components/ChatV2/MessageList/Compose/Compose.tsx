@@ -19,6 +19,14 @@ function Compose() {
     sendMessage(messageContent);
   }
 
+  function handleOnKeyDownMessageContent(event: any) {
+    // Check if the key pressed is Enter (key code 13)
+    if (event.key === "Enter") {
+      // Your code to handle Enter key press goes here
+      handleSendMessage();
+    }
+  }
+
   return (
     <div className="compose">
       <input
@@ -27,6 +35,7 @@ function Compose() {
         placeholder="Type a message, @name"
         value={messageContent}
         onChange={handleChangeMessageContent}
+        onKeyDown={handleOnKeyDownMessageContent}
       />
       <Button variant="contained" onClick={handleSendMessage}>
         <SendRoundedIcon></SendRoundedIcon>

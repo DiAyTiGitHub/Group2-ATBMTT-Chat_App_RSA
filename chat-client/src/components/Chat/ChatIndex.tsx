@@ -29,11 +29,6 @@ function ChatIndex() {
         }
     }, []);
 
-    const {
-        sendPrivateValue,
-        sendValue,
-    } = chatStore;
-
     const [tab, setTab] = useState("ChatIndex");
     const [publicMessage, setPublicMessage] = useState("");
     const [privateMessage, setPrivateMessage] = useState("");
@@ -49,11 +44,9 @@ function ChatIndex() {
     }
 
     function handleSendPublicMessage() {
-        sendValue(publicMessage);
     }
 
     function handleSendPrivateMessage() {
-        sendPrivateValue(privateMessage);
     }
 
     const currentUser = LocalStorage.getLoginUser();

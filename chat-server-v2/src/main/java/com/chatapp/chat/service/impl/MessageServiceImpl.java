@@ -135,8 +135,12 @@ public class MessageServiceImpl implements MessageService {
         messageEntity.setSendDate(new Date());
         messageEntity.setUser(currentUser);
         Message res = messageRepository.saveAndFlush(messageEntity);
+
+        List<MessageDTO> latestMessages = get20LatestMessagesByRoomId(res.getRoom().getId());
+
         MessageDTO resDto = new MessageDTO(res);
-        if (res == null) return null;
+        if (resDto == null) return null;
+        resDto.getRoom().setMessages(latestMessages);
 
         Set<UserRoom> userRooms = roomEntity.getUserRooms();
         List<User> users = new ArrayList<>();
@@ -145,7 +149,8 @@ public class MessageServiceImpl implements MessageService {
         }
 
         for (User user : users) {
-            sendMessageTo("/privateMessage", resDto);
+            if (currentUser.getId() != user.getId())
+                simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", resDto);
         }
 
         return resDto;
