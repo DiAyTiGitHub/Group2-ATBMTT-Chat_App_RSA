@@ -10,7 +10,7 @@ export default function Message(props) {
       endsSequence,
       photo
     } = props;
-
+    
     return (
       <div className={[
         'message',
@@ -31,7 +31,7 @@ export default function Message(props) {
 
         <div className="bubble-container">
           <div className="bubble">
-            { data.message }
+            { data }
           </div>
         </div>
       </div>
