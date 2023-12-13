@@ -2,19 +2,19 @@ import React, { useEffect, useState, memo } from 'react';
 import Compose from './Compose/Compose';
 import Toolbar from '../Toolbar/Toolbar';
 import Message from './Message/Message';
-
+import LocalStorage from 'src/common/LocalStorage';
 import './MessageList.css';
 import { object } from 'yup';
 import { observer } from 'mobx-react';
 import { useStore } from 'src/stores';
 import { ConstructionOutlined } from '@mui/icons-material';
 
-const MY_USER_ID = 'dattrinh';
+
 
 function MessageList(props: any) {
   const { chatStore } = useStore();
   const { chosenRoom } = chatStore;
-
+  const MY_USER_ID = LocalStorage.getLoginUser()?.username;
   // const [messages, setMessages] = useState([]);
 
   // useEffect(() => {
@@ -27,7 +27,6 @@ function MessageList(props: any) {
 
   const renderMessages = () => {
     const messages = chosenRoom.messages;
-    console.log(messages)
     let i = 0;
     let messageCount = messages.length;
     let tempArray = [];
@@ -36,13 +35,11 @@ function MessageList(props: any) {
       let current = messages[i];
       let next = messages[i + 1];
       let type = current.messageType.name;
-      console.log(type)
       let isMine = current.user.username === MY_USER_ID;
       let startsSequence = true;
       let endsSequence = false;
-      let photo = "test";
-
-
+      let photo = !isMine && current.user.avatar != null ? current.user.avatar : 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
+      let sendDate = current.sendDate;
       if (previous && previous.user.username === current.user.username) {
         startsSequence = false
       }
@@ -60,10 +57,12 @@ function MessageList(props: any) {
           endsSequence={endsSequence}
           data={current.content}
           author={current.user.username}
-          photo
+          photo={photo}
+          sendDate={sendDate}
         />
       );
       i += 1;
+
     }
     return tempArray;
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import './Message.css';
+import moment from 'moment';
 
 export default function Message(props) {
     const {
@@ -9,8 +10,10 @@ export default function Message(props) {
       isMine,
       startsSequence,
       endsSequence,
-      photo
+      photo,
+      sendDate
     } = props;
+    console.log(photo);
     return (
       <div className={[
         'message',
@@ -18,27 +21,29 @@ export default function Message(props) {
         `${startsSequence ? 'start' : ''}`,
         `${endsSequence ? 'end' : ''}`
       ].join(' ')}>
+        
         {
           type=="notification" &&
             <div className="notification">
-              test
+              { moment(sendDate).format('LLLL') } 
             </div>
         }
-        {/* {
-          !isMine && startsSequence && 
-          <img className="conversation-photo" src={photo} alt="" />
-        } */}
         {
-          startsSequence &&
+          startsSequence && 
             <div className="username">
               { author }
             </div>
         }
-
+        <div className="user-container">
+        {
+        startsSequence && !isMine &&
+          <img className="thumbnail" src={ photo } alt=""></img>
+        }
         <div className="bubble-container">
           <div className="bubble">
             { data }
           </div>
+        </div>
         </div>
       </div>
     );
