@@ -27,9 +27,7 @@ function UserItem({ userInfo }: any) {
     useEffect(() => {
         // setFriendStatus(checkFriendStatus());
         checkFriendStatus();
-
         console.log(friendstatus);
-        
     }, [addFriendUsers, userInfo]);
 
     function checkFriendStatus() {
@@ -48,6 +46,7 @@ function UserItem({ userInfo }: any) {
 
     function handleClickAddFriend() {
         addFriend(userInfo);
+        setFriendStatus("Hủy gửi kết bạn");
         const notification = {
             content: currentLoginUser?.username + " sended you an add friend request!",
             user: userInfo
@@ -62,6 +61,7 @@ function UserItem({ userInfo }: any) {
             if (request?.requestSender?.id == userInfo?.id) relationship = request;
         });
         acceptFriend(relationship);
+        setFriendStatus("Hủy kết bạn");
         const notification = {
             content: currentLoginUser?.username + " accepted your add friend request!",
             user: userInfo
@@ -72,6 +72,7 @@ function UserItem({ userInfo }: any) {
 
     function handleClickUnfriend() {
         unFriend(userInfo);
+        setFriendStatus("Kết bạn");
     }
 
     function handleClickButton() {
