@@ -8,6 +8,7 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
+import Tooltip from '@mui/material/Tooltip';
 
 function Header() {
     const currentPage = window.location.pathname;
@@ -17,27 +18,30 @@ function Header() {
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <div className="flex-center justify-right w-100 header p-4">
-                    {/* {navigations.map(function (navigation, index) {
-                        return (
-                            <NavLink key={index} to={navigation.path} className="p-0 px-4">
-                                <p>{navigation.name}</p>
-                            </NavLink>
-                        );
-                    })} */}
                     <NavLink key={0} to={'/chat-v2'} className="p-0 px-4">
-                        <QuestionAnswerRoundedIcon className='icons'></QuestionAnswerRoundedIcon>
+                        <Tooltip title="Messaging" enterDelay={500} leaveDelay={200} arrow followCursor>
+                            <QuestionAnswerRoundedIcon className='icons'></QuestionAnswerRoundedIcon>
+                        </Tooltip>
                     </NavLink>
                     <NavLink key={1} to={'/chat'} className="p-0 px-4">
-                        <QuestionMarkRoundedIcon className='icons'></QuestionMarkRoundedIcon>
+                        <Tooltip title="?" enterDelay={500} leaveDelay={200} arrow followCursor>
+                            <QuestionMarkRoundedIcon className='icons'></QuestionMarkRoundedIcon>
+                        </Tooltip>
                     </NavLink>
                     <NavLink key={2} to={'/friends'} className="p-0 px-4">
-                        <PeopleRoundedIcon className='icons'></PeopleRoundedIcon>
+                        <Tooltip title="Friends" enterDelay={500} leaveDelay={200} arrow followCursor>
+                            <PeopleRoundedIcon className='icons'></PeopleRoundedIcon>
+                        </Tooltip>
                     </NavLink>
                     <NavLink key={3} to={'account'} className="p-0 px-4">
-                        <AccountCircleRoundedIcon className='icons'></AccountCircleRoundedIcon>
+                        <Tooltip title="Account" enterDelay={500} leaveDelay={200} arrow followCursor>
+                            <AccountCircleRoundedIcon className='icons'></AccountCircleRoundedIcon>
+                        </Tooltip>
                     </NavLink>
                     <NavLink key={4} to={'/'} className="p-0 px-4">
-                        <ExitToAppRoundedIcon className='icons'></ExitToAppRoundedIcon>
+                        <Tooltip title="Switch account" enterDelay={500} leaveDelay={200} arrow followCursor>
+                            <ExitToAppRoundedIcon className='icons'></ExitToAppRoundedIcon>
+                        </Tooltip>
                     </NavLink>
                 </div>
             </Grid>

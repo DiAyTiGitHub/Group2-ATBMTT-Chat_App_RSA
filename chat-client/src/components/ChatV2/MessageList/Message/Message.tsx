@@ -1,6 +1,6 @@
 import React from 'react';
 import './Message.css';
-import moment from 'moment';
+import { format, parseISO} from 'date-fns';
 
 export default function Message(props) {
     const {
@@ -13,7 +13,6 @@ export default function Message(props) {
       photo,
       sendDate
     } = props;
-    console.log(photo);
     return (
       <div className={[
         'message',
@@ -25,7 +24,7 @@ export default function Message(props) {
         {
           type=="notification" &&
             <div className="notification">
-              { moment(sendDate).format('LLLL') } 
+              { format(parseISO(sendDate), "do MMMM yyyy") } 
             </div>
         }
         {

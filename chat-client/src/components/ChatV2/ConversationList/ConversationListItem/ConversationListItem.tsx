@@ -3,16 +3,13 @@ import './ConversationListItem.css';
 import LocalStorage from 'src/common/LocalStorage';
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
-import moment from 'moment';
+import { format, parseISO} from 'date-fns';
 
 function ConversationListItem(props: any) {
   const { chatStore } = useStore();
   const { setChosenRoom } = chatStore;
 
-  console.log("current conversation: ", props.room);
-
   const { id, avatar, name, code, participants, messages } = props.room;
-  console.log(messages.sendDate);
   function renderConversationName() {
     if (!name || name.trim() === '') {
       const currentUser = LocalStorage.getLoginUser();
@@ -47,7 +44,8 @@ function ConversationListItem(props: any) {
     if (messages && messages.length > 0) {
 
       const lastMessage = messages[messages.length - 1];
-      return moment(lastMessage.sendDate).format('DD/MM/YYYY');
+
+      return format(parseISO(lastMessage.sendDate), 'd/M/yyyy');
     }
     return "";
   }
