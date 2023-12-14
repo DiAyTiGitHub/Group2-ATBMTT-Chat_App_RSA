@@ -46,7 +46,9 @@ function Header() {
                         onClick={handleCloseNavMenu}
                         sx={{ my: 2, color: 'white', display: 'block', fontSize:'20px'}}
                         >
-                        MESSAGING
+                        <Tooltip title='Show conversations and messages' enterDelay={500} leaveDelay={200} arrow>
+                          <QuestionAnswerRoundedIcon fontSize="large"></QuestionAnswerRoundedIcon>
+                        </Tooltip>
                     </Button>    
                 </NavLink>
                 <NavLink key={3} to={'./friends'} className="p-0 px-4 d-flex">
@@ -55,7 +57,9 @@ function Header() {
                         onClick={handleCloseNavMenu}
                         sx={{ my: 2, color: 'white', display: 'block', fontSize:'20px'}}
                         >
-                        FRIENDS
+                        <Tooltip title='Show people and friends' enterDelay={500} leaveDelay={200} arrow>
+                          <PeopleRoundedIcon fontSize="large"></PeopleRoundedIcon>
+                        </Tooltip>
                     </Button>    
                 </NavLink>
             </Box>
