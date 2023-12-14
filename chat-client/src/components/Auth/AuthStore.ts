@@ -18,7 +18,6 @@ class AuthStore {
         try {
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
-
             toast.success("Login successfully!");
             const { data: userData } = await getCurrentLoginUser();
             this.setUser(userData);

@@ -30,3 +30,10 @@
 .message-list-container::-webkit-scrollbar-thumb:active {
   background-color: #2574c3; /* Change the color as needed */
 }
+
+.no-message {
+  color: #999;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+}

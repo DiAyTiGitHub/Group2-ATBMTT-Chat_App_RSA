@@ -70,7 +70,7 @@ function MessageList(props: any) {
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
-      {!chosenRoom ? <> No conversation was chosen</>
+      {!chosenRoom ? <div className="no-message"> No conversation was chosen</div>
         : <div className="message-list-container">
           {
             renderMessages() 

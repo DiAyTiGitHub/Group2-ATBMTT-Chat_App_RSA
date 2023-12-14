@@ -42,9 +42,9 @@ function InfoList() {
     return (
         <div className="info-list d-lg-flex">
             {!chosenRoom && (
-                <>
-                    No conversation chosen
-                </>
+                <div className="no-info">
+                    <p>No conversation chosen</p>
+                </div>
             )}
             {chosenRoom && (
                 <>

@@ -28,9 +28,9 @@ function ConversationList() {
       }
       {
         !joinedRooms || (joinedRooms.length === 0) && (
-          <>
-            You don't have any conversation, lets add friends and start chatting!
-          </>
+          <div className="no-conversation">
+            <p>You don't have any conversation, lets add friends and start chatting!</p>
+          </div>
         )
       }
     </div>

@@ -17,3 +17,9 @@
     font-size: 16;
     font-weight: 500;
 }
+.no-info {
+  color: #999;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 20px;
+}

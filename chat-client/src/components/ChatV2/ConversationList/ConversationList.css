@@ -34,3 +34,9 @@
 .conversation-list::-webkit-scrollbar-thumb:active {
   background-color: #2574c3; /* Change the color as needed */
 }
+
+.no-conversation {
+  color: #999;
+  font-weight: 400;
+  text-align: center;
+}
