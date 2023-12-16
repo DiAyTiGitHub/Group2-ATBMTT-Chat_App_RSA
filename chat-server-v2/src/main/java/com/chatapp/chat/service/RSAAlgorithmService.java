@@ -12,7 +12,7 @@ public class RSAAlgorithmService {
 
     public RSAAlgorithmService(){
         // initialize key pair n, e, d
-        int bits = 2048;
+        int bits = 20;
         SecureRandom r = new SecureRandom();//create BigInteger r random
         BigInteger p = new BigInteger(bits, 100, r);
         BigInteger q = new BigInteger(bits, 100, r);

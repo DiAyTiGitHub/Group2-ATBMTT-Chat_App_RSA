@@ -44,8 +44,7 @@ class AuthStore {
 
     onConnected = () => {
         this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/notification', this.onReceivedNotification);
-        this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/privateMessage', this.onReceivedNotificationPrivateMessage);
-        this.userJoin();
+        // this.stompClient.subscribe('/user/' + this.currentLoginUser.id + '/privateMessage', this.onReceivedNotificationPrivateMessage);
     }
 
     onReceivedNotificationPrivateMessage = (payload: any) => {
@@ -54,14 +53,6 @@ class AuthStore {
         const currentPage = window.location.pathname;
         if (currentPage === "/chat-v2") return;
         toast.info(senderName + " sended you a message!");
-    }
-
-    userJoin = () => {
-        // const currentUser = LocalStorage.getLoginUser();
-        // const chatMessage = {
-        //     content: currentUser?.username + " is online!"
-        // };
-        // this.stompClient.send("/app/public-message", {}, JSON.stringify(chatMessage));
     }
 
     onReceivedPublicMessage = (payload: any) => {
