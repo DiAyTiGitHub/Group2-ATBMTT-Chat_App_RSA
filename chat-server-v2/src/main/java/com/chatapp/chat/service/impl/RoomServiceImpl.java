@@ -1,19 +1,25 @@
 package com.chatapp.chat.service.impl;
 
-import com.chatapp.chat.entity.Room;
-import com.chatapp.chat.entity.RoomType;
-import com.chatapp.chat.entity.User;
-import com.chatapp.chat.entity.UserRoom;
+import com.chatapp.chat.entity.*;
 import com.chatapp.chat.model.*;
+import com.chatapp.chat.repository.RSAKeyRepository;
 import com.chatapp.chat.repository.RoomRepository;
 import com.chatapp.chat.repository.UserRoomRepository;
-import com.chatapp.chat.service.MessageService;
-import com.chatapp.chat.service.RoomService;
-import com.chatapp.chat.service.RoomTypeService;
-import com.chatapp.chat.service.UserService;
+import com.chatapp.chat.service.*;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.PublicKey;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -32,6 +38,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private RSAKeyRepository rsaKeyRepository;
 
     @Override
     public Set<UserDTO> getAllJoinedUsersByRoomId(UUID roomId) {
@@ -125,6 +134,17 @@ public class RoomServiceImpl implements RoomService {
             if (roomType != null) entity.setRoomType(roomType);
         }
 
+        //generate public and private key for new room
+        RSAAlgorithmService rsaService = new RSAAlgorithmService();
+        RSAKey publicKey = rsaService.getPublicKey();
+        RSAKey privateKey = rsaService.getPrivateKey();
+
+        RSAKey responsePublicKey = rsaKeyRepository.save(publicKey);
+        entity.setPublicKey(responsePublicKey);
+
+        RSAKey responsePrivateKey = rsaKeyRepository.save(privateKey);
+        entity.setPrivateKey(responsePrivateKey);
+
         Room responseEntity = roomRepository.save(entity);
 
         return responseEntity;
@@ -170,5 +190,38 @@ public class RoomServiceImpl implements RoomService {
         UserServiceImpl.sortRoomDTOInLastestMessagesOrder(rooms);
 
         return rooms;
+    }
+
+    @Value("${app.upload.dir}") // Configured in application.properties or application.yml
+    private String uploadDir;
+
+    @Override
+    public String uploadRoomAvatar(MultipartFile fileUpload, UUID roomId) {
+        LocalDateTime myObj = LocalDateTime.now();
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+        Room needUpdateRoom = roomRepository.findById(roomId).orElse(null);
+        if (needUpdateRoom == null) return null;
+
+        try {
+            Path pathImg = Paths.get(uploadDir);
+
+            InputStream inputStream = fileUpload.getInputStream();
+            String ext = FilenameUtils.getExtension(fileUpload.getOriginalFilename());
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyyHHmmss");
+
+            String formattedDate = myObj.format(myFormatObj);
+            String nameFile = currentUser.getUsername() + "_" + formattedDate + "." + ext;
+            Files.copy(inputStream, pathImg.resolve(nameFile),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            needUpdateRoom.setAvatar(nameFile);
+            Room res = roomRepository.save(needUpdateRoom);
+
+            return uploadDir + res.getAvatar();
+        } catch (Exception e) {
+            System.err.println(e);
+            return null;
+        }
     }
 }

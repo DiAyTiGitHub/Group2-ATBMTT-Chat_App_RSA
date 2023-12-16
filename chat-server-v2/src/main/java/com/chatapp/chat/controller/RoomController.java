@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,5 +44,12 @@ public class RoomController {
         List<RoomDTO> res = roomService.searchRoom(seachObject);
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<List<RoomDTO>>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/avatar/{roomId}")
+    public ResponseEntity<String> updloadRoomAvatar(@RequestParam("fileUpload") MultipartFile fileUpload, @PathVariable UUID roomId) {
+        String res = roomService.uploadRoomAvatar(fileUpload, roomId);
+        if (res != null) return new ResponseEntity<String>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

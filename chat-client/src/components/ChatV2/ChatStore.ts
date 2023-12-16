@@ -36,7 +36,8 @@ class ChatStore {
             const currentUser = LocalStorage.getLoginUser();
 
             const chatMessage = {
-                content: this.encryptRSA(messageContent),
+                // content: this.encryptRSA(messageContent),
+                content: messageContent,
                 room: { id: this.chosenRoom.id },
                 messageType: { name: "chat" },
                 user: currentUser,
@@ -52,7 +53,7 @@ class ChatStore {
             throw new Error(err);
         }
     };
-    
+
     mod = (a, b, n) => {
         if (n === 1) return 0;
         let kq = 1;

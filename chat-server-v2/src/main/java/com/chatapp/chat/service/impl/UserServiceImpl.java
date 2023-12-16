@@ -1,11 +1,9 @@
 package com.chatapp.chat.service.impl;
 
-import com.chatapp.chat.entity.Friend;
-import com.chatapp.chat.entity.Room;
-import com.chatapp.chat.entity.User;
-import com.chatapp.chat.entity.UserRoom;
+import com.chatapp.chat.entity.*;
 import com.chatapp.chat.model.*;
 import com.chatapp.chat.repository.MessageRepository;
+import com.chatapp.chat.repository.RSAKeyRepository;
 import com.chatapp.chat.repository.UserRepository;
 import com.chatapp.chat.service.MessageService;
 import com.chatapp.chat.service.RoomService;
@@ -38,6 +36,8 @@ public class UserServiceImpl implements UserService {
     private MessageService messageService;
     @Autowired
     private MessageRepository messageRepository;
+    @Autowired
+    private RSAKeyRepository rsaKeyRepository;
 
     @Override
     public UserDTO getCurrentLoginUser() {
@@ -335,5 +335,21 @@ public class UserServiceImpl implements UserService {
         if (currentUser == null) return null;
         List<MessageDTO> data = messageRepository.getAllNotificationsByUserId(currentUser.getId());
         return data;
+    }
+
+    @Override
+    public RSAKeyDTO updateUserPublicKey(RSAKeyDTO publicKeyDto) {
+        User currentUser = getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+        RSAKey publicKey = currentUser.getPublicKey();
+        if (publicKey == null) publicKey = new RSAKey();
+        publicKey.setE(publicKeyDto.getE());
+        publicKey.setN(publicKeyDto.getN());
+        RSAKey res = rsaKeyRepository.save(publicKey);
+        if (res == null) return null;
+        currentUser.setPublicKey(res);
+        User responseUser = userRepository.save(currentUser);
+        if (responseUser == null) return null;
+        return new RSAKeyDTO(res);
     }
 }

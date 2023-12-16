@@ -27,9 +27,9 @@ export default function Message(props) {
     let m0 = m;
     let x0 = 0;
     let x1 = 1;
-  
+
     if (m === 1) return 0;
-  
+
     while (a > 1) {
       let q = Math.floor(a / m);
       let t = m;
@@ -51,25 +51,25 @@ export default function Message(props) {
     let plaintext = "";
 
     try {
-        // Trim and remove whitespace from the Base64 string
-        let cleanBase64String = messageContent.trim().replace(/\s/g, '');
+      // Trim and remove whitespace from the Base64 string
+      let cleanBase64String = messageContent.trim().replace(/\s/g, '');
 
-        // Decoding the Base64 string
-        let decodedString = atob(cleanBase64String);
+      // Decoding the Base64 string
+      let decodedString = atob(cleanBase64String);
 
-        // Decrypting each character code and constructing the plaintext
-        for (let i = 0; i < decodedString.length; i++) {
-            let decryptedCharCode = mod(decodedString.charCodeAt(i), d, n);
-            plaintext += String.fromCharCode(decryptedCharCode);
-        }
-        console.log("Chuoi tin nhan giai ma: " + plaintext);
+      // Decrypting each character code and constructing the plaintext
+      for (let i = 0; i < decodedString.length; i++) {
+        let decryptedCharCode = mod(decodedString.charCodeAt(i), d, n);
+        plaintext += String.fromCharCode(decryptedCharCode);
+      }
+      console.log("Chuoi tin nhan giai ma: " + plaintext);
     } catch (error) {
-        console.error("Error decoding Base64:", error);
-        console.log("Input causing the issue:", messageContent);
-        return ""; 
+      console.error("Error decoding Base64:", error);
+      console.log("Input causing the issue:", messageContent);
+      return "";
     }
     return plaintext;
-};
+  };
 
 
   //
@@ -95,7 +95,8 @@ export default function Message(props) {
         )}
         <div className="bubble-container">
           <div className="bubble">
-            {decryptRSA(data)}
+            {/* {decryptRSA(data)} */}
+            {data}
           </div>
         </div>
       </div>

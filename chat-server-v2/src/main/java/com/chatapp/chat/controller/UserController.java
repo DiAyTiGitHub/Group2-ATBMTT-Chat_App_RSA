@@ -127,4 +127,11 @@ public class UserController {
         if (res != null) return new ResponseEntity<List<MessageDTO>>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
+    @PutMapping("/publicKey")
+    public ResponseEntity<RSAKeyDTO> updateUserPublicKey(@RequestBody RSAKeyDTO publicKeyDto){
+        RSAKeyDTO res = userService.updateUserPublicKey(publicKeyDto);
+        if (res != null) return new ResponseEntity<RSAKeyDTO>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
 }

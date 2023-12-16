@@ -41,6 +41,30 @@ public class Room {
     @OneToOne(mappedBy = "room")
     private Friend relationship;
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "publicKeyId")
+    private RSAKey publicKey;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "privateKeyId")
+    private RSAKey privateKey;
+
+    public RSAKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(RSAKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public RSAKey getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(RSAKey privateKey) {
+        this.privateKey = privateKey;
+    }
+
     public Friend getRelationship() {
         return relationship;
     }
@@ -128,4 +152,6 @@ public class Room {
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
+
+
 }

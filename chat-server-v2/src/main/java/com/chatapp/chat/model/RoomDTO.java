@@ -17,6 +17,7 @@ public class RoomDTO {
     private String color;
     private RoomTypeDTO roomType;
     private Set<UserDTO> participants;
+    private RSAKeyDTO publicKey;
 
     public Set<UserDTO> getParticipants() {
         return participants;
@@ -41,6 +42,8 @@ public class RoomDTO {
         this.color = entity.getColor();
         if (entity.getRoomType() != null)
             this.roomType = new RoomTypeDTO(entity.getRoomType());
+        if (entity.getPublicKey() != null)
+            this.publicKey = new RSAKeyDTO(entity.getPublicKey());
     }
 
     public UUID getId() {
@@ -113,6 +116,14 @@ public class RoomDTO {
 
     public void setMessages(List<MessageDTO> messages) {
         this.messages = messages;
+    }
+
+    public RSAKeyDTO getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(RSAKeyDTO publicKey) {
+        this.publicKey = publicKey;
     }
 
     @Override

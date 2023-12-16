@@ -48,6 +48,18 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRoom> userRooms;
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "publicKeyId")
+    private RSAKey publicKey;
+
+    public RSAKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(RSAKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
     public Set<Message> getMessages() {
         return messages;
     }

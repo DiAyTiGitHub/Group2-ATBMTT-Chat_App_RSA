@@ -1,5 +1,6 @@
 package com.chatapp.chat.model;
 
+import com.chatapp.chat.entity.RSAKey;
 import com.chatapp.chat.entity.User;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public class UserDTO {
     private Boolean gender; // 0 - Female, 1 - Male
     private Date birthDate;
     private String avatar;
+    private RSAKeyDTO publicKey;
 
     public UserDTO() {
     }
@@ -29,6 +31,9 @@ public class UserDTO {
         this.address = entity.getAddress();
         this.fullname = entity.getFullname();
         this.avatar = entity.getAvatar();
+        if (entity.getPublicKey() != null) {
+            this.publicKey = new RSAKeyDTO(entity.getPublicKey());
+        }
     }
 
     public UUID getId() {

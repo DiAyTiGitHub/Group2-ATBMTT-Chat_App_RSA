@@ -3,6 +3,7 @@ package com.chatapp.chat.service.impl;
 import com.chatapp.chat.entity.*;
 import com.chatapp.chat.model.MessageDTO;
 import com.chatapp.chat.model.MessageTypeDTO;
+import com.chatapp.chat.model.RSAKeyDTO;
 import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.repository.MessageRepository;
 import com.chatapp.chat.repository.RoomRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.*;
 
 @Service
@@ -155,5 +157,33 @@ public class MessageServiceImpl implements MessageService {
         }
 
         return resDto;
+    }
+
+    @Override
+    public String encryptMessage(String message, RSAKeyDTO publicKeyDto) {
+        BigInteger e = publicKeyDto.getE();
+        BigInteger n = publicKeyDto.getN();
+        return (new BigInteger(message.getBytes())).modPow(e, n).toString();
+    }
+
+    @Override
+    public String decryptMessage(String message, RSAKeyDTO privateKeyDto) {
+        BigInteger n = privateKeyDto.getN();
+        BigInteger d = privateKeyDto.getD();
+        return new String((new BigInteger(message)).modPow(d, n).toByteArray());
+    }
+
+    @Override
+    public BigInteger encryptMessage(BigInteger message, RSAKeyDTO publicKeyDto) {
+        BigInteger e = publicKeyDto.getE();
+        BigInteger n = publicKeyDto.getN();
+        return message.modPow(e, n);
+    }
+
+    @Override
+    public BigInteger decryptMessage(BigInteger message, RSAKeyDTO privateKeyDto) {
+        BigInteger n = privateKeyDto.getN();
+        BigInteger d = privateKeyDto.getD();
+        return message.modPow(d, n);
     }
 }

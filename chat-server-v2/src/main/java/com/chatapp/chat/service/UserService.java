@@ -1,10 +1,7 @@
 package com.chatapp.chat.service;
 
 import com.chatapp.chat.entity.User;
-import com.chatapp.chat.model.FriendDTO;
-import com.chatapp.chat.model.MessageDTO;
-import com.chatapp.chat.model.RoomDTO;
-import com.chatapp.chat.model.UserDTO;
+import com.chatapp.chat.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -48,4 +45,6 @@ public interface UserService {
     public List<MessageDTO> getTop20LatestNotifications();
 
     public List<MessageDTO> getAllNotifications();
+
+    public RSAKeyDTO updateUserPublicKey(RSAKeyDTO publicKeyDto);
 }
