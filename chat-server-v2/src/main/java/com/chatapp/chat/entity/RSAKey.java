@@ -16,13 +16,13 @@ public class RSAKey {
     @Column(name = "id", unique = true, nullable = false)
     private UUID id;
 
-    @Column
+    @Column(columnDefinition = "longtext")
     private BigInteger n;
 
-    @Column
+    @Column(columnDefinition = "longtext")
     private BigInteger e;
 
-    @Column
+    @Column(columnDefinition = "longtext")
     private BigInteger d;
 
     @OneToOne(mappedBy = "publicKey")

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-
+        System.out.println("REQUEST: " + request.getRequestURI());
+        if (request.getRequestURI().contains("register")){
+            chain.doFilter(request, response);
+            return;
+        }
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -43,7 +48,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 System.out.println("JWT Token has expired");
             }
-        } else{
+        } else {
             logger.warn("JWT Token does not begin with Bearer String");
         }
 
