@@ -1,8 +1,11 @@
-import React from "react";
+import React, { memo } from "react";
 import "./Message.css";
 import { format, parseISO } from "date-fns";
+import { observer } from "mobx-react";
+import { useStore } from "src/stores";
+import RSAService from "src/components/Auth/RSAService";
 
-export default function Message(props) {
+function Message(props: any) {
   const {
     data,
     author,
@@ -13,42 +16,13 @@ export default function Message(props) {
     photo,
     sendDate,
   } = props;
-  //hàm tính modulo theo lũy thừa
-  const mod = (a, b, n) => {
-    if (n === 1) return 0;
-    let kq = 1;
-    for (let i = 0; i < b; i++) {
-      kq = (kq * a) % n;
-    }
-    return kq;
-  };
-  // tinh nghịch đảo a mod m
-  function modInverse(a, m) {
-    let m0 = m;
-    let x0 = 0;
-    let x1 = 1;
 
-    if (m === 1) return 0;
+  const { authStore } = useStore();
+  const { privateKey } = authStore;
 
-    while (a > 1) {
-      let q = Math.floor(a / m);
-      let t = m;
-      m = a % m;
-      a = t;
-      t = x0;
-      x0 = x1 - q * x0;
-      x1 = t;
-    }
-    if (x1 < 0) x1 += m0;
-    return x1;
-  }
-  const decryptRSA = (messageContent) => {
-    const q = 11,
-      p = 13,
-      e = 97;
-    const n = p * q, phiN = (p - 1) * (q - 1);
-    const d = modInverse(e, phiN);
+  const decryptRSA = (messageContent: string) => {
     let plaintext = "";
+    const { n, d } = privateKey;
 
     try {
       // Trim and remove whitespace from the Base64 string
@@ -59,7 +33,7 @@ export default function Message(props) {
 
       // Decrypting each character code and constructing the plaintext
       for (let i = 0; i < decodedString.length; i++) {
-        let decryptedCharCode = mod(decodedString.charCodeAt(i), d, n);
+        let decryptedCharCode = RSAService.mod(decodedString.charCodeAt(i), d, n);
         plaintext += String.fromCharCode(decryptedCharCode);
       }
       console.log("Chuoi tin nhan giai ma: " + plaintext);
@@ -68,11 +42,9 @@ export default function Message(props) {
       console.log("Input causing the issue:", messageContent);
       return "";
     }
+
     return plaintext;
   };
-
-
-  //
 
   return (
     <div
@@ -103,3 +75,5 @@ export default function Message(props) {
     </div>
   );
 }
+
+export default memo(observer(Message));

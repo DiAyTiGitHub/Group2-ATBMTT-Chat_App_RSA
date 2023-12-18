@@ -6,8 +6,9 @@ import { observer } from 'mobx-react';
 import { useStore } from 'src/stores';
 
 function Compose() {
-  const { chatStore } = useStore();
+  const { chatStore, authStore } = useStore();
   const { sendMessage } = chatStore;
+  const { publicKey } = authStore;
   const [messageContent, setMessageContent] = useState("");
 
   function handleChangeMessageContent(event: any) {

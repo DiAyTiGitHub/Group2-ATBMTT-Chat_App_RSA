@@ -31,9 +31,9 @@ public class UserDTO {
         this.address = entity.getAddress();
         this.fullname = entity.getFullname();
         this.avatar = entity.getAvatar();
-        if (entity.getPublicKey() != null) {
-            this.publicKey = new RSAKeyDTO(entity.getPublicKey());
-        }
+//        if (entity.getPublicKey() != null) {
+//            this.publicKey = new RSAKeyDTO(entity.getPublicKey());
+//        }
     }
 
     public UUID getId() {

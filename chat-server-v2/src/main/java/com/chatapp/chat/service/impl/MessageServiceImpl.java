@@ -123,9 +123,14 @@ public class MessageServiceImpl implements MessageService {
         if (currentUser == null) return null;
         Room roomEntity = roomRepository.findById(messageDTO.getRoom().getId()).orElse(null);
         if (roomEntity == null) return null;
+
+        // content is decrypted by room public key
+        RSAKey privateKey = roomEntity.getPrivateKey();
+        String decryptedContent = decryptMessage(messageDTO.getContent(), new RSAKeyDTO(privateKey));
+
         Message messageEntity = new Message();
         messageEntity.setRoom(roomEntity);
-        messageEntity.setContent(messageDTO.getContent());
+        messageEntity.setContent(decryptedContent);
         if (messageDTO.getMessageType() == null) return null;
         MessageType messageTypeEntity = messageTypeService.getMessageTypeEntityByName(messageDTO.getMessageType().getName());
         if (messageTypeEntity == null) {
@@ -151,9 +156,17 @@ public class MessageServiceImpl implements MessageService {
             users.add(ur.getUser());
         }
 
+        String intactContent = resDto.getContent();
         for (User user : users) {
-            if (currentUser.getId() != user.getId())
+            if (currentUser.getId() != user.getId()) {
+                RSAKey publicKey = user.getPublicKey();
+                String encryptedMessage = encryptMessage(intactContent, new RSAKeyDTO(publicKey));
+                resDto.setContent(encryptedMessage);
+                for(MessageDTO messageToUser : resDto.getRoom().getMessages()){
+                    messageToUser.setContent(encryptMessage(messageToUser.getContent(), new RSAKeyDTO(publicKey)));
+                }
                 simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", resDto);
+            }
         }
 
         return resDto;

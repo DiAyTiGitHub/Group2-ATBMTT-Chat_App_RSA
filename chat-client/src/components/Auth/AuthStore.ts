@@ -4,11 +4,14 @@ import SockJS from 'sockjs-client';
 import { toast } from "react-toastify";
 import LocalStorage from "src/common/LocalStorage";
 import { registerUser, authenticateUser } from "../../services/AuthService";
-import { getCurrentLoginUser } from "../../services/UserService";
+import { getCurrentLoginUser, updateUserPublicKey } from "../../services/UserService";
 import axios from "axios";
+import RSAService from './RSAService';
 
 class AuthStore {
     currentLoginUser = null;
+    publicKey = null;
+    privateKey = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -22,6 +25,13 @@ class AuthStore {
             const { data: userData } = await getCurrentLoginUser();
             this.setUser(userData);
             this.currentLoginUser = userData;
+
+            //generate key after successfully authenticated
+            const rsaKeyGenerator = new RSAService();
+            this.publicKey = rsaKeyGenerator.publicKey;
+            const { data: publicKeyData } = await updateUserPublicKey(this.publicKey);
+            console.log("checking public key data: ", publicKeyData);
+            this.privateKey = rsaKeyGenerator.privateKey;
             this.connectToSocket();
             return data;
         }

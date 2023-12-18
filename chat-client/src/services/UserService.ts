@@ -48,15 +48,18 @@ export function getAllJoinedRooms() {
     return axios.get(url);
 }
 
+export function updateUserPublicKey(publicKey: any) {
+    const url = API_PATH + '/publicKey';
+    return axios.put(url, publicKey);
+}
 
-
-export function updateUserInfo(userDTO) {
+export function updateUserInfo(userDTO: any) {
     const url = API_PATH + '/info';
-  
+
     return axios.put(url, userDTO)
-      .then(response => response.data)
-      .catch(error => {
-        console.error('Error updating user info:', error);
-        throw error;
-      });
-  }
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error updating user info:', error);
+            throw error;
+        });
+}
