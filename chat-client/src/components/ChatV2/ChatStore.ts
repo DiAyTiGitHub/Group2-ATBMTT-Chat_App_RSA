@@ -31,23 +31,19 @@ class ChatStore {
 
   // Mã hoá
   encryptRSA = (messageContent: string) => {
-    try{
+    try {
       const { n, e } = this.chosenRoom.publicKey;
       let encryptedChar = [];
       for (let i = 0; i < messageContent.length; i++) {
         let charCode = messageContent.charCodeAt(i);
         encryptedChar[i] = RSAService.mod(charCode, e, n);
-        console.log("running");
       }
-      let encryptedString = encryptedChar.join('');
-      console.log("Chuoi ma hoa la: " + btoa(encryptedString));
+      let encryptedString = encryptedChar.join(',');
       return btoa(encryptedString);
     }
-    catch(error){
-      console.log("Error"+ error.message);
-      
+    catch (error) {
+      console.log("Error" + error.message);
     }
-    
   };
 
   sendMessage = (messageContent: string) => {
@@ -63,8 +59,8 @@ class ChatStore {
         messageType: { name: "chat" },
         user: currentUser,
       };
-      console.log("msg content: "+this.encryptRSA(messageContent));
-      
+      console.log("msg content: " + this.encryptRSA(messageContent));
+
       this.stompClient.send(
         "/app/privateMessage",
         {},

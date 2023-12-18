@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.apache.commons.codec.binary.Base64;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -126,7 +127,7 @@ public class MessageServiceImpl implements MessageService {
 
         // content is decrypted by room public key
         RSAKey privateKey = roomEntity.getPrivateKey();
-        String decryptedContent = decryptMessage(messageDTO.getContent(), new RSAKeyDTO(privateKey));
+        String decryptedContent = handleDecryptMessage(messageDTO.getContent(), new RSAKeyDTO(privateKey));
 
         Message messageEntity = new Message();
         messageEntity.setRoom(roomEntity);
@@ -160,10 +161,10 @@ public class MessageServiceImpl implements MessageService {
         for (User user : users) {
             if (currentUser.getId() != user.getId()) {
                 RSAKey publicKey = user.getPublicKey();
-                String encryptedMessage = encryptMessage(intactContent, new RSAKeyDTO(publicKey));
+                String encryptedMessage = handleEncryptMessage(intactContent, new RSAKeyDTO(publicKey));
                 resDto.setContent(encryptedMessage);
-                for(MessageDTO messageToUser : resDto.getRoom().getMessages()){
-                    messageToUser.setContent(encryptMessage(messageToUser.getContent(), new RSAKeyDTO(publicKey)));
+                for (MessageDTO messageToUser : resDto.getRoom().getMessages()) {
+                    messageToUser.setContent(handleEncryptMessage(messageToUser.getContent(), new RSAKeyDTO(publicKey)));
                 }
                 simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", resDto);
             }
@@ -173,30 +174,55 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public String encryptMessage(String message, RSAKeyDTO publicKeyDto) {
-        BigInteger e = publicKeyDto.getE();
-        BigInteger n = publicKeyDto.getN();
-        return (new BigInteger(message.getBytes())).modPow(e, n).toString();
+    public String handleEncryptMessage(String message, RSAKeyDTO publicKeyDto) {
+        try {
+            int messageLength = message.length();
+            String[] encryptedChars = new String[messageLength];
+
+            for (int i = 0; i < messageLength; i++) {
+                char currentChar = message.charAt(i);
+                encryptedChars[i] = encryptMessage(String.valueOf(currentChar), publicKeyDto);
+            }
+
+            String encryptedString = String.join(",", encryptedChars);
+            byte[] encodedBytes = Base64.encodeBase64(encryptedString.getBytes());
+            System.out.println("encryptedString: " + encryptedString);
+            return new String(encodedBytes);
+        } catch (Exception error) {
+            System.out.println("Error: " + error.getMessage());
+            return null;
+        }
     }
 
     @Override
-    public String decryptMessage(String message, RSAKeyDTO privateKeyDto) {
+    public String decryptMessage(String character, RSAKeyDTO privateKeyDto) {
         BigInteger n = privateKeyDto.getN();
         BigInteger d = privateKeyDto.getD();
-        return new String((new BigInteger(message)).modPow(d, n).toByteArray());
+        return new String((new BigInteger(character)).modPow(d, n).toByteArray());
     }
 
     @Override
-    public BigInteger encryptMessage(BigInteger message, RSAKeyDTO publicKeyDto) {
+    public String handleDecryptMessage(String message, RSAKeyDTO privateKeyDto) {
+        try {
+            byte[] decodedData = Base64.decodeBase64(message);
+            String decodedString = new String(decodedData);
+            String encryptedNums[] = decodedString.split(",");
+
+            String messageDecrypted = "";
+            for (String numString : encryptedNums) {
+                messageDecrypted += decryptMessage(numString, privateKeyDto);
+            }
+            return messageDecrypted;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String encryptMessage(String character, RSAKeyDTO publicKeyDto) {
         BigInteger e = publicKeyDto.getE();
         BigInteger n = publicKeyDto.getN();
-        return message.modPow(e, n);
-    }
-
-    @Override
-    public BigInteger decryptMessage(BigInteger message, RSAKeyDTO privateKeyDto) {
-        BigInteger n = privateKeyDto.getN();
-        BigInteger d = privateKeyDto.getD();
-        return message.modPow(d, n);
+        return (new BigInteger(character.getBytes())).modPow(e, n).toString();
     }
 }

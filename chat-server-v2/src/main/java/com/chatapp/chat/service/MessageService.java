@@ -23,11 +23,11 @@ public interface MessageService {
 
     public MessageDTO sendPrivateMessage(MessageDTO messageDTO);
 
+    public String handleEncryptMessage(String message, RSAKeyDTO publicKeyDto);
+
+    public String handleDecryptMessage(String message, RSAKeyDTO privateKeyDto);
+
     public String encryptMessage(String message, RSAKeyDTO publicKeyDto);
 
     public String decryptMessage(String message, RSAKeyDTO privateKeyDto);
-
-    public BigInteger encryptMessage(BigInteger message, RSAKeyDTO publicKeyDto);
-
-    public BigInteger decryptMessage(BigInteger message, RSAKeyDTO privateKeyDto);
 }
