@@ -19,32 +19,32 @@ function Message(props: any) {
 
   const { authStore } = useStore();
   const { privateKey } = authStore;
+  // const rsaDecrypt = (messageContent) => {
+  //   let plaintext = "";
+  //   const { n, d } = privateKey;
+  //   console.log("n:"+n+"\nd:"+d);
+    
+  //   console.log("Chuoi can gia ma la: "+messageContent);
+    
+  //   let modifiedMessageContent = String(messageContent.replace(/-/g, '+').replace(/_/g, '/'));
+  //   try {
+  //     // Use `atob` to decode base64-encoded string
+  //     let charCode = atob(modifiedMessageContent);
+  //     var mang = charCode.split(",").map(Number);
 
-  const decryptRSA = (messageContent: string) => {
-    let plaintext = "";
-    const { n, d } = privateKey;
+  //     for (let i = 0; i < mang.length; i++) {
+  //       // Use mang.length instead of charCode.length
+  //       let decryptedCharCode = RSAService.mod(mang[i], d, n);
+  //       plaintext += String.fromCharCode(decryptedCharCode);
+  //     }
 
-    try {
-      // Trim and remove whitespace from the Base64 string
-      let cleanBase64String = messageContent.trim().replace(/\s/g, '');
+  //     console.log("Chuoi giai ma la: " + plaintext);
 
-      // Decoding the Base64 string
-      let decodedString = atob(cleanBase64String);
-
-      // Decrypting each character code and constructing the plaintext
-      for (let i = 0; i < decodedString.length; i++) {
-        let decryptedCharCode = RSAService.mod(decodedString.charCodeAt(i), d, n);
-        plaintext += String.fromCharCode(decryptedCharCode);
-      }
-      console.log("Chuoi tin nhan giai ma: " + plaintext);
-    } catch (error) {
-      console.error("Error decoding Base64:", error);
-      console.log("Input causing the issue:", messageContent);
-      return "";
-    }
-
-    return plaintext;
-  };
+  //     return plaintext;
+  //   } catch (error) {
+  //     console.log("loi :" + error.message);
+  //   }
+  // };
 
   return (
     <div
@@ -67,7 +67,7 @@ function Message(props: any) {
         )}
         <div className="bubble-container">
           <div className="bubble">
-            {/* {decryptRSA(data)} */}
+            {/* {rsaDecrypt(data)} */}
             {data}
           </div>
         </div>
