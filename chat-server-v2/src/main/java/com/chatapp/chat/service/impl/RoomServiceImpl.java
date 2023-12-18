@@ -218,7 +218,7 @@ public class RoomServiceImpl implements RoomService {
             needUpdateRoom.setAvatar(nameFile);
             Room res = roomRepository.save(needUpdateRoom);
 
-            return uploadDir + res.getAvatar();
+            return uploadDir + "/" + res.getAvatar();
         } catch (Exception e) {
             System.err.println(e);
             return null;

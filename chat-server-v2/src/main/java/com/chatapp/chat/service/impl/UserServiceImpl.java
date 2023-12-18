@@ -314,7 +314,7 @@ public class UserServiceImpl implements UserService {
             loginUser.setAvatar(nameFile);
             UserDTO res = updateUserInfo(loginUser);
             if (res == null) return null;
-            return uploadDir + res.getAvatar();
+            return uploadDir + "/"+ res.getAvatar();
         } catch (Exception e) {
             System.err.println(e);
             return null;
