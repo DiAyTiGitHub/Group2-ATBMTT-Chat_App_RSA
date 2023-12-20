@@ -3,7 +3,6 @@ import "./Message.css";
 import { format, parseISO } from "date-fns";
 import { observer } from "mobx-react";
 import { useStore } from "src/stores";
-import RSAService from "src/components/Auth/RSAService";
 
 function Message(props: any) {
   const {
@@ -17,38 +16,10 @@ function Message(props: any) {
     sendDate,
   } = props;
 
-  const { authStore } = useStore();
+  const { authStore, chatStore } = useStore();
   const { privateKey } = authStore;
 
-  const rsaDecrypt = (messageContent: string) => {
-    let plaintext = "";
-    const { n, d } = privateKey;
-    console.log("n:" + n + "\nd:" + d);
-
-    console.log("Chuoi can gia ma la: " + messageContent);
-
-    if (type == "chat") {
-      try {
-        // Use `atob` to decode base64-encoded string
-        var mang = messageContent.split(",").map(Number);
-
-        for (let i = 0; i < mang.length; i++) {
-          // Use mang.length instead of charCode.length
-          let decryptedCharCode = RSAService.mod(mang[i], d, n);
-          plaintext += String.fromCharCode(decryptedCharCode);
-          console.log("running");
-        }
-
-        console.log("Chuoi giai ma la: " + plaintext);
-
-        return plaintext;
-      } catch (error) {
-        console.log("loi :" + error.message);
-      }
-    }
-    
-    return messageContent;
-  };
+  const { rsaDecrypt } = chatStore;
 
   return (
     <div
@@ -71,8 +42,7 @@ function Message(props: any) {
         )}
         <div className="bubble-container">
           <div className="bubble">
-            {rsaDecrypt(data)}
-            {/* {data} */}
+            {rsaDecrypt(data, type, privateKey)}
           </div>
         </div>
       </div>

@@ -3,10 +3,11 @@ import './ConversationListItem.css';
 import LocalStorage from 'src/common/LocalStorage';
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
-import { format, parseISO} from 'date-fns';
+import { format, parseISO } from 'date-fns';
+import RSAService from 'src/components/Auth/RSAService';
 
 function ConversationListItem(props: any) {
-  const { chatStore } = useStore();
+  const { authStore, chatStore } = useStore();
   const { setChosenRoom } = chatStore;
 
   const { id, avatar, name, code, participants, messages } = props.room;
@@ -24,11 +25,14 @@ function ConversationListItem(props: any) {
     return name;
   }
 
+  const { privateKey } = authStore;
+  const { rsaDecrypt } = chatStore;
+
   function renderLastMessageInConversation() {
     if (messages && messages.length > 0) {
 
       const lastMessage = messages[messages.length - 1];
-      return lastMessage.content;
+      return rsaDecrypt(lastMessage.content, lastMessage.messageType.name, privateKey);
     }
     return "";
   }
