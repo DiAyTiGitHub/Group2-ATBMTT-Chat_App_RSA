@@ -3,14 +3,28 @@ class RSAService {
         this.generate();
     }
     //hàm tính modulo theo lũy thừa
-    static mod = (a, b, n) => {
-        if (n === 1) return 0;
+    // static mod = (a, b, n) => {
+    //     if (n === 1) return 0;
+    //     let result = 1;
+    //     for (let i = 0; i < b; i++) {
+    //         result = (result * a) % n;
+    //     }
+    //     return result;
+    // };
+    static mod = (a, b, m) =>{
         let result = 1;
-        for (let i = 0; i < b; i++) {
-            result = (result * a) % n;
+        a = a % m;
+      
+        while (b > 0) {
+          if (b % 2 === 1) {
+            result = (result * a) % m;
+          }
+          a = (a * a) % m;
+          b = Math.floor(b / 2);
         }
+      
         return result;
-    };
+      }
     // tinh nghịch đảo a mod m
     modInverse = (a, m) => {
         let m0 = m;
@@ -31,25 +45,56 @@ class RSAService {
         if (x1 < 0) x1 += m0;
         return x1;
     };
-    // Check số nguyên tố
-    isPrime = (num) => {
-        let sqrtnum = Math.floor(Math.sqrt(num));
-        let prime = num !== 1;
-        for (let i = 2; i <= sqrtnum; i++) {
-            if (num % i === 0) {
-                prime = false;
-                break;
-            }
+   
+      // kiểm tra số nguyên tố Miller-Rabin
+    isPrime = (n, k) =>{
+        if (n <= 1 || n === 4) {
+          return false;
         }
-        return prime;
-    };
-
+        if (n <= 3) {
+          return true;
+        }
+      
+        let d = n - 1;
+        while (d % 2 === 0) {
+          d = Math.floor(d / 2);
+        }
+      
+        for (let i = 0; i < k; i++) {
+          let a = 2 + Math.floor(Math.random() * (n - 4));
+          let x = RSAService.mod(a, d, n);
+      
+          if (x === 1 || x === n - 1) {
+            continue;
+          }
+      
+          let isProbablePrime = false;
+          while (d !== n - 1) {
+            x = (x * x) % n;
+            d *= 2;
+      
+            if (x === 1) {
+              return false;
+            }
+            if (x === n - 1) {
+              isProbablePrime = true;
+              break;
+            }
+          }
+      
+          if (!isProbablePrime) {
+            return false;
+          }
+        }
+      
+        return true;
+      }
     //random số nguyên tố bất kì
     getRandomPrime = () => {
-        let prime;
+        let prime, k =10000007;
         do {
             prime = Math.floor(Math.random() * 10000) + 2;
-        } while (!this.isPrime(prime));
+        } while (!this.isPrime(prime,k));
         return prime;
     };
     //tìm ước chung lớn nhất
@@ -58,11 +103,11 @@ class RSAService {
     };
     // tìm số nguyên tố sấp xỉ với num
     getCoPrime = (num) => {
-        let coPrime;
+        let coPrime,k =10000007;
         do {
             coPrime = Math.floor(Math.random() * (num - 2)) + 2;
         } while (
-            (this.gcd(num, coPrime) !== 1 || this.isPrime(coPrime) === false) &&
+            (this.gcd(num, coPrime) !== 1 || this.isPrime(coPrime,k) === false) &&
             num !== coPrime
         );
         return coPrime;
