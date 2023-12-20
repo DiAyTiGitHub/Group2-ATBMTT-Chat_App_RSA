@@ -9,7 +9,6 @@ function ConversationSearch() {
   const { chatStore, friendsStore } = useStore();
   const { searchConversation } = chatStore;
   const { usersList } = friendsStore;
-  console.log(usersList);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -105,7 +104,7 @@ function ConversationSearch() {
               );
             })}
           </List>
-          <div className='d-flex justify-around'>
+          <div className='d-flex justify-content-around'>
             <Button variant="contained">Cancel</Button>
             <Button variant="contained">Confirm</Button>
           </div>

@@ -35,6 +35,19 @@ function Message(props: any) {
           {format(parseISO(sendDate), "do MMMM yyyy")}
         </div>
       )}
+
+      {type == "join" && (
+        <div className="notification">
+          {'${author} has joined'}
+        </div>
+      )}
+
+      {type == "left" && (
+        <div className="notification">
+          {'${author} has left'}
+        </div>
+      )}
+
       {startsSequence && <div className="username">{author}</div>}
       <div className="user-container">
         {startsSequence && !isMine && (
