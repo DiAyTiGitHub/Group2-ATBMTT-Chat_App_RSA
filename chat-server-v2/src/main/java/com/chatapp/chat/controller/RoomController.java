@@ -52,4 +52,19 @@ public class RoomController {
         if (res != null) return new ResponseEntity<String>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("/group")
+    public ResponseEntity<RoomDTO> createGroupChat(@RequestBody UUID joinUserIds[]) {
+        if (joinUserIds == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        RoomDTO createdRoom = roomService.createGroupChat(joinUserIds);
+        if (createdRoom != null) return new ResponseEntity<RoomDTO>(createdRoom, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/group/{roomId}")
+    public ResponseEntity<RoomDTO> unjoinAnGroupChat(@PathVariable UUID roomId){
+        RoomDTO res = roomService.unjoinGroupChat(roomId);
+        if (res != null) return new ResponseEntity<RoomDTO>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
 }

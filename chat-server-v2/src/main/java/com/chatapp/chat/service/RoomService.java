@@ -32,4 +32,8 @@ public interface RoomService {
     public List<RoomDTO> searchRoom(SeachObject seachObject);
 
     public String uploadRoomAvatar(MultipartFile fileUpload, UUID roomId);
+
+    public RoomDTO createGroupChat(UUID joinUserIds[]);
+
+    public RoomDTO unjoinGroupChat(UUID groupChatId);
 }

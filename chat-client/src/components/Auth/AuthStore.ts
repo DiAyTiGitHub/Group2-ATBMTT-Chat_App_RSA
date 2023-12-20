@@ -79,7 +79,7 @@ class AuthStore {
 
     onError = (err: any) => {
         console.error(err);
-        toast.error("Connect to chat server error, please try again!");
+        toast.error("Connect to chat server error, please login again!");
     }
 
     onReceivedNotification = (payload: any) => {

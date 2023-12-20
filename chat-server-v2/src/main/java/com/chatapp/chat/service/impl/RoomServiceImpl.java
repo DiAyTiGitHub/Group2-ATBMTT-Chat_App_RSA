@@ -224,4 +224,23 @@ public class RoomServiceImpl implements RoomService {
             return null;
         }
     }
+
+    @Override
+    public RoomDTO createGroupChat(UUID[] joinUserIds) {
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+        List<User> joiningUsers = new ArrayList<>();
+        joiningUsers.add(currentUser);
+        for (UUID joinUserId : joinUserIds) {
+            User joinUser = userService.getUserEntityById(joinUserId);
+            if (joinUser == null) return null;
+            joiningUsers.add(joinUser);
+        }
+        return null;
+    }
+
+    @Override
+    public RoomDTO unjoinGroupChat(UUID groupChatId) {
+        return null;
+    }
 }
