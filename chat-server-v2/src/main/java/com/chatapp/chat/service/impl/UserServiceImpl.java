@@ -100,6 +100,15 @@ public class UserServiceImpl implements UserService {
             Room room = userRoom.getRoom();
             RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
             List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+
+            RSAKey publicKey = currentUser.getPublicKey();
+            for (MessageDTO message : messages) {
+                if (message.getMessageType().getName().equals("chat")) {
+                    String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
+                    message.setContent(encryptedMessage);
+                }
+            }
+
             roomDto.setMessages(messages);
             rooms.add(roomDto);
         }
@@ -140,6 +149,13 @@ public class UserServiceImpl implements UserService {
             if (room.getRoomType().getName().trim().toLowerCase().equals("private")) {
                 RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
                 List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+
+                RSAKey publicKey = currentUser.getPublicKey();
+                for (MessageDTO message : messages) {
+                    String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
+                    message.setContent(encryptedMessage);
+                }
+
                 roomDto.setMessages(messages);
                 rooms.add(roomDto);
             }
@@ -165,6 +181,13 @@ public class UserServiceImpl implements UserService {
             if (room.getRoomType().getName().trim().toLowerCase().equals("public")) {
                 RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
                 List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+
+                RSAKey publicKey = currentUser.getPublicKey();
+                for (MessageDTO message : messages) {
+                    String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
+                    message.setContent(encryptedMessage);
+                }
+
                 roomDto.setMessages(messages);
                 rooms.add(roomDto);
             }
@@ -314,7 +337,7 @@ public class UserServiceImpl implements UserService {
             loginUser.setAvatar(nameFile);
             UserDTO res = updateUserInfo(loginUser);
             if (res == null) return null;
-            return uploadDir + "/"+ res.getAvatar();
+            return uploadDir + "/" + res.getAvatar();
         } catch (Exception e) {
             System.err.println(e);
             return null;

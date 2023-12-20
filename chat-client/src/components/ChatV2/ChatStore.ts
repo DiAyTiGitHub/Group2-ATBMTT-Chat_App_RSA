@@ -39,7 +39,7 @@ class ChatStore {
         encryptedChar[i] = RSAService.mod(charCode, e, n);
       }
       let encryptedString = encryptedChar.join(',');
-      return btoa(encryptedString);
+      return (encryptedString);
     }
     catch (error) {
       console.log("Error" + error.message);

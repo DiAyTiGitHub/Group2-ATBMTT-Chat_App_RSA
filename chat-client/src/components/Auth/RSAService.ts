@@ -48,7 +48,7 @@ class RSAService {
     getRandomPrime = () => {
         let prime;
         do {
-            prime = Math.floor(Math.random() * 1000000) + 2;
+            prime = Math.floor(Math.random() * 10000) + 2;
         } while (!this.isPrime(prime));
         return prime;
     };
