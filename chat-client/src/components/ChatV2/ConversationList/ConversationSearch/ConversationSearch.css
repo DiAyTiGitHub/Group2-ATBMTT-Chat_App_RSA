@@ -1,7 +1,8 @@
 .conversation-search {
   padding: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .conversation-search-input {
@@ -10,6 +11,7 @@
   border-radius: 10px;
   border: none;
   font-size: 14px;
+  width: 80%;
 }
 
 .conversation-search-input::placeholder {
@@ -18,4 +20,17 @@
 
 .conversation-search-input:focus::placeholder {
   text-align: left;
+}
+
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  background-color: white;
+  border: 2px solid white;
+  box-shadow: 24;
+  padding: 15px;
+  border-radius: 5px;
 }
