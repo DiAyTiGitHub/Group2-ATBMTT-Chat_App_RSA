@@ -102,3 +102,7 @@
 .mine .user-container {
   justify-content: end;
 }
+
+.bubble {
+  overflow-wrap: anywhere;
+}
