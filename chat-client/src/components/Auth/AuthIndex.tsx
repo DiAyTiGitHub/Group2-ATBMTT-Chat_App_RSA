@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Tabs from '@mui/material/Tabs';
@@ -8,6 +8,7 @@ import LoginPage from "./LoginPage";
 import Signup from "./SignUpPage";
 import { useNavigate } from "react-router";
 import { observer } from "mobx-react";
+import { useStore } from "src/stores";
 
 // Import your Login and Signup components here
 
@@ -24,8 +25,14 @@ function AuthIndex() {
   // const backgroundStyle = {background: 'https://marketplace.canva.com/EAD2962NKnQ/2/0/400w/canva-rainbow-gradient-pink-and-purple-virtual-background-LrNk7fAXxw8.jpg' };
 
 
-  function TabPanel(props) {
+  function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
+    const { chatStore } = useStore();
+    const { setStompClient } = chatStore;
+
+    useEffect(function () {
+      setStompClient(null);
+    }, []);
 
     return (
       <div
