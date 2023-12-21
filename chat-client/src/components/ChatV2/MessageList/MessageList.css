@@ -2,7 +2,7 @@
   overflow-y: auto;
   padding-left: 6px;
   padding-bottom: 24px;
-  max-height: 80vh;
+  max-height: calc(100vh - 165px);
 }
 
 /* Define a style for the track */
