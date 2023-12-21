@@ -10,8 +10,8 @@ function ConversationSearch() {
   const { searchConversation } = chatStore;
   const { usersList } = friendsStore;
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpenPopup = () => setOpen(true);
+  const handleClosePopup = () => setOpen(false);
   
   const [searchKeyword, setSearchKeyword] = useState();
 
@@ -33,7 +33,7 @@ function ConversationSearch() {
 
   const [checked, setChecked] = React.useState([1]);
 
-  const handleToggle = (value: number) => () => {
+  const handleToggleCheckBox = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -63,12 +63,12 @@ function ConversationSearch() {
         onChange={handleChange}
         onKeyDown={handleOnKeyDown}
       />
-      <IconButton aria-label="new group chat" onClick={handleOpen}>
+      <IconButton aria-label="new group chat" onClick={handleOpenPopup}>
         <GroupAddIcon />
       </IconButton>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleClosePopup}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -84,7 +84,7 @@ function ConversationSearch() {
                   secondaryAction={
                     <Checkbox
                       edge="end"
-                      onChange={handleToggle(index)}
+                      onChange={handleToggleCheckBox(index)}
                       checked={checked.indexOf(index) !== -1}
                       inputProps={{ 'aria-labelledby': labelId }}
                     />
