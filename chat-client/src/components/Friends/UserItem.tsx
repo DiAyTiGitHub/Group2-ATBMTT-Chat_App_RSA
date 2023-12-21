@@ -55,12 +55,12 @@ function UserItem({ userInfo }: any) {
         // createNotificationForUserByUserId(notification);
     }
 
-    function handleClickAcceptFriendRequest() {
+    async function handleClickAcceptFriendRequest() {
         let relationship = null;
         addFriendUsers.forEach(function (request) {
             if (request?.requestSender?.id == userInfo?.id) relationship = request;
         });
-        acceptFriend(relationship);
+        await acceptFriend(relationship);
         setFriendStatus("Hủy kết bạn");
         const notification = {
             content: currentLoginUser?.username + " accepted your add friend request!",

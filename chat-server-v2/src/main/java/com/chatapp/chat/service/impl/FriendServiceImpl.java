@@ -40,6 +40,9 @@ public class FriendServiceImpl implements FriendService {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private MessageTypeService messageTypeService;
+
     @Override
     public FriendDTO sendFriendRequest(UUID receiverId) {
         //get current user
@@ -124,6 +127,7 @@ public class FriendServiceImpl implements FriendService {
             MessageDTO notification = new MessageDTO();
             notification.setUser(new UserDTO(relationship.getRequestSender()));
             notification.setRoom(new RoomDTO(room));
+            notification.setMessageType(new MessageTypeDTO(messageTypeService.getMessageTypeEntityByName("notification")));
             notification.setContent(currentUser.getUsername() + " accepted your add friend request!");
             notification = messageService.handlerForNotification(notification);
             messageService.sendMessageTo("/notification", notification);
@@ -147,7 +151,7 @@ public class FriendServiceImpl implements FriendService {
         User friendUser = userService.getUserEntityById(userId);
         if (friendUser == null) return;
 
-        if(relationship.getRoom() == null) return;
+        if (relationship.getRoom() == null) return;
         Room willDeleteRoom = roomRepository.findById(relationship.getRoom().getId()).orElse(null);
         if (willDeleteRoom == null) return;
 

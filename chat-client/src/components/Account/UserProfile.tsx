@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useObserver } from 'mobx-react';
 import { useStore } from 'src/stores';
 import LocalStorage from 'src/common/LocalStorage';
@@ -15,6 +15,7 @@ import {
     Avatar,
     Typography
 } from '@mui/material';
+import { Form, Formik } from "formik";
 
 const gender = [
     {
@@ -28,120 +29,77 @@ const gender = [
 ];
 
 const UserProfile: React.FC = ({ }: any) => {
-    const accountStore = useStore();
+    const { accountStore } = useStore();
+    const { uploadUserAvatar, getAvatarSrc } = accountStore;
 
-    const avatar = LocalStorage.getLoginUser()?.avatar;
-    const username = LocalStorage.getLoginUser()?.username;
-    const address = LocalStorage.getLoginUser()?.address;
-    const [values, setValues] = useState({
-        avatar: avatar,
-        fullName: LocalStorage.getLoginUser()?.fullname,
-        userName: username,
-        address: address,
-        gender: LocalStorage.getLoginUser()?.gender,
-        birthDate: LocalStorage.getLoginUser()?.birthDate
-    });
-
-    const handleChange = (event) => {
-            setValues((prevState) => ({
-                ...prevState,
-                [event.target.name]: event.target.value
-            }));
-        };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        saveFormDataToJSON();
-    };
-
-    const saveFormDataToJSON = async () => {
-        try {
-            const formData = {
-                avatar: values.avatar,
-                fullName: values.fullName,
-                userName: values.userName,
-                address: values.address,
-                gender: values.gender,
-                birthDate: values.birthDate
-            };
-            console.log(formData);
-
-            await accountStore.updateUserInfo(formData);
-
-            console.log("User info updated successfully!");
-        } catch (error) {
-            console.error('Error updating user info:', error);
+    async function handleChangeImage(event: any) {
+        if (event.target.files && event.target.files[0]) {
+            let img = event.target.files[0];
+            const imageSrc = await uploadUserAvatar(img);
+            setImagePath(imageSrc);
         }
-    };
+    }
+
+    function handleFormSubmit(values: any) {
+        console.log("form values: ", values);
+    }
+
+    const currentUser = LocalStorage.getLoginUser();
+    console.log(currentUser);
+    const validationSchema = {};
+    const [imagePath, setImagePath] = useState("");
+    const initialValues = {};
+
+    useEffect(function () {
+        if (currentUser.avatar != "") {
+            const imageSrcPromise = getAvatarSrc(currentUser.avatar);
+            imageSrcPromise.then(function (data) {
+                setImagePath(data);
+            })
+        }
+    }, [])
 
     return useObserver(() => (
-        <form
-            autoComplete="off"
-            noValidate
-            onSubmit={handleSubmit}
+        <Formik
+            initialValues={initialValues}
+            onSubmit={handleFormSubmit}
+            validationSchema={validationSchema}
         >
-            {/* <div className="appCard p-3 m-3"> */}
-            <Grid
-                container
-                spacing={3}
-            >
-                <Grid
-                    xs={12}
-                    md={6}
-                    lg={4}
-                >
-                    {/* <div className="appCard p-3 m-3"> */}
-                    <Card>
-                        <CardContent>
-                            <Box
-                                sx={{
-                                    alignItems: 'center',
-                                    display: 'flex',
-                                    flexDirection: 'column'
-                                }}
-                            >
-                                <Avatar
-                                    src={avatar}
-                                    sx={{
-                                        height: 80,
-                                        mb: 2,
-                                        width: 80
-                                    }}
-                                />
-                                <Typography
-                                    gutterBottom
-                                    variant="h5"
-                                >
-                                    {/* {LocalStorage.getLoginUser()?.userName}a */}
-                                    {username}
-                                </Typography>
-                                <Typography
-                                    color="text.secondary"
-                                    variant="body2"
-                                >
-                                    {address}
-                                </Typography>
-                            </Box>
-                        </CardContent>
-                        <Divider />
-                        <CardActions>
-                            <Button
-                                fullWidth
-                                variant="text"
-                                onClick={() => { }}
-                            >
-                                Upload picture
-                            </Button>
-                        </CardActions>
-                    </Card>
-                    {/* </div> */}
-                </Grid>
-                <Grid
+            {(props) => (
+                <Form autoComplete='off'>
+                    <Grid
+                        container
+                        spacing={3}
+                    >
+                        <Grid
+                            xs={12}
+                            md={6}
+                            lg={4}
+                        >
+                            <Card>
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            alignItems: 'center',
+                                            display: 'flex',
+                                            flexDirection: 'column'
+                                        }}
+                                    >
+                                        <h3>Avatar</h3>
+                                        <img src={imagePath} alt="" className="userAvatar" />
+                                    </Box>
+                                </CardContent>
+                                <Divider />
+                                <CardActions>
+                                    <input type="file" name="avatar" onChange={handleChangeImage} />
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                        {/* <Grid
                     xs={24}
                     md={12}
                     lg={8}
                 >
-                    {/* <div className="appCard p-3 m-3"> */}
                     <Card>
                         <CardHeader
                             subheader="The information can be edited"
@@ -230,30 +188,6 @@ const UserProfile: React.FC = ({ }: any) => {
                                             value={values.birthDate}
                                         />
                                     </Grid>
-                                    {/* <Grid
-                                xs={12}
-                                md={6}
-                            >
-                                <TextField
-                                    fullWidth
-                                    label="Select State"
-                                    name="state"
-                                    onChange={handleChange}
-                                    required
-                                    select
-                                    SelectProps={{ native: true }}
-                                    value={values.state}
-                                >
-                                    {states.map((option) => (
-                                        <option
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </TextField>
-                            </Grid> */}
                                 </Grid>
                             </Box>
                         </CardContent>
@@ -264,11 +198,12 @@ const UserProfile: React.FC = ({ }: any) => {
                             </Button>
                         </CardActions>
                     </Card>
-                    {/* </div> */}
-                </Grid>
-            </Grid>
-            {/* </div> */}
-        </form>
+                </Grid> */}
+                    </Grid>
+                </Form>
+            )}
+        </Formik>
+
     ));
 };
 

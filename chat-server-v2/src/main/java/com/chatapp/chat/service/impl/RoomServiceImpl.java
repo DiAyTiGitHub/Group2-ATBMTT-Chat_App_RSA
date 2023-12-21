@@ -42,6 +42,9 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private RSAKeyRepository rsaKeyRepository;
 
+    @Autowired
+    private UserRoomService userRoomService;
+
     @Override
     public Set<UserDTO> getAllJoinedUsersByRoomId(UUID roomId) {
         Room entity = roomRepository.findById(roomId).orElse(null);
@@ -183,6 +186,15 @@ public class RoomServiceImpl implements RoomService {
             }
             if (!containsCurrentUser) continue;
             List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
+
+            RSAKey publicKey = currenUser.getPublicKey();
+            for (MessageDTO message : messages) {
+                if (message.getMessageType().getName().equals("chat")) {
+                    String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
+                    message.setContent(encryptedMessage);
+                }
+            }
+
             roomDto.setMessages(messages);
             rooms.add(roomDto);
         }
@@ -227,6 +239,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO createGroupChat(UUID[] joinUserIds) {
+        if (joinUserIds == null) return null;
         User currentUser = userService.getCurrentLoginUserEntity();
         if (currentUser == null) return null;
         List<User> joiningUsers = new ArrayList<>();
@@ -236,11 +249,40 @@ public class RoomServiceImpl implements RoomService {
             if (joinUser == null) return null;
             joiningUsers.add(joinUser);
         }
-        return null;
+        Room roomChat = createRoomEntity(new RoomDTO());
+        Set<UserRoom> userRooms = new HashSet<>();
+        for (User user : joiningUsers) {
+            UserRoomDTO urDto = new UserRoomDTO();
+            urDto.setRoom(new RoomDTO(roomChat));
+            urDto.setUser(new UserDTO(user));
+            UserRoom userRoom = userRoomService.createUserRoomEntity(urDto);
+            userRooms.add(userRoom);
+        }
+        UserRoomDTO creatorURDto = new UserRoomDTO();
+        UserRoom creatorUserRoom = userRoomService.createUserRoomEntity(creatorURDto);
+        creatorUserRoom.setRole("Creator");
+        userRoomRepository.save(creatorUserRoom);
+        userRooms.add(creatorUserRoom);
+        roomChat.setName("Unname conversation");
+        roomChat.setUserRooms(userRooms);
+        RoomType roomType = roomTypeService.getRoomTypeEntityByName("group");
+        roomChat.setRoomType(roomType);
+        Room response = roomRepository.save(roomChat);
+        if (response == null)
+            return null;
+        return new RoomDTO(response);
     }
 
     @Override
     public RoomDTO unjoinGroupChat(UUID groupChatId) {
-        return null;
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+        Room unjoinRoom = roomRepository.findById(groupChatId).orElse(null);
+        if (unjoinRoom == null) return null;
+        UserRoom userRoom = userRoomRepository.findByUserIdAndRoomId(currentUser.getId(), unjoinRoom.getId());
+        if (userRoom == null) return null;
+        userRoomService.deleteUserRoom(userRoom.getId());
+        unjoinRoom = roomRepository.findById(groupChatId).orElse(null);
+        return new RoomDTO(unjoinRoom);
     }
 }

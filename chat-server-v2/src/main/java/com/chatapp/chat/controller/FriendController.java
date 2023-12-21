@@ -44,4 +44,6 @@ public class FriendController {
         if (relationship == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<FriendDTO>(relationship, HttpStatus.OK);
     }
+
+
 }

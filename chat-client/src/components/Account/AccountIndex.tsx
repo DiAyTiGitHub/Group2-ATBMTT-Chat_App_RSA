@@ -6,6 +6,7 @@ import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 import UserProfile from "./UserProfile";
 import FriendsList from "./FriendsList";
+import './AccountStyles.scss';
 
 function AccountIndex() {
     const navigate = useNavigate();
@@ -18,8 +19,8 @@ function AccountIndex() {
     const { currentLoginUser } = authStore;
 
     useEffect(function () {
-        if (!currentLoginUser) {
-        // if (!LocalStorage.getLoginUser()) {
+        // if (!currentLoginUser) {
+        if (!LocalStorage.getLoginUser()) {
             toast.info("You haven't logged in yet! Please login first!");
             navigate("/");
         }
@@ -29,16 +30,16 @@ function AccountIndex() {
     }, []);
 
     return (
-        <>
-            <div style={{ display: 'flex' }}>
-                <div className="appCard p-3 m-5" style={{ flex: 3 }}>
+        <div className="app flex-center w-100 p-0 m-0 flex-1 align-start">
+            <div className="flex-center w-100 p-6 flex-column">
+                <div className="appCard br-10" style={{ flex: 3 }}>
                     <UserProfile />
                 </div>
-                <div className="appCard p-3 m-5" style={{ flex: 1 }}>
+                <div className="appCard br-10 mt-4" style={{ flex: 1 }}>
                     <FriendsList />
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

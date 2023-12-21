@@ -63,3 +63,23 @@ export function updateUserInfo(userDTO: any) {
             throw error;
         });
 }
+
+export function uploadUserAvatar(image: any) {
+    const url = API_PATH + '/avatar';
+    // return axios.post(image);
+
+    const formData = new FormData();
+    formData.append("fileUpload", image);
+    // make a POST request to the File Upload API with the FormData object and Rapid API headers
+    return axios.post(url, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+}
+
+export function getAvatarURL(avatarUrl:string) {
+    return axios.get(avatarUrl, {
+        responseType: 'arraybuffer', // Indicate that the response is binary data
+    });
+}

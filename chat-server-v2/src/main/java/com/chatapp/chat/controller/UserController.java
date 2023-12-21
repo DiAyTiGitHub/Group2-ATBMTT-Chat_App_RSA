@@ -1,10 +1,13 @@
 package com.chatapp.chat.controller;
 
+import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.*;
 import com.chatapp.chat.service.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,13 @@ public class UserController {
         return new ResponseEntity<Set<UserDTO>>(friends, HttpStatus.OK);
     }
 
+    @GetMapping("/friends/{userId}")
+    public ResponseEntity<Set<UserDTO>> getAllFriendsOfUser(@PathVariable UUID userId){
+        Set<UserDTO> friends = userService.getAllFiends();
+        if (friends == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Set<UserDTO>>(friends, HttpStatus.OK);
+    }
+
     @GetMapping("/joinedRoom")
     public ResponseEntity<List<RoomDTO>> getAllJoinedRooms() {
         List<RoomDTO> rooms = userService.getAllJoinedRooms();
@@ -68,6 +78,13 @@ public class UserController {
     @PostMapping("/search")
     public ResponseEntity<Set<UserDTO>> searchUsers(@RequestBody SeachObject seachObject) {
         Set<UserDTO> users = userService.searchUsers(seachObject.getKeyword());
+        if (users == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Set<UserDTO>>(users, HttpStatus.OK);
+    }
+
+    @PostMapping("/searchFriend")
+    public ResponseEntity<Set<UserDTO>> searchFriend(@RequestBody SeachObject seachObject) {
+        Set<UserDTO> users = userService.searchFriend(seachObject.getKeyword());
         if (users == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<Set<UserDTO>>(users, HttpStatus.OK);
     }
@@ -107,6 +124,14 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("/avatar/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+        Resource file = userService.getAvatarByName(filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
     @PutMapping("/info")
     public ResponseEntity<UserDTO> updateUserInfo(UserDTO dto) {
         UserDTO res = userService.updateUserInfo(dto);
@@ -129,7 +154,7 @@ public class UserController {
     }
 
     @PutMapping("/publicKey")
-    public ResponseEntity<RSAKeyDTO> updateUserPublicKey(@RequestBody RSAKeyDTO publicKeyDto){
+    public ResponseEntity<RSAKeyDTO> updateUserPublicKey(@RequestBody RSAKeyDTO publicKeyDto) {
         RSAKeyDTO res = userService.updateUserPublicKey(publicKeyDto);
         if (res != null) return new ResponseEntity<RSAKeyDTO>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

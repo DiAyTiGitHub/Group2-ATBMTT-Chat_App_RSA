@@ -14,9 +14,9 @@ const FriendsList: React.FC = () => {
   } = accountStore;
   
   return (
-    <div>
+    <div className="p-3">
       <h2>My Friends</h2>
-      <ul>
+      <ul className="m-0 p-0">
         {
           friendList.map(function (friend, index) {
             return (

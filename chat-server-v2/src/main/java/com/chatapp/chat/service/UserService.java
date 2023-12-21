@@ -2,6 +2,7 @@ package com.chatapp.chat.service;
 
 import com.chatapp.chat.entity.User;
 import com.chatapp.chat.model.*;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface UserService {
     public UserDTO getUserByName(String userName);
 
     public Set<UserDTO> getAllFiends();
+
+    public Set<UserDTO> getFriendsOfUser(UUID userId);
 
     public Set<FriendDTO> getAddFriendRequests();
 
@@ -40,6 +43,8 @@ public interface UserService {
 
     public UserDTO updateUserInfo(UserDTO dto);
 
+    public Resource getAvatarByName(String filename);
+
     public String uploadAvatar(MultipartFile fileUpload);
 
     public List<MessageDTO> getTop20LatestNotifications();
@@ -47,4 +52,7 @@ public interface UserService {
     public List<MessageDTO> getAllNotifications();
 
     public RSAKeyDTO updateUserPublicKey(RSAKeyDTO publicKeyDto);
+
+    public Set<UserDTO> searchFriend(String keyword);
+
 }

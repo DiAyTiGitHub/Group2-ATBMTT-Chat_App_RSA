@@ -1,5 +1,6 @@
 package com.chatapp.chat.service.impl;
 
+import com.chatapp.chat.controller.UserController;
 import com.chatapp.chat.entity.*;
 import com.chatapp.chat.model.*;
 import com.chatapp.chat.repository.MessageRepository;
@@ -9,15 +10,20 @@ import com.chatapp.chat.service.MessageService;
 import com.chatapp.chat.service.RoomService;
 import com.chatapp.chat.service.UserService;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.jni.FileInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -73,6 +79,33 @@ public class UserServiceImpl implements UserService {
             }
         }
         for (Friend relationship : currentUser.getFriendFromReceive()) {
+            if (relationship.getState()) {
+                User requestSender = relationship.getRequestSender();
+                friends.add(requestSender);
+            }
+        }
+
+        Set<UserDTO> friendList = new HashSet<UserDTO>();
+        for (User friend : friends) {
+            friendList.add(new UserDTO(friend));
+        }
+
+        return friendList;
+    }
+
+    @Override
+    public Set<UserDTO> getFriendsOfUser(UUID userId) {
+        User user = getUserEntityById(userId);
+        if (user == null) return null;
+        Set<User> friends = new HashSet<>();
+
+        for (Friend relationship : user.getFriendFromRequest()) {
+            if (relationship.getState()) {
+                User requestReceiver = relationship.getReceiver();
+                friends.add(requestReceiver);
+            }
+        }
+        for (Friend relationship : user.getFriendFromReceive()) {
             if (relationship.getState()) {
                 User requestSender = relationship.getRequestSender();
                 friends.add(requestSender);
@@ -152,8 +185,10 @@ public class UserServiceImpl implements UserService {
 
                 RSAKey publicKey = currentUser.getPublicKey();
                 for (MessageDTO message : messages) {
-                    String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
-                    message.setContent(encryptedMessage);
+                    if (message.getMessageType().getName().equals("chat")) {
+                        String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
+                        message.setContent(encryptedMessage);
+                    }
                 }
 
                 roomDto.setMessages(messages);
@@ -184,8 +219,10 @@ public class UserServiceImpl implements UserService {
 
                 RSAKey publicKey = currentUser.getPublicKey();
                 for (MessageDTO message : messages) {
-                    String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
-                    message.setContent(encryptedMessage);
+                    if (message.getMessageType().getName().equals("chat")) {
+                        String encryptedMessage = messageService.handleEncryptMessage(message.getContent(), new RSAKeyDTO(publicKey));
+                        message.setContent(encryptedMessage);
+                    }
                 }
 
                 roomDto.setMessages(messages);
@@ -334,10 +371,14 @@ public class UserServiceImpl implements UserService {
             String nameFile = loginUser.getUsername() + "_" + formattedDate + "." + ext;
             Files.copy(inputStream, pathImg.resolve(nameFile),
                     StandardCopyOption.REPLACE_EXISTING);
-            loginUser.setAvatar(nameFile);
+
+            String url = MvcUriComponentsBuilder
+                    .fromMethodName(UserController.class, "getFile", nameFile).build().toString();
+
+            loginUser.setAvatar(url);
             UserDTO res = updateUserInfo(loginUser);
             if (res == null) return null;
-            return uploadDir + "/" + res.getAvatar();
+            return res.getAvatar();
         } catch (Exception e) {
             System.err.println(e);
             return null;
@@ -374,5 +415,36 @@ public class UserServiceImpl implements UserService {
         User responseUser = userRepository.save(currentUser);
         if (responseUser == null) return null;
         return new RSAKeyDTO(res);
+    }
+
+    private final Path root = Paths.get("imageResources");
+
+    @Override
+    public Resource getAvatarByName(String filename) {
+        try {
+            Path file = root.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Set<UserDTO> searchFriend(String keyword) {
+        Set<UserDTO> friends = getAllUsers();
+        if (friends == null) return null;
+        Set<UserDTO> res = new HashSet<>();
+        for (UserDTO friend : friends) {
+            if (friend.getUsername().contains(keyword) || friend.getFullname().contains(keyword) || friend.getFullname().contains(keyword)) {
+                res.add(friend);
+            }
+        }
+        return res;
     }
 }
