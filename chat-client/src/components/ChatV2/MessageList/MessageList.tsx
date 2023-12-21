@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useRef } from 'react';
 import Compose from './Compose/Compose';
 import Toolbar from '../Toolbar/Toolbar';
 import Message from './Message/Message';
@@ -12,6 +12,7 @@ import { ConstructionOutlined } from '@mui/icons-material';
 
 
 function MessageList(props: any) {
+  const ref = useRef<HTMLDivElement>(null);
   const { chatStore } = useStore();
   const { chosenRoom } = chatStore;
   const MY_USER_ID = LocalStorage.getLoginUser()?.username;
@@ -24,6 +25,13 @@ function MessageList(props: any) {
   // const getMessages = () => {
   //   setMessages([...messages, ...chosenRoom.messages])
   // }
+
+  const scrollToBottom = () => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+      console.log(ref.current.scrollHeight)
+    }
+  };
 
   const renderMessages = () => {
     const messages = chosenRoom.messages;
@@ -47,7 +55,7 @@ function MessageList(props: any) {
       if (next && next.user.username !== current.user.username) {
         endsSequence = true
       }
-
+      
       tempArray.push(
         <Message
           key={i}
@@ -62,16 +70,16 @@ function MessageList(props: any) {
         />
       );
       i += 1;
-
     }
     return tempArray;
   }
+  scrollToBottom();
 
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
       {!chosenRoom ? <div className="no-message"> No conversation was chosen</div>
-        : <div className="message-list-container">
+        : <div className="message-list-container" ref={ref}>
           {
             renderMessages() 
           }
