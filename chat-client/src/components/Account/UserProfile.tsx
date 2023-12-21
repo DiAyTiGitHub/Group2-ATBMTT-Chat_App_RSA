@@ -37,10 +37,8 @@ const UserProfile: React.FC = ({ }: any) => {
     }
 
     const currentUser = LocalStorage.getLoginUser();
-    console.log(currentUser);
-    const validationSchema = {};
+   
     const [imagePath, setImagePath] = useState("");
-    const [initialValues, setInitialValues] = useState(currentUser);
 
     useEffect(function () {
         if (currentUser.avatar != "") {
@@ -53,7 +51,7 @@ const UserProfile: React.FC = ({ }: any) => {
 
     return useObserver(() => (
         <Formik
-            initialValues={initialValues}
+            initialValues={currentUser}
             onSubmit={handleFormSubmit}
         >
             {({ values, handleChange, setFieldTouched, setFieldValue }) => {
