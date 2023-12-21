@@ -13,20 +13,12 @@ import {
     TextField,
     Unstable_Grid2 as Grid,
     Avatar,
-    Typography
+    Typography,
+    RadioGroup,
+    FormControlLabel,
+    Radio
 } from '@mui/material';
-import { Form, Formik } from "formik";
-
-const gender = [
-    {
-        value: "male",
-        label: "Male"
-    },
-    {
-        value: "female",
-        label: "Female"
-    },
-];
+import { Field, Form, Formik } from "formik";
 
 const UserProfile: React.FC = ({ }: any) => {
     const { accountStore } = useStore();
@@ -48,7 +40,7 @@ const UserProfile: React.FC = ({ }: any) => {
     console.log(currentUser);
     const validationSchema = {};
     const [imagePath, setImagePath] = useState("");
-    const initialValues = {};
+    const [initialValues, setInitialValues] = useState(currentUser);
 
     useEffect(function () {
         if (currentUser.avatar != "") {
@@ -63,145 +55,139 @@ const UserProfile: React.FC = ({ }: any) => {
         <Formik
             initialValues={initialValues}
             onSubmit={handleFormSubmit}
-            validationSchema={validationSchema}
         >
-            {(props) => (
-                <Form autoComplete='off'>
-                    <Grid
-                        container
-                        spacing={3}
-                    >
+            {({ values, handleChange, setFieldTouched, setFieldValue }) => {
+                const change = (name: any, e: any) => {
+                    e.persist();
+                    handleChange(e);
+                    setFieldTouched(name, true, false);
+                };
+
+                return (
+                    <Form autoComplete='off'>
                         <Grid
-                            xs={12}
-                            md={6}
-                            lg={4}
+                            container
+                            spacing={0}
                         >
-                            <Card>
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            alignItems: 'center',
-                                            display: 'flex',
-                                            flexDirection: 'column'
-                                        }}
-                                    >
-                                        <h3>Avatar</h3>
-                                        <img src={imagePath} alt="" className="userAvatar" />
-                                    </Box>
-                                </CardContent>
-                                <Divider />
-                                <CardActions>
-                                    <input type="file" name="avatar" onChange={handleChangeImage} />
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                        {/* <Grid
-                    xs={24}
-                    md={12}
-                    lg={8}
-                >
-                    <Card>
-                        <CardHeader
-                            subheader="The information can be edited"
-                            title="Profile"
-                        />
-                        <CardContent sx={{ pt: 0 }}>
-                            <Box sx={{ m: -1.5 }}>
-                                <Grid
-                                    container
-                                    spacing={3}
-                                >
-                                    <Grid
-                                        xs={12}
-                                        md={6}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            helperText="Please specify the first name"
-                                            label="Full name"
-                                            name="fullName"
-                                            onChange={handleChange}
-                                            required
-                                            value={values.fullName}
-                                        />
-                                    </Grid>
-                                    <Grid
-                                        xs={12}
-                                        md={6}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            label="User name"
-                                            name="userName"
-                                            onChange={handleChange}
-                                            required
-                                            value={values.userName}
-                                        />
-                                    </Grid>
-                                    <Grid
-                                        xs={12}
-                                        md={6}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            label="Address"
-                                            name="address"
-                                            onChange={handleChange}
-                                            required
-                                            value={values.address}
-                                        />
-                                    </Grid>
-                                    <Grid
-                                        xs={12}
-                                        md={6}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            label="Gender"
-                                            name="gender"
-                                            onChange={handleChange}
-                                            required
-                                            select
-                                            SelectProps={{ native: true }}
-                                            value={values.gender}
+                            <Grid
+                                xs={12}
+                                md={4}
+                                lg={3}
+
+                            >
+                                <Card className="flex-center flex-column">
+                                    <CardContent>
+                                        <Box
+                                            sx={{
+                                                alignItems: 'center',
+                                                display: 'flex',
+                                                flexDirection: 'column'
+                                            }}
                                         >
-                                            {gender.map((option) => (
-                                                <option
-                                                    key={option.value}
-                                                    value={option.value}
+                                            <h3>Avatar</h3>
+                                            <img src={imagePath} alt="" className="userAvatar" />
+                                        </Box>
+                                    </CardContent>
+                                    <CardActions className="flex-1">
+                                        <input type="file" name="avatar" onChange={handleChangeImage} />
+                                    </CardActions>
+                                    <Divider />
+                                </Card>
+                            </Grid>
+                            <Grid
+                                xs={12}
+                                md={8}
+                                lg={9}
+                            >
+                                <Card>
+                                    <CardContent>
+                                        <h3 className="w-100 flex-center m-0 pb-4">Your info</h3>
+                                        <Grid container spacing={2}>
+                                            <Grid xs={12} md={6}>
+                                                <TextField
+                                                    name="username"
+                                                    label="username"
+                                                    fullWidth
+                                                    disabled
+                                                    value={values.username}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12} md={6}>
+                                                <TextField
+                                                    name="fullname"
+                                                    label="fullname"
+                                                    fullWidth
+                                                    value={values.fullname}
+                                                    placeholder="Not have yet"
+                                                    onChange={change.bind(null, "fullname")}
+                                                />
+                                            </Grid>
+                                            <Grid xs={12}>
+                                                <TextField
+                                                    name="address"
+                                                    label="address"
+                                                    fullWidth
+                                                    value={values.address}
+                                                    placeholder="Not have yet"
+                                                    onChange={change.bind(null, "address")}
+                                                />
+                                            </Grid>
+                                            {/* <Grid xs={12} md={6}>
+                                                <h6>Gender:</h6>
+                                                <div className="flex">
+                                                    <div className="optionRadio flex-center">
+                                                        <input
+                                                            type="radio"
+                                                            name="gender"
+                                                            value="1"
+                                                            checked={values.gender === "1"}
+                                                            onChange={() => setFieldValue("gender", "1")}
+                                                        />
+                                                        <h6 className="m-0 ml-2">
+                                                            Male
+                                                        </h6>
+                                                    </div>
+
+                                                    <div className="optionRadio flex-center ml-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="gender"
+                                                            value="0"
+                                                            checked={values.gender === "0"}
+                                                            onChange={() => setFieldValue("gender", "0")}
+                                                        />
+                                                        <h6 className="m-0 ml-2">
+                                                            Female
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </Grid> */}
+                                            <Grid xs={12} md={6}>
+                                                <h6>Gender:</h6>
+                                                <RadioGroup
+                                                    row
+                                                    name="gender"
+                                                    value={values.gender}
+                                                    onChange={handleChange}
                                                 >
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </TextField>
-                                    </Grid>
-                                    <Grid
-                                        xs={12}
-                                        md={6}
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            label="BirthDate"
-                                            name="birthDate"
-                                            onChange={handleChange}
-                                            required
-                                            value={values.birthDate}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                        </CardContent>
-                        <Divider />
-                        <CardActions sx={{ justifyContent: 'flex-end' }}>
-                            <Button variant="contained" type="submit">
-                                Save details
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid> */}
-                    </Grid>
-                </Form>
-            )}
+                                                    <FormControlLabel value="1" control={<Radio />} label="Male" />
+                                                    <FormControlLabel value="0" control={<Radio />} label="Female" />
+                                                </RadioGroup>
+                                            </Grid>
+                                        </Grid>
+                                    </CardContent>
+                                    <CardActions className="w-100 flex justify-right">
+                                        <Button variant="contained" type="submit">
+                                            Save details
+                                        </Button>
+                                    </CardActions>
+                                    <Divider />
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </Form>
+                );
+            }}
         </Formik>
 
     ));

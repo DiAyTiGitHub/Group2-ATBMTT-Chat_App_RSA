@@ -204,6 +204,7 @@ html {
 
 .flex {
     display: flex;
+    flex-direction: row !important;
 }
 
 .flex-column {
