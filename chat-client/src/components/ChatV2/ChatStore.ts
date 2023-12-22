@@ -103,6 +103,7 @@ class ChatStore {
   };
 
   registerUser = () => {
+    if (this.stompClient) return;
     this.connect();
   };
 

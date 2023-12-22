@@ -39,7 +39,6 @@ function LoginPage({ handleChangeTab, navigate }: any) {
             .finally(function () {
                 props.setSubmitting(false);
             });
-
     };
 
     return (
