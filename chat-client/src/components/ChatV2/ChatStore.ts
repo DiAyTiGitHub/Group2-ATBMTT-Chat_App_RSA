@@ -55,7 +55,6 @@ class ChatStore {
 
     if (type == "chat") {
       try {
-        // Use `atob` to decode base64-encoded string
         var mang = messageContent.split(",").map(Number);
 
         for (let i = 0; i < mang.length; i++) {

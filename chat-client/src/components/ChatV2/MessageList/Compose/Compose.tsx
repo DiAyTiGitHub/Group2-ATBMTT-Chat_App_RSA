@@ -8,7 +8,6 @@ import { useStore } from 'src/stores';
 function Compose() {
   const { chatStore, authStore } = useStore();
   const { sendMessage } = chatStore;
-  const { publicKey } = authStore;
   const [messageContent, setMessageContent] = useState("");
 
   function handleChangeMessageContent(event: any) {

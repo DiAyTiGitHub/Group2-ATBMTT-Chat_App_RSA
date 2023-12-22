@@ -185,10 +185,6 @@ public class MessageServiceImpl implements MessageService {
             }
 
             String encryptedString = String.join(",", encryptedChars);
-            byte[] encodedBytes = Base64.encodeBase64(encryptedString.getBytes());
-            System.out.println("encryptedString: " + encryptedString);
-//            return new String(encodedBytes);
-            System.out.println("chekcing encrypted message to send: " + encryptedString);
             return encryptedString;
         } catch (Exception error) {
             System.out.println("Error: " + error.getMessage());
@@ -206,10 +202,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public String handleDecryptMessage(String message, RSAKeyDTO privateKeyDto) {
         try {
-//            byte[] decodedData = Base64.decodeBase64(message);
-//            String decodedString = new String(decodedData);
-//            String encryptedNums[] = decodedString.split(",");
-            System.out.println("message to decrypt: " + message);
             String encryptedNums[] = message.split(",");
 
             String messageDecrypted = "";
