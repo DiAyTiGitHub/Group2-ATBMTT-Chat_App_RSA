@@ -4,13 +4,12 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormHelperText } from '@mui/material';
-
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 
 function SignUpUser({ navigate, handleChangeTab }: any) {
     const paperStyle = { padding: 20, margin: '0 auto', borderRadius: '0px 0px 15px 15px' };
-    const headerStyle = { margin: 0 };
     const avatarStyle = { backgroundColor: '#1bbd7e' };
     const btnstyle = { margin: '8px 0' };
 
@@ -48,13 +47,11 @@ function SignUpUser({ navigate, handleChangeTab }: any) {
         <Grid>
             <Paper style={paperStyle}>
                 <Grid container spacing={2} className='flex-center'>
-                    <Grid item xs={12} className='flex-center'>
+                    <Grid item xs={12} className='flex-center pb-2'>
                         <Avatar style={avatarStyle} className='mr-2'>
                             <AddCircleOutlineOutlinedIcon />
                         </Avatar>
-                        <div>
-                            <Typography style={headerStyle}><h2>Sign Up</h2> </Typography>
-                        </div>
+                        <h2 className='m-0 pl-1'>Sign Up</h2>
                     </Grid>
                     {/* <Grid item xs={12}>
                         <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
@@ -112,6 +109,7 @@ function SignUpUser({ navigate, handleChangeTab }: any) {
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Button
+                                                className='flex-center'
                                                 type="submit"
                                                 color="primary"
                                                 variant="contained"
@@ -119,7 +117,10 @@ function SignUpUser({ navigate, handleChangeTab }: any) {
                                                 style={btnstyle}
                                                 fullWidth
                                             >
-                                                {props.isSubmitting ? 'Loading' : 'Sign Up'}
+                                                <PersonAddAltIcon className='mr-2' />
+                                                <h6 className='m-0 flex-center'>
+                                                    {props.isSubmitting ? 'Loading' : 'Sign Up'}
+                                                </h6>
                                             </Button>
                                         </Grid>
                                     </Grid>
@@ -129,7 +130,7 @@ function SignUpUser({ navigate, handleChangeTab }: any) {
                         <Typography className="flex-center">
                             {`Already have an account? `}
                             <Link href="#" onClick={() => handleChangeTab('event', 0)}>
-                                Sign In
+                                Log In
                             </Link>
                         </Typography>
                     </Grid>

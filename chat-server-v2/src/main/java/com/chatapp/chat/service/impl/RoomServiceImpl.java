@@ -1,6 +1,7 @@
 package com.chatapp.chat.service.impl;
 
 import com.chatapp.chat.entity.*;
+import com.chatapp.chat.entity.Message;
 import com.chatapp.chat.model.*;
 import com.chatapp.chat.repository.RSAKeyRepository;
 import com.chatapp.chat.repository.RoomRepository;
@@ -9,6 +10,7 @@ import com.chatapp.chat.service.*;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +46,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private UserRoomService userRoomService;
+
+    @Autowired
+    private MessageTypeService messageTypeService;
+
+    @Autowired
+    private SetupDataService setupDataService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public Set<UserDTO> getAllJoinedUsersByRoomId(UUID roomId) {
@@ -238,7 +249,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTO createGroupChat(UUID[] joinUserIds) {
+    public RoomDTO createGroupChat(NewGroupChat newGroupChat) {
+        if (newGroupChat == null) return null;
+        UUID joinUserIds[] = newGroupChat.getJoinUserIds();
         if (joinUserIds == null) return null;
         User currentUser = userService.getCurrentLoginUserEntity();
         if (currentUser == null) return null;
@@ -251,19 +264,51 @@ public class RoomServiceImpl implements RoomService {
         }
         Room roomChat = createRoomEntity(new RoomDTO());
         Set<UserRoom> userRooms = new HashSet<>();
+
+        UserRoomDTO creatorURDto = new UserRoomDTO();
+        creatorURDto.setRoom(new RoomDTO(roomChat));
+        creatorURDto.setUser(new UserDTO(currentUser));
+        UserRoom creatorUserRoom = userRoomService.createUserRoomEntity(creatorURDto);
+        creatorUserRoom.setRole("Creator");
+        userRoomRepository.save(creatorUserRoom);
+
+        userRooms.add(creatorUserRoom);
+
+        MessageTypeDTO messageTypeDTO = messageTypeService.getMessageTypeByName("join");
+        if (messageTypeDTO == null) setupDataService.setupData();
+        messageTypeDTO = messageTypeService.getMessageTypeByName("join");
+        if(messageTypeDTO == null) return null;
+
+        //send message that creator had created this conversation
+        MessageDTO creatorMessageDto = new MessageDTO();
+        creatorMessageDto.setMessageType(messageTypeDTO);
+        creatorMessageDto.setRoom(new RoomDTO(roomChat));
+        creatorMessageDto.setUser(new UserDTO(currentUser));
+        creatorMessageDto.setContent(currentUser.getUsername() + " created this conversation");
+        MessageDTO creatorMessageRes = messageService.createMessage(creatorMessageDto);
+        simpMessagingTemplate.convertAndSendToUser(currentUser.getId().toString(), "/privateMessage", creatorMessageRes);
+
         for (User user : joiningUsers) {
             UserRoomDTO urDto = new UserRoomDTO();
             urDto.setRoom(new RoomDTO(roomChat));
             urDto.setUser(new UserDTO(user));
             UserRoom userRoom = userRoomService.createUserRoomEntity(urDto);
             userRooms.add(userRoom);
+
+            //send message each user had joined this conversation
+            MessageDTO messageDto = new MessageDTO();
+            messageDto.setMessageType(messageTypeDTO);
+            messageDto.setRoom(new RoomDTO(roomChat));
+            messageDto.setUser(new UserDTO(user));
+            messageDto.setContent(user.getUsername() + " joined");
+            MessageDTO messageRes = messageService.createMessage(messageDto);
+            simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", messageRes);
         }
-        UserRoomDTO creatorURDto = new UserRoomDTO();
-        UserRoom creatorUserRoom = userRoomService.createUserRoomEntity(creatorURDto);
-        creatorUserRoom.setRole("Creator");
-        userRoomRepository.save(creatorUserRoom);
-        userRooms.add(creatorUserRoom);
+
         roomChat.setName("Unname conversation");
+        if (newGroupChat.getName() != null)
+            roomChat.setName(newGroupChat.getName());
+
         roomChat.setUserRooms(userRooms);
         RoomType roomType = roomTypeService.getRoomTypeEntityByName("group");
         roomChat.setRoomType(roomType);

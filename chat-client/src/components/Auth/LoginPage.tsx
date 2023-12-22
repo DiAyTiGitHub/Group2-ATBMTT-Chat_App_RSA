@@ -4,12 +4,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; // Import icons
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useStore } from 'src/stores';
-import { over } from 'stompjs';
-import SockJS from 'sockjs-client';
+import LoginIcon from '@mui/icons-material/Login';
+import { toast } from 'react-toastify';
 
 function LoginPage({ handleChangeTab, navigate }: any) {
     const paperStyle = { padding: 20, margin: 'auto 0px', borderRadius: '0px 0px 15px 15px' };
-    const headerStyle = { margin: 0 };
     const avatarStyle = { backgroundColor: '#1bbd7e' };
     const btnstyle = { margin: '8px 0' };
 
@@ -32,6 +31,8 @@ function LoginPage({ handleChangeTab, navigate }: any) {
         authenticateUser(values)
             .then(function () {
                 navigate("/chat-v2");
+                toast.dismiss();
+                toast.success("Successfully generating keys for conversations!");
             })
             .catch(function (error) {
                 console.error(error);
@@ -44,14 +45,12 @@ function LoginPage({ handleChangeTab, navigate }: any) {
     return (
         <Grid>
             <Paper style={paperStyle}>
-                <Grid className='flex-center' style={{ paddingBottom: '20px' }}>
+                <Grid className='flex-center pb-5'>
                     <Avatar style={avatarStyle} className='mr-2'>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <div>
-                        <Typography style={headerStyle}>
-                            <h2>Sign In</h2>
-                        </Typography>
+                    <div className='flex-center'>
+                        <h2 className='m-0'>Log In</h2>
                     </div>
                 </Grid>
                 <Formik
@@ -91,6 +90,7 @@ function LoginPage({ handleChangeTab, navigate }: any) {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button
+                                        className='flex-center'
                                         type="submit"
                                         color="primary"
                                         variant="contained"
@@ -98,7 +98,10 @@ function LoginPage({ handleChangeTab, navigate }: any) {
                                         style={btnstyle}
                                         fullWidth
                                     >
-                                        {props.isSubmitting ? 'Loading' : 'Sign in'}
+                                        <LoginIcon className='mr-2' />
+                                        <h6 className='m-0 flex-center'>
+                                            {props.isSubmitting ? 'Loading' : 'Log in'}
+                                        </h6>
                                     </Button>
                                 </Grid>
                             </Grid>
@@ -106,11 +109,8 @@ function LoginPage({ handleChangeTab, navigate }: any) {
                     )}
                 </Formik>
                 <Typography className="flex-center">
-                    <Link href="#">Forgot password?</Link>
-                </Typography>
-                <Typography className="flex-center">
                     {`Do you have an account? `}
-                    <Link href="#" onClick={() => handleChangeTab('event', 1)}>
+                    <Link href="#" onClick={() => handleChangeTab('event', 1)} className="ml-1">
                         Sign Up
                     </Link>
                 </Typography>

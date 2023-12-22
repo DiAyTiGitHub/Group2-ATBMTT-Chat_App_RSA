@@ -1,5 +1,6 @@
 package com.chatapp.chat.controller;
 
+import com.chatapp.chat.model.NewGroupChat;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.SeachObject;
 import com.chatapp.chat.service.RoomService;
@@ -39,7 +40,7 @@ public class RoomController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<RoomDTO>> searchRoom(@RequestBody SeachObject seachObject) {
+    public ResponseEntity<List<RoomDTO>> searchJoinedRooms(@RequestBody SeachObject seachObject) {
         if (seachObject == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         List<RoomDTO> res = roomService.searchRoom(seachObject);
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -54,15 +55,16 @@ public class RoomController {
     }
 
     @PostMapping("/group")
-    public ResponseEntity<RoomDTO> createGroupChat(@RequestBody UUID joinUserIds[]) {
-        if (joinUserIds == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        RoomDTO createdRoom = roomService.createGroupChat(joinUserIds);
+    public ResponseEntity<RoomDTO> createGroupChat(@RequestBody NewGroupChat newGroupChat) {
+        if (newGroupChat == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        if (newGroupChat.getJoinUserIds().length < 2) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        RoomDTO createdRoom = roomService.createGroupChat(newGroupChat);
         if (createdRoom != null) return new ResponseEntity<RoomDTO>(createdRoom, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/group/{roomId}")
-    public ResponseEntity<RoomDTO> unjoinAnGroupChat(@PathVariable UUID roomId){
+    public ResponseEntity<RoomDTO> unjoinAnGroupChat(@PathVariable UUID roomId) {
         RoomDTO res = roomService.unjoinGroupChat(roomId);
         if (res != null) return new ResponseEntity<RoomDTO>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

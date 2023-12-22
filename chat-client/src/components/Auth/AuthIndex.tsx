@@ -9,8 +9,7 @@ import Signup from "./SignUpPage";
 import { useNavigate } from "react-router";
 import { observer } from "mobx-react";
 import { useStore } from "src/stores";
-
-// Import your Login and Signup components here
+import './AuthStyles.scss';
 
 function AuthIndex() {
   const [value, setValue] = useState(0);
@@ -22,8 +21,6 @@ function AuthIndex() {
   };
 
   const paperStyle = { width: 340, margin: "0px auto", backgroundImage: `url('https://marketplace.canva.com/EAD2962NKnQ/2/0/400w/canva-rainbow-gradient-pink-and-purple-virtual-background-LrNk7fAXxw8.jpg')` };
-  // const backgroundStyle = {background: 'https://marketplace.canva.com/EAD2962NKnQ/2/0/400w/canva-rainbow-gradient-pink-and-purple-virtual-background-LrNk7fAXxw8.jpg' };
-
 
   function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
@@ -44,7 +41,7 @@ function AuthIndex() {
       >
         {value === index && (
           <Box>
-            <Typography>{children}</Typography>
+            <div>{children}</div>
           </Box>
         )}
       </div>
@@ -53,8 +50,7 @@ function AuthIndex() {
 
   return (
     <div
-      className="flex-center w-100 p-0 m-0 flex-1"
-      style={{ background: `url('https://marketplace.canva.com/EAD2962NKnQ/2/0/400w/canva-rainbow-gradient-pink-and-purple-virtual-background-LrNk7fAXxw8.jpg')`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%" }}
+      className="flex-center w-100 p-0 m-0 flex-1 authIndexStyle"
     >
       <Paper elevation={20} style={paperStyle}>
         <Tabs
@@ -89,50 +85,3 @@ function AuthIndex() {
 }
 
 export default memo(observer(AuthIndex));
-
-//old auth index
-// function AuthIndex() {
-//   const { authStore } = useStore();
-//   const {
-//       registerUser,
-//       userData,
-//       setUserData
-//   } = authStore;
-
-//   function handleUsername(event: any) {
-//       const { value } = event.target;
-//       const newData = { ...userData, "username": value };
-//       console.log("cahnging");
-//       setUserData(newData);
-//   }
-
-//   useEffect(function () {
-//       console.log("user data changed: " + userData);
-//   }, [userData]);
-
-//   console.log("checking userData: " + userData);
-
-//   return (
-//       <div className="register">
-//           {userData?.connected && (
-//               <>
-//                   Bạn đã có tài khoản! Quay lại tab chat để trải nghiệm
-//               </>
-//           )}
-//           {!userData?.connected && (
-//               <>
-//                   <input
-//                       id="user-name"
-//                       placeholder="Enter your name"
-//                       name="username"
-//                       onChange={handleUsername}
-//                       value={userData.username}
-//                   />
-//                   <button type="button" onClick={registerUser}>
-//                       connect
-//                   </button>
-//               </>
-//           )}
-//       </div>
-//   );
-// }

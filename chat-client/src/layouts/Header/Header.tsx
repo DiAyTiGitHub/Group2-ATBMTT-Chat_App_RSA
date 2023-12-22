@@ -37,7 +37,7 @@ function Header() {
 
   return (
 
-    <AppBar position="static">
+    <AppBar position="static" className="appHeader">
       <Toolbar disableGutters>
         <Box sx={{ flexGrow: 1, display: "flex" }}>
           <NavLink to={'./chat-v2'} className="p-0 px-4 d-flex">

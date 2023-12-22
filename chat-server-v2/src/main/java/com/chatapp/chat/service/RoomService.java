@@ -1,10 +1,7 @@
 package com.chatapp.chat.service;
 
 import com.chatapp.chat.entity.Room;
-import com.chatapp.chat.model.MessageDTO;
-import com.chatapp.chat.model.RoomDTO;
-import com.chatapp.chat.model.SeachObject;
-import com.chatapp.chat.model.UserDTO;
+import com.chatapp.chat.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -33,7 +30,7 @@ public interface RoomService {
 
     public String uploadRoomAvatar(MultipartFile fileUpload, UUID roomId);
 
-    public RoomDTO createGroupChat(UUID joinUserIds[]);
+    public RoomDTO createGroupChat(NewGroupChat newGroupChat);
 
     public RoomDTO unjoinGroupChat(UUID groupChatId);
 }

@@ -22,6 +22,7 @@ class AuthStore {
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
             toast.success("Login successfully!");
+            toast.info("Generating keys for upcoming conversations, please wait...");
             const { data: userData } = await getCurrentLoginUser();
             this.setUser(userData);
             this.currentLoginUser = userData;

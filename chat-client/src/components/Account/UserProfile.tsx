@@ -21,8 +21,9 @@ import {
 import { Field, Form, Formik } from "formik";
 
 const UserProfile: React.FC = ({ }: any) => {
-    const { accountStore } = useStore();
+    const { accountStore, authStore } = useStore();
     const { uploadUserAvatar, getAvatarSrc } = accountStore;
+    const { currentLoginUser } = authStore;
 
     async function handleChangeImage(event: any) {
         if (event.target.files && event.target.files[0]) {
@@ -36,22 +37,22 @@ const UserProfile: React.FC = ({ }: any) => {
         console.log("form values: ", values);
     }
 
-    const currentUser = LocalStorage.getLoginUser();
-   
     const [imagePath, setImagePath] = useState("");
 
+    const currentUser = LocalStorage.getLoginUser();
+
     useEffect(function () {
-        if (currentUser.avatar != "") {
-            const imageSrcPromise = getAvatarSrc(currentUser.avatar);
+        if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "" && currentLoginUser) {
+            const imageSrcPromise = getAvatarSrc(currentLoginUser.avatar);
             imageSrcPromise.then(function (data) {
                 setImagePath(data);
             })
         }
-    }, [])
+    }, []);
 
     return useObserver(() => (
         <Formik
-            initialValues={currentUser}
+            initialValues={currentLoginUser || currentUser}
             onSubmit={handleFormSubmit}
         >
             {({ values, handleChange, setFieldTouched, setFieldValue }) => {
@@ -107,7 +108,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                     label="username"
                                                     fullWidth
                                                     disabled
-                                                    value={values.username}
+                                                    value={values.username || ""}
                                                 />
                                             </Grid>
                                             <Grid xs={12} md={6}>
@@ -115,7 +116,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                     name="fullname"
                                                     label="fullname"
                                                     fullWidth
-                                                    value={values.fullname}
+                                                    value={values.fullname || ""}
                                                     placeholder="Not have yet"
                                                     onChange={change.bind(null, "fullname")}
                                                 />
@@ -125,7 +126,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                     name="address"
                                                     label="address"
                                                     fullWidth
-                                                    value={values.address}
+                                                    value={values.address || ""}
                                                     placeholder="Not have yet"
                                                     onChange={change.bind(null, "address")}
                                                 />
@@ -165,7 +166,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                 <RadioGroup
                                                     row
                                                     name="gender"
-                                                    value={values.gender}
+                                                    value={values.gender || ""}
                                                     onChange={handleChange}
                                                 >
                                                     <FormControlLabel value="1" control={<Radio />} label="Male" />

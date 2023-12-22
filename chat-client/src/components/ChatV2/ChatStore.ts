@@ -4,6 +4,7 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import LocalStorage from "src/common/LocalStorage";
 import { getAllJoinedRooms } from "src/services/UserService";
+import { searchJoinedRooms, createGroupChat } from "src/services/RoomService";
 import RSAService from "../Auth/RSAService";
 
 class ChatStore {
@@ -17,17 +18,7 @@ class ChatStore {
     makeAutoObservable(this);
   }
 
-  searchConversation = async (keyword: string) => {
-    try {
-      const searchObject = {
-        keyword: keyword,
-      };
-    } catch (err) {
-      console.log(err);
-      toast.error("Find conversation errors :( Please try again!");
-      throw new Error(err);
-    }
-  };
+
 
   // Mã hoá
   encryptRSA = (messageContent: string) => {
@@ -102,6 +93,10 @@ class ChatStore {
     }
   };
 
+
+
+
+
   registerUser = () => {
     if (this.stompClient) return;
     this.connect();
@@ -119,36 +114,6 @@ class ChatStore {
       "/user/" + currenUser.id + "/privateMessage",
       this.onReceiveRoomMessage
     );
-  };
-
-  onError = (err: any) => {
-    console.log(err);
-    toast.error("Connect to chat server error, please try again!");
-  };
-
-  chosenRoom = null;
-  setChosenRoom = (chosenRoom: any) => {
-    this.chosenRoom = chosenRoom;
-  };
-
-  joinedRooms = [];
-  getAllJoinedRooms = async () => {
-    console.log("getAllJoinedRooms is called");
-    try {
-      const { data } = await getAllJoinedRooms();
-      this.joinedRooms = data;
-      this.chosenRoom = data[0];
-
-      if (!this.stompClient) {
-        toast.error(
-          "You haven't connected to chat server! Please login again!"
-        );
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Load conversation fail, please try again!");
-    }
   };
 
   onReceiveRoomMessage = (payload: any) => {
@@ -186,6 +151,82 @@ class ChatStore {
       this.joinedRooms = [...this.joinedRooms];
     }
   };
+
+  onError = (err: any) => {
+    console.log(err);
+    toast.error("Connect to chat server error, please try again!");
+  };
+
+
+
+
+
+  chosenRoom = null;
+  setChosenRoom = (chosenRoom: any) => {
+    this.chosenRoom = chosenRoom;
+  };
+
+  joinedRooms = [];
+  getAllJoinedRooms = async () => {
+    try {
+      const { data } = await getAllJoinedRooms();
+      this.joinedRooms = data;
+      this.chosenRoom = data[0];
+
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Load conversation fail, please try again!");
+    }
+  };
+
+  searchJoinedRooms = async (keyword: string) => {
+    try {
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        return;
+      }
+
+      const searchObject = {
+        keyword: keyword,
+      };
+      const { data } = await searchJoinedRooms(searchObject);
+      this.joinedRooms = data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Find conversation errors :( Please try again!");
+      throw new Error(err);
+    }
+  };
+
+  createGroupChat = async (room: any) => {
+    try {
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        return;
+      }
+
+      const { data } = await createGroupChat(room);
+      console.log("new group chat: ", data);
+      toast.success("Create group chat " + data.name + " successfully");
+      return data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Create new group chat fail, please try again!");
+      throw new Error(err);
+    }
+  }
+
+
 }
 
 export default ChatStore;

@@ -2,17 +2,14 @@ import React, { memo, useState } from 'react';
 import './ConversationSearch.css';
 import { observer } from 'mobx-react';
 import { useStore } from 'src/stores';
-import { IconButton, Modal, Box, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Checkbox, Avatar, Typography, Divider, TextField, Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import GroupConversationCreator from './GroupConversationCreator/GroupConversationCreator';
 
 function ConversationSearch() {
-  const { chatStore, friendsStore } = useStore();
-  const { searchConversation } = chatStore;
-  const { usersList } = friendsStore;
-  const [open, setOpen] = React.useState(false);
-  const handleOpenPopup = () => setOpen(true);
-  const handleClosePopup = () => setOpen(false);
-  
+  const { chatStore } = useStore();
+  const { searchJoinedRooms } = chatStore;
+
   const [searchKeyword, setSearchKeyword] = useState();
 
   function handleChange(event: any) {
@@ -22,7 +19,7 @@ function ConversationSearch() {
   }
 
   function handleSearch(keyword: string) {
-    searchConversation(keyword);
+    searchJoinedRooms(keyword);
   }
 
   function handleOnKeyDown(event: any) {
@@ -31,27 +28,7 @@ function ConversationSearch() {
     }
   }
 
-  const [checked, setChecked] = React.useState([1]);
-
-  const handleToggleCheckBox = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-
-  function renderAvatar(avatar) {
-    if (!avatar || avatar.trim() === '') {
-      return 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
-    }
-    return avatar;
-  }
+  const [openChooseMember, setOpenChooseMember] = useState(false);
 
   return (
     <div className="conversation-search w-100">
@@ -63,53 +40,19 @@ function ConversationSearch() {
         onChange={handleChange}
         onKeyDown={handleOnKeyDown}
       />
-      <IconButton aria-label="new group chat" onClick={handleOpenPopup}>
+      <IconButton aria-label="new group chat" onClick={function () {
+        setOpenChooseMember(true);
+      }}>
         <GroupAddIcon />
       </IconButton>
-      <Modal
-        open={open}
-        onClose={handleClosePopup}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box className='modal-container'>
-          <Typography variant='h5' sx={{ fontWeight: 800}}>NEW GROUP CHAT</Typography>
-          <TextField id="standard-basic" label="Enter chat name" variant="standard" />
-          <List dense sx={{ width: '100%' }}>
-            {usersList.map((user, index) => {
-              const labelId = `checkbox-list-secondary-label-${index}`;
-              return (
-                <ListItem
-                  key={index}
-                  secondaryAction={
-                    <Checkbox
-                      edge="end"
-                      onChange={handleToggleCheckBox(index)}
-                      checked={checked.indexOf(index) !== -1}
-                      inputProps={{ 'aria-labelledby': labelId }}
-                    />
-                  }
-                  disablePadding
-                >
-                  <ListItemButton>
-                    <ListItemAvatar>
-                      <Avatar
-                        alt=''
-                        src={ renderAvatar(user.avatar) }
-                      />
-                    </ListItemAvatar>
-                    <ListItemText id={labelId} primary={user.username} color='black'/>
-                  </ListItemButton>
-                </ListItem>
-              );
-            })}
-          </List>
-          <div className='d-flex justify-content-around'>
-            <Button variant="contained">Cancel</Button>
-            <Button variant="contained">Confirm</Button>
-          </div>
-        </Box>
-      </Modal>
+
+      <GroupConversationCreator
+        open={openChooseMember}
+        handleClose={function () {
+          setOpenChooseMember(false);
+        }}
+      />
+
     </div>
   );
 }

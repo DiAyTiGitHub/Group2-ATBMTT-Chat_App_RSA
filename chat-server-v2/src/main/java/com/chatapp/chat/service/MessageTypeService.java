@@ -19,4 +19,6 @@ public interface MessageTypeService {
 
     public MessageType getMessageTypeEntityByName(String messageTypeName);
 
+    public MessageTypeDTO getMessageTypeByName(String messageTypeName);
+
 }

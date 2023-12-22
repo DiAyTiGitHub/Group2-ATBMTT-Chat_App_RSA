@@ -9,7 +9,7 @@ class AccountStore {
     makeAutoObservable(this);
   }
 
-  allFriends = async () => {
+  getAllFriends = async () => {
     try {
       const { data } = await getAllFriend();
       this.friendList = data;
@@ -46,6 +46,8 @@ class AccountStore {
   }
 
   getAvatarSrc = async (avatarUrl: string) => {
+    if (!avatarUrl) return;
+    
     try {
       const response = await getAvatarURL(avatarUrl);
 

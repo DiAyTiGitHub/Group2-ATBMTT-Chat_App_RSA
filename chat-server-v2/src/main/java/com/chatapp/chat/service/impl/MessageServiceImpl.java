@@ -42,12 +42,16 @@ public class MessageServiceImpl implements MessageService {
         if (roomEntity == null) return null;
         User currentUser = userService.getCurrentLoginUserEntity();
         if (currentUser == null) return null;
-        MessageType messageType = messageTypeService.getMessageTypeEntityByName("chat");
-        if (messageType == null) setupDataService.setupData();
-        messageType = messageTypeService.getMessageTypeEntityByName("chat");
-        if (messageType == null) return null;
+
+        MessageType messageType = null;
         if (dto.getMessageType() != null)
             messageType = messageTypeService.getMessageTypeEntityByName(dto.getMessageType().getName());
+        else {
+            messageType = messageTypeService.getMessageTypeEntityByName("chat");
+            if (messageType == null) setupDataService.setupData();
+            messageType = messageTypeService.getMessageTypeEntityByName("chat");
+            if (messageType == null) return null;
+        }
 
         Message messageEntity = new Message();
         messageEntity.setMessageType(messageType);

@@ -16,15 +16,6 @@ function MessageList(props: any) {
   const { chatStore } = useStore();
   const { chosenRoom } = chatStore;
   const MY_USER_ID = LocalStorage.getLoginUser()?.username;
-  // const [messages, setMessages] = useState([]);
-
-  // useEffect(() => {
-  //   getMessages();
-  // }, [])
-
-  // const getMessages = () => {
-  //   setMessages([...messages, ...chosenRoom.messages])
-  // }
 
   const scrollToBottom = () => {
     if (ref.current) {

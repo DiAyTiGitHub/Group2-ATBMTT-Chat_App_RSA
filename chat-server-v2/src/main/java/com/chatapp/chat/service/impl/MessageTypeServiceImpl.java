@@ -75,4 +75,9 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     public MessageType getMessageTypeEntityByName(String messageTypeName) {
         return messageTypeRepository.findByName(messageTypeName);
     }
+
+    @Override
+    public MessageTypeDTO getMessageTypeByName(String messageTypeName) {
+        return new MessageTypeDTO(getMessageTypeEntityByName(messageTypeName));
+    }
 }
