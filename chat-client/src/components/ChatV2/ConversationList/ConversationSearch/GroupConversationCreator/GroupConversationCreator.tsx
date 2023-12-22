@@ -12,6 +12,7 @@ function GroupConversationCreator(props: any) {
 
     const { friendsStore, chatStore } = useStore();
     const { allFriends, currentFriends } = friendsStore;
+    const { createGroupChat } = chatStore;
 
     useEffect(function () {
         allFriends();
@@ -33,6 +34,7 @@ function GroupConversationCreator(props: any) {
             return;
         }
         console.log("checking send data...", sendData);
+        createGroupChat(sendData);
 
     }
 

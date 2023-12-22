@@ -33,6 +33,7 @@ public class UserRoomServiceImpl implements UserRoomService {
         entity.setUser(user);
         entity.setRoom(room);
         entity.setRole("Member");
+        if (!dto.getRole().trim().equals("")) entity.setRole(dto.getRole());
         entity.setNickName(user.getUsername());
 
         UserRoom responseEntity = userRoomRepository.save(entity);

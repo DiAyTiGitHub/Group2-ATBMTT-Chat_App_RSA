@@ -145,10 +145,14 @@ class ChatStore {
       }
       this.joinedRooms[0] = temp;
       this.joinedRooms = [...this.joinedRooms];
+      console.log("catched 1");
     } else {
       const newRoom = payloadData.room;
       this.joinedRooms.unshift(newRoom);
       this.joinedRooms = [...this.joinedRooms];
+      console.log("catched 2: new room must be catched");
+      console.log("newRoom", newRoom);
+      console.log("this.joinedRooms", this.joinedRooms);
     }
   };
 

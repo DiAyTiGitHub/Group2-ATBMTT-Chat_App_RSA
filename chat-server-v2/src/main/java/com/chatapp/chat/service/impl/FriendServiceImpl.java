@@ -126,7 +126,9 @@ public class FriendServiceImpl implements FriendService {
             //notify receiver that they have received an add friend request
             MessageDTO notification = new MessageDTO();
             notification.setUser(new UserDTO(relationship.getRequestSender()));
-            notification.setRoom(new RoomDTO(room));
+            RoomDTO roomInMessage = new RoomDTO(room);
+            roomInMessage.setParticipants(roomService.getAllJoinedUsersByRoomId(roomInMessage.getId()));
+            notification.setRoom(roomInMessage);
             notification.setMessageType(new MessageTypeDTO(messageTypeService.getMessageTypeEntityByName("notification")));
             notification.setContent(currentUser.getUsername() + " accepted your add friend request!");
             notification = messageService.handlerForNotification(notification);

@@ -56,6 +56,9 @@ public class RoomServiceImpl implements RoomService {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    @Autowired
+    private RoomService roomService;
+
     @Override
     public Set<UserDTO> getAllJoinedUsersByRoomId(UUID roomId) {
         Room entity = roomRepository.findById(roomId).orElse(null);
@@ -268,25 +271,9 @@ public class RoomServiceImpl implements RoomService {
         UserRoomDTO creatorURDto = new UserRoomDTO();
         creatorURDto.setRoom(new RoomDTO(roomChat));
         creatorURDto.setUser(new UserDTO(currentUser));
+        creatorURDto.setRole("Admin");
         UserRoom creatorUserRoom = userRoomService.createUserRoomEntity(creatorURDto);
-        creatorUserRoom.setRole("Creator");
-        userRoomRepository.save(creatorUserRoom);
-
         userRooms.add(creatorUserRoom);
-
-        MessageTypeDTO messageTypeDTO = messageTypeService.getMessageTypeByName("join");
-        if (messageTypeDTO == null) setupDataService.setupData();
-        messageTypeDTO = messageTypeService.getMessageTypeByName("join");
-        if(messageTypeDTO == null) return null;
-
-        //send message that creator had created this conversation
-        MessageDTO creatorMessageDto = new MessageDTO();
-        creatorMessageDto.setMessageType(messageTypeDTO);
-        creatorMessageDto.setRoom(new RoomDTO(roomChat));
-        creatorMessageDto.setUser(new UserDTO(currentUser));
-        creatorMessageDto.setContent(currentUser.getUsername() + " created this conversation");
-        MessageDTO creatorMessageRes = messageService.createMessage(creatorMessageDto);
-        simpMessagingTemplate.convertAndSendToUser(currentUser.getId().toString(), "/privateMessage", creatorMessageRes);
 
         for (User user : joiningUsers) {
             UserRoomDTO urDto = new UserRoomDTO();
@@ -294,28 +281,51 @@ public class RoomServiceImpl implements RoomService {
             urDto.setUser(new UserDTO(user));
             UserRoom userRoom = userRoomService.createUserRoomEntity(urDto);
             userRooms.add(userRoom);
-
-            //send message each user had joined this conversation
-            MessageDTO messageDto = new MessageDTO();
-            messageDto.setMessageType(messageTypeDTO);
-            messageDto.setRoom(new RoomDTO(roomChat));
-            messageDto.setUser(new UserDTO(user));
-            messageDto.setContent(user.getUsername() + " joined");
-            MessageDTO messageRes = messageService.createMessage(messageDto);
-            simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", messageRes);
         }
 
-        roomChat.setName("Unname conversation");
+        roomChat.setName("You and other " + joinUserIds.length + " people");
         if (newGroupChat.getName() != null)
             roomChat.setName(newGroupChat.getName());
 
         roomChat.setUserRooms(userRooms);
         RoomType roomType = roomTypeService.getRoomTypeEntityByName("group");
         roomChat.setRoomType(roomType);
+
+        //chatRoom is finally created done in database
         Room response = roomRepository.save(roomChat);
         if (response == null)
             return null;
-        return new RoomDTO(response);
+
+        MessageTypeDTO messageTypeDTO = messageTypeService.getMessageTypeByName("join");
+        if (messageTypeDTO == null) setupDataService.setupData();
+        messageTypeDTO = messageTypeService.getMessageTypeByName("join");
+        if (messageTypeDTO == null) return null;
+
+        RoomDTO responseDto = new RoomDTO(response);
+        responseDto.setParticipants(roomService.getAllJoinedUsersByRoomId(responseDto.getId()));
+
+        //send message that creator had created this conversation
+        MessageDTO creatorMessageDto = new MessageDTO();
+        creatorMessageDto.setMessageType(messageTypeDTO);
+        creatorMessageDto.setRoom(responseDto);
+        creatorMessageDto.setUser(new UserDTO(currentUser));
+        creatorMessageDto.setContent(currentUser.getUsername() + " created this conversation");
+        MessageDTO creatorMessageRes = messageService.createMessage(creatorMessageDto);
+        simpMessagingTemplate.convertAndSendToUser(currentUser.getId().toString(), "/privateMessage", creatorMessageRes);
+
+        for (User user : joiningUsers) {
+            if (currentUser.getId().equals(user.getId())) continue;
+            //send message each user had joined this conversation
+            MessageDTO messageDto = new MessageDTO();
+            messageDto.setMessageType(messageTypeDTO);
+            messageDto.setRoom(responseDto);
+            messageDto.setUser(new UserDTO(user));
+            messageDto.setContent(user.getUsername() + " joined");
+            MessageDTO messageRes = messageService.createMessage(messageDto);
+            simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", messageRes);
+        }
+
+        return responseDto;
     }
 
     @Override
