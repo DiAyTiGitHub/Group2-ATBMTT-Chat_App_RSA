@@ -1,8 +1,13 @@
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useState } from 'react';
+import PersonIcon from '@mui/icons-material/Person';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import Tooltip from '@mui/material/Tooltip';
 import { useStore } from 'src/stores';
 import LocalStorage from 'src/common/LocalStorage';
 import { useNavigate } from 'react-router';
+import { IconButton } from '@mui/material';
 
 function UserItem({ userInfo }: any) {
     const navigate = useNavigate();
@@ -87,6 +92,26 @@ function UserItem({ userInfo }: any) {
         }
     }
 
+    function renderButton() {
+        if (friendstatus == "Chấp nhận kết bạn") {
+            return  <IconButton>
+                        <PersonAddAlt1Icon fontSize='large'></PersonAddAlt1Icon>
+                    </IconButton>
+                   
+                    
+        }
+        else if (friendstatus == "Hủy gửi kết bạn" || friendstatus == "Hủy kết bạn") {
+            return  <IconButton>
+                        <PersonRemoveIcon fontSize='large'></PersonRemoveIcon>
+                    </IconButton>
+        }
+        else if (friendstatus == "Kết bạn") {
+            return  <IconButton>
+                        <PersonAddAlt1Icon fontSize='large'></PersonAddAlt1Icon>
+                    </IconButton>
+        }    
+    }
+
     return (
         <div className="appCard flex w-100 br-10  userItem over-hidden">
             <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="user image"
@@ -104,21 +129,13 @@ function UserItem({ userInfo }: any) {
             <div className="userItemAction flex-center flex-column p-3">
                 {
                     LocalStorage.getLoginUser()?.id == userInfo?.id ? (
-                        <button className='pointer br-10' onClick={function () {
+                        <IconButton onClick={function () {
                             navigate("/account");
-                        }} type='button'>
-                            <h6 className='p-0 m-0'>
-                                Xem thông tin cá nhân
-                            </h6>
-                        </button>
+                        }}>
+                            <PersonIcon fontSize='large'></PersonIcon>
+                        </IconButton>
                     ) : (
-                        <button className='pointer br-10' onClick={handleClickButton} type='button'>
-                            <h6 className='p-0 m-0'>
-                                {
-                                    friendstatus
-                                }
-                            </h6>
-                        </button>
+                        <div>{renderButton()}</div>
                     )
                 }
 
