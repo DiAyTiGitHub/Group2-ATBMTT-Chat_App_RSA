@@ -34,7 +34,11 @@ function GroupConversationCreator(props: any) {
             return;
         }
         console.log("checking send data...", sendData);
-        createGroupChat(sendData);
+        createGroupChat(sendData)
+            .then(function (data) {
+                toast.success("Create group chat " + data.name + " successfully");
+                handleClose();
+            });
 
     }
 

@@ -19,7 +19,7 @@ function InfoList() {
 
     function renderRoomName() {
         if (!chosenRoom) return "No info";
-        if (!chosenRoom?.name || chosenRoom?.name.length === 0 || chosenRoom.trim() === '') {
+        if (!chosenRoom?.name || chosenRoom?.name.length === 0 || chosenRoom?.name.trim() === '') {
             const currentUser = LocalStorage.getLoginUser();
             for (let i = 0; i < chosenRoom.participants.length; i++) {
                 const participant = chosenRoom.participants[i];

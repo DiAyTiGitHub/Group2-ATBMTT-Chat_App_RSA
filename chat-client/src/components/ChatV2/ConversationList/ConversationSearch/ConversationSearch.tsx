@@ -46,12 +46,14 @@ function ConversationSearch() {
         <GroupAddIcon />
       </IconButton>
 
-      <GroupConversationCreator
-        open={openChooseMember}
-        handleClose={function () {
-          setOpenChooseMember(false);
-        }}
-      />
+      {openChooseMember && (
+        <GroupConversationCreator
+          open={openChooseMember}
+          handleClose={function () {
+            setOpenChooseMember(false);
+          }}
+        />
+      )}
 
     </div>
   );

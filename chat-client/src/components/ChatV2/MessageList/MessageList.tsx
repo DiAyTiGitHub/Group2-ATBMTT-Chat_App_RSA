@@ -25,7 +25,7 @@ function MessageList(props: any) {
   };
 
   const renderMessages = () => {
-    const messages = chosenRoom.messages;
+    const messages = chosenRoom?.messages|| [];
     let i = 0;
     let messageCount = messages.length;
     let tempArray = [];
@@ -46,7 +46,7 @@ function MessageList(props: any) {
       if (next && next.user.username !== current.user.username) {
         endsSequence = true
       }
-      
+
       tempArray.push(
         <Message
           key={i}
@@ -72,7 +72,7 @@ function MessageList(props: any) {
       {!chosenRoom ? <div className="no-message"> No conversation was chosen</div>
         : <div className="message-list-container" ref={ref}>
           {
-            renderMessages() 
+            renderMessages()
           }
         </div>
       }

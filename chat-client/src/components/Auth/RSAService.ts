@@ -2,15 +2,7 @@ class RSAService {
   constructor() {
     this.generate();
   }
-  //hàm tính modulo theo lũy thừa
-  // static mod = (a, b, n) => {
-  //     if (n === 1) return 0;
-  //     let result = 1;
-  //     for (let i = 0; i < b; i++) {
-  //         result = (result * a) % n;
-  //     }
-  //     return result;
-  // };
+
   static mod = (a, b, m) => {
     let result = 1;
     a = a % m;
@@ -25,6 +17,7 @@ class RSAService {
 
     return result;
   }
+
   // tinh nghịch đảo a mod m
   modInverse = (a, m) => {
     let m0 = m;
@@ -54,25 +47,20 @@ class RSAService {
     if (n <= 3) {
       return true;
     }
-
     let d = n - 1;
     while (d % 2 === 0) {
       d = Math.floor(d / 2);
     }
-
     for (let i = 0; i < k; i++) {
       let a = 2 + Math.floor(Math.random() * (n - 4));
       let x = RSAService.mod(a, d, n);
-
       if (x === 1 || x === n - 1) {
         continue;
       }
-
       let isProbablePrime = false;
       while (d !== n - 1) {
         x = (x * x) % n;
         d *= 2;
-
         if (x === 1) {
           return false;
         }
@@ -81,14 +69,13 @@ class RSAService {
           break;
         }
       }
-
       if (!isProbablePrime) {
         return false;
       }
     }
-
     return true;
   }
+
   //random số nguyên tố bất kì
   getRandomPrime = () => {
     let prime, k = 10000007;
@@ -97,10 +84,12 @@ class RSAService {
     } while (!this.isPrime(prime, k));
     return prime;
   };
+
   //tìm ước chung lớn nhất
   gcd = (a, b) => {
     return b === 0 ? a : this.gcd(b, a % b);
   };
+
   // tìm số nguyên tố sấp xỉ với num
   getCoPrime = (num) => {
     let coPrime, k = 10000007;
@@ -112,7 +101,8 @@ class RSAService {
     );
     return coPrime;
   };
-  // Hiện ra màn hình p,q,n,e,d
+
+  //generate public key and private key once successfully login
   generate = async () => {
     try {
       let p = this.getRandomPrime();
@@ -125,6 +115,7 @@ class RSAService {
 
       let d = this.modInverse(e, phi);
 
+      // Hiện ra màn hình p,q,n,e,d
       console.log("p:", p, "\nq:", q, "\nn:", n, "\ne:", e, "\nd:", d);
       this.publicKey = {
         n: n,

@@ -128,9 +128,14 @@ public class UserServiceImpl implements UserService {
         Set<UserRoom> userRooms = currentUser.getUserRooms();
         if (userRooms == null) return null;
         List<RoomDTO> rooms = new ArrayList<>();
+        Set<UUID> roomIdSet = new HashSet<>();
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
+
+            if (roomIdSet.contains(room.getId())) continue;
+            roomIdSet.add(room.getId());
+
             RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
             List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
 
@@ -176,9 +181,14 @@ public class UserServiceImpl implements UserService {
         Set<UserRoom> userRooms = currentUser.getUserRooms();
         if (userRooms == null) return null;
         List<RoomDTO> rooms = new ArrayList<>();
+        Set<UUID> roomIdSet = new HashSet<>();
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
+
+            if (roomIdSet.contains(room.getId())) continue;
+            roomIdSet.add(room.getId());
+
             if (room.getRoomType().getName().trim().toLowerCase().equals("private")) {
                 RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
                 List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());
@@ -210,9 +220,14 @@ public class UserServiceImpl implements UserService {
         Set<UserRoom> userRooms = currentUser.getUserRooms();
         if (userRooms == null) return null;
         List<RoomDTO> rooms = new ArrayList<>();
+        Set<UUID> roomIdSet = new HashSet<>();
 
         for (UserRoom userRoom : userRooms) {
             Room room = userRoom.getRoom();
+
+            if (roomIdSet.contains(room.getId())) continue;
+            roomIdSet.add(room.getId());
+
             if (room.getRoomType().getName().trim().toLowerCase().equals("public")) {
                 RoomDTO roomDto = roomService.handleAddJoinedUserIntoRoomDTO(room);
                 List<MessageDTO> messages = messageService.get20LatestMessagesByRoomId(roomDto.getId());

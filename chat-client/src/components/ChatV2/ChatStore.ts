@@ -128,6 +128,7 @@ class ChatStore {
     for (let i = 0; i < this.joinedRooms.length; i++) {
       const currentRoom = this.joinedRooms[i];
       if (currentRoom.id === roomId) {
+        if (!currentRoom.messages) currentRoom.messages = [];
         currentRoom.messages.push(payloadData);
         this.joinedRooms[i] = { ...currentRoom };
         isExisted = i;
@@ -148,6 +149,11 @@ class ChatStore {
       console.log("catched 1");
     } else {
       const newRoom = payloadData.room;
+      const firstMessage = {
+        ...payloadData,
+        room: null
+      };
+      newRoom.messages = [firstMessage];
       this.joinedRooms.unshift(newRoom);
       this.joinedRooms = [...this.joinedRooms];
       console.log("catched 2: new room must be catched");
@@ -221,7 +227,6 @@ class ChatStore {
 
       const { data } = await createGroupChat(room);
       console.log("new group chat: ", data);
-      toast.success("Create group chat " + data.name + " successfully");
       return data;
     } catch (err) {
       console.log(err);

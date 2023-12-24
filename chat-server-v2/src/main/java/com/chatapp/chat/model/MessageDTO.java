@@ -30,6 +30,18 @@ public class MessageDTO implements Comparator<MessageDTO> {
             this.messageType = new MessageTypeDTO(entity.getMessageType());
     }
 
+    public MessageDTO(MessageDTO dto) {
+        this.id = dto.getId();
+        this.content = dto.getContent();
+        this.sendDate = dto.getSendDate();
+//        if (dto.getRoom() != null)
+//            this.room = dto.getRoom();
+        if (dto.getUser() != null)
+            this.user = dto.getUser();
+        if (dto.getMessageType() != null)
+            this.messageType = dto.getMessageType();
+    }
+
     public UUID getId() {
         return id;
     }

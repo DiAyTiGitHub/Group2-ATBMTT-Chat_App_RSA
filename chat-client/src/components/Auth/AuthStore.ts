@@ -21,6 +21,7 @@ class AuthStore {
         try {
             const { data } = await authenticateUser(user);
             this.setSession(data?.token);
+            toast.dismiss();
             toast.success("Login successfully!");
             toast.info("Generating keys for upcoming conversations, please wait...");
             const { data: userData } = await getCurrentLoginUser();

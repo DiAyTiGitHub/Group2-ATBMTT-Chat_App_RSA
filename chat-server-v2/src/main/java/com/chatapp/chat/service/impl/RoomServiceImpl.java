@@ -304,6 +304,8 @@ public class RoomServiceImpl implements RoomService {
         RoomDTO responseDto = new RoomDTO(response);
         responseDto.setParticipants(roomService.getAllJoinedUsersByRoomId(responseDto.getId()));
 
+        List<MessageDTO> spreadMessages = new ArrayList<>();
+
         //send message that creator had created this conversation
         MessageDTO creatorMessageDto = new MessageDTO();
         creatorMessageDto.setMessageType(messageTypeDTO);
@@ -311,7 +313,8 @@ public class RoomServiceImpl implements RoomService {
         creatorMessageDto.setUser(new UserDTO(currentUser));
         creatorMessageDto.setContent(currentUser.getUsername() + " created this conversation");
         MessageDTO creatorMessageRes = messageService.createMessage(creatorMessageDto);
-        simpMessagingTemplate.convertAndSendToUser(currentUser.getId().toString(), "/privateMessage", creatorMessageRes);
+//        simpMessagingTemplate.convertAndSendToUser(currentUser.getId().toString(), "/privateMessage", creatorMessageRes);
+        spreadMessages.add(creatorMessageRes);
 
         for (User user : joiningUsers) {
             if (currentUser.getId().equals(user.getId())) continue;
@@ -322,7 +325,13 @@ public class RoomServiceImpl implements RoomService {
             messageDto.setUser(new UserDTO(user));
             messageDto.setContent(user.getUsername() + " joined");
             MessageDTO messageRes = messageService.createMessage(messageDto);
-            simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", messageRes);
+//            simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", messageRes);
+            spreadMessages.add(messageRes);
+        }
+
+        responseDto.setMessages(spreadMessages);
+        for (MessageDTO messageDTO : spreadMessages) {
+            simpMessagingTemplate.convertAndSendToUser(messageDTO.getUser().getId().toString(), "/privateMessage", messageDTO);
         }
 
         return responseDto;

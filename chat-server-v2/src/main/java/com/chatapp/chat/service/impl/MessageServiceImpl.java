@@ -157,8 +157,12 @@ public class MessageServiceImpl implements MessageService {
 
         Set<UserRoom> userRooms = roomEntity.getUserRooms();
         List<User> users = new ArrayList<>();
+        Set<UUID> userIdSet = new HashSet<>();
         for (UserRoom ur : userRooms) {
-            users.add(ur.getUser());
+            User loopingUser = ur.getUser();
+            if (userIdSet.contains(loopingUser.getId())) continue;
+            users.add(loopingUser);
+            userIdSet.add(loopingUser.getId());
         }
 
         String intactContent = resDto.getContent();
@@ -197,6 +201,13 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public String encryptMessage(String character, RSAKeyDTO publicKeyDto) {
+        BigInteger e = publicKeyDto.getE();
+        BigInteger n = publicKeyDto.getN();
+        return (new BigInteger(character.getBytes())).modPow(e, n).toString();
+    }
+
+    @Override
     public String decryptMessage(String character, RSAKeyDTO privateKeyDto) {
         BigInteger n = privateKeyDto.getN();
         BigInteger d = privateKeyDto.getD();
@@ -219,10 +230,5 @@ public class MessageServiceImpl implements MessageService {
         }
     }
 
-    @Override
-    public String encryptMessage(String character, RSAKeyDTO publicKeyDto) {
-        BigInteger e = publicKeyDto.getE();
-        BigInteger n = publicKeyDto.getN();
-        return (new BigInteger(character.getBytes())).modPow(e, n).toString();
-    }
+
 }
