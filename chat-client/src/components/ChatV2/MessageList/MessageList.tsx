@@ -25,7 +25,7 @@ function MessageList(props: any) {
   };
 
   const renderMessages = () => {
-    const messages = chosenRoom?.messages|| [];
+    const messages = chosenRoom?.messages || [];
     let i = 0;
     let messageCount = messages.length;
     let tempArray = [];
@@ -69,12 +69,19 @@ function MessageList(props: any) {
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
-      {!chosenRoom ? <div className="no-message"> No conversation was chosen</div>
-        : <div className="message-list-container" ref={ref}>
-          {
-            renderMessages()
-          }
+      {!chosenRoom ? (
+        <div className="message-list-container" ref={ref}>
+          <div className="no-message"> No conversation was chosen</div>
         </div>
+      )
+        :
+        (
+          <div className="message-list-container" ref={ref}>
+            {
+              renderMessages()
+            }
+          </div>
+        )
       }
       <Compose></Compose>
     </div>

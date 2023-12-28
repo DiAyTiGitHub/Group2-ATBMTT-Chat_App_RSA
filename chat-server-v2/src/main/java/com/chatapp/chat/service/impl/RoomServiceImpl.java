@@ -332,7 +332,9 @@ public class RoomServiceImpl implements RoomService {
 
         responseDto.setMessages(spreadMessages);
         for (MessageDTO messageDTO : spreadMessages) {
-            simpMessagingTemplate.convertAndSendToUser(messageDTO.getUser().getId().toString(), "/privateMessage", messageDTO);
+            for (User userIn : joiningUsers) {
+                simpMessagingTemplate.convertAndSendToUser(userIn.getId().toString(), "/privateMessage", messageDTO);
+            }
         }
 
         return responseDto;
