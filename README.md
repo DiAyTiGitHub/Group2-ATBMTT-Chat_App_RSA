@@ -69,6 +69,7 @@ Dự án ChatApp sử dụng thuật toán RSA (Rivest-Shamir-Adleman) nhằm đ
 - install Spring Boot Extension Pack
 ![App Screenshot](https://scontent.xx.fbcdn.net/v/t1.15752-9/411243520_684358733850676_1653977239017351040_n.png?stp=dst-png_p206x206&_nc_cat=102&ccb=1-7&_nc_sid=510075&_nc_eui2=AeHTeqlPsfcL8brlaC79YcBnpa2uGo0nUTylra4ajSdRPMWbsNd85lvxCkrt5WC_WZ7OXI5M7aIgzzZO9skq4nNK&_nc_ohc=4YYq0C_35AUAX-FtXeP&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdTInt7yvtMUnreZH8Fx2lfBNEXlAdOJH_GLxDf1HULRIg&oe=65B5673C)
 - run file ChatApplication.java
+
 ![App Screenshot](https://scontent.xx.fbcdn.net/v/t1.15752-9/409345078_309550291428690_4364899141002120406_n.png?stp=dst-png_s526x296&_nc_cat=101&ccb=1-7&_nc_sid=510075&_nc_eui2=AeGX2tcQcshQmzb_BPt3aq3D-EAnDLUpQAX4QCcMtSlABdrdavgTt40OwWQ6lyOxwEGLXeB5TeNqQsIUiArK2HSU&_nc_ohc=alOnJhoarr8AX-f-A_A&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdSeHFcOJzAjzK4rbsK9DsbwcFq15SlHv1-JdaBzGSwMSQ&oe=65B55E99)
 ## Báo Cáo Lỗi
 
