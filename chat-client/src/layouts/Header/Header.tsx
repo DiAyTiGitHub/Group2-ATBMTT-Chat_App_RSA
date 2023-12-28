@@ -9,6 +9,7 @@ import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
 import LocalStorage from 'src/common/LocalStorage';
+import { observer } from 'mobx-react';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Account', 'Friends', , 'Logout'];
@@ -102,4 +103,4 @@ function Header() {
   );
 }
 
-export default memo(Header);
+export default memo(observer(Header));

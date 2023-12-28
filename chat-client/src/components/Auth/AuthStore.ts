@@ -17,6 +17,10 @@ class AuthStore {
         makeAutoObservable(this);
     }
 
+    setCurrentLoginUser = (currentLoginUser: any) => {
+        this.currentLoginUser = { ...currentLoginUser };
+    }
+
     authenticateUser = async (user: any) => {
         try {
             const { data } = await authenticateUser(user);
