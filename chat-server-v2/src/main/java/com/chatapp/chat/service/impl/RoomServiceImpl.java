@@ -276,6 +276,7 @@ public class RoomServiceImpl implements RoomService {
         userRooms.add(creatorUserRoom);
 
         for (User user : joiningUsers) {
+            if (user.getId().equals(currentUser.getId())) continue;
             UserRoomDTO urDto = new UserRoomDTO();
             urDto.setRoom(new RoomDTO(roomChat));
             urDto.setUser(new UserDTO(user));
@@ -284,7 +285,7 @@ public class RoomServiceImpl implements RoomService {
         }
 
         roomChat.setName("You and other " + joinUserIds.length + " people");
-        if (newGroupChat.getName() != null)
+        if (newGroupChat.getName() != null && newGroupChat.getName().length() > 0)
             roomChat.setName(newGroupChat.getName());
 
         roomChat.setUserRooms(userRooms);
@@ -312,7 +313,7 @@ public class RoomServiceImpl implements RoomService {
         creatorMessageDto.setRoom(responseDto);
         creatorMessageDto.setUser(new UserDTO(currentUser));
         creatorMessageDto.setContent(currentUser.getUsername() + " created this conversation");
-        MessageDTO creatorMessageRes = messageService.createMessage(creatorMessageDto);
+        MessageDTO creatorMessageRes = messageService.createMessageAttachedUser(creatorMessageDto);
 //        simpMessagingTemplate.convertAndSendToUser(currentUser.getId().toString(), "/privateMessage", creatorMessageRes);
         spreadMessages.add(creatorMessageRes);
 
@@ -324,14 +325,16 @@ public class RoomServiceImpl implements RoomService {
             messageDto.setRoom(responseDto);
             messageDto.setUser(new UserDTO(user));
             messageDto.setContent(user.getUsername() + " joined");
-            MessageDTO messageRes = messageService.createMessage(messageDto);
+            MessageDTO messageRes = messageService.createMessageAttachedUser(messageDto);
 //            simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", messageRes);
             spreadMessages.add(messageRes);
         }
 
         responseDto.setMessages(spreadMessages);
         for (MessageDTO messageDTO : spreadMessages) {
-            simpMessagingTemplate.convertAndSendToUser(messageDTO.getUser().getId().toString(), "/privateMessage", messageDTO);
+            for (User userIn : joiningUsers) {
+                simpMessagingTemplate.convertAndSendToUser(userIn.getId().toString(), "/privateMessage", messageDTO);
+            }
         }
 
         return responseDto;

@@ -18,6 +18,7 @@ function ChatIndex() {
     const {
         registerUser,
         getAllJoinedRooms,
+        setIsLoading
     } = chatStore;
 
     const navigate = useNavigate();
@@ -28,8 +29,12 @@ function ChatIndex() {
             navigate("/");
         }
         else {
+            setIsLoading(true);
             registerUser();
-            getAllJoinedRooms();
+            getAllJoinedRooms()
+                .finally(function () {
+                    setIsLoading(false);
+                })
         }
     }, []);
 

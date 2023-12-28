@@ -8,6 +8,13 @@ import { searchJoinedRooms, createGroupChat } from "src/services/RoomService";
 import RSAService from "../Auth/RSAService";
 
 class ChatStore {
+  isLoading = true;
+
+  setIsLoading = (state: boolean) => {
+    if (this.isLoading != state)
+      this.isLoading = state;
+  }
+
   stompClient = null;
 
   setStompClient = (stompClient: any) => {

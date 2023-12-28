@@ -33,6 +33,7 @@ function LoginPage({ handleChangeTab, navigate }: any) {
                 navigate("/chat-v2");
                 toast.dismiss();
                 toast.success("Successfully generating keys for conversations!");
+                toast.info("Decrypting old messages in conversations!");
             })
             .catch(function (error) {
                 console.error(error);

@@ -35,12 +35,41 @@ public class MessageServiceImpl implements MessageService {
     private RoomService roomService;
 
     @Override
-
     public MessageDTO createMessage(MessageDTO dto) {
         if (dto == null) return null;
         Room roomEntity = roomRepository.findById(dto.getRoom().getId()).orElse(null);
         if (roomEntity == null) return null;
         User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+
+        MessageType messageType = null;
+        if (dto.getMessageType() != null)
+            messageType = messageTypeService.getMessageTypeEntityByName(dto.getMessageType().getName());
+        else {
+            messageType = messageTypeService.getMessageTypeEntityByName("chat");
+            if (messageType == null) setupDataService.setupData();
+            messageType = messageTypeService.getMessageTypeEntityByName("chat");
+            if (messageType == null) return null;
+        }
+
+        Message messageEntity = new Message();
+        messageEntity.setMessageType(messageType);
+        messageEntity.setContent(dto.getContent());
+        messageEntity.setRoom(roomEntity);
+        messageEntity.setUser(currentUser);
+        messageEntity.setSendDate(new Date());
+
+        return new MessageDTO(messageRepository.saveAndFlush(messageEntity));
+    }
+
+    @Override
+    public MessageDTO createMessageAttachedUser(MessageDTO dto) {
+        if (dto == null) return null;
+        if (dto.getRoom() == null) return null;
+        Room roomEntity = roomRepository.findById(dto.getRoom().getId()).orElse(null);
+        if (roomEntity == null) return null;
+        if (dto.getUser() == null) return null;
+        User currentUser = userService.getUserEntityById(dto.getUser().getId());
         if (currentUser == null) return null;
 
         MessageType messageType = null;

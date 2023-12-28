@@ -17,7 +17,7 @@ function ChooseUserItem(props: any) {
                 setImagePath(data);
             })
         }
-    });
+    }, []);
 
     function handleChangeJoinUserIds() {
         const currentUserId = user.id;

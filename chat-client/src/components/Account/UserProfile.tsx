@@ -23,13 +23,17 @@ import { Field, Form, Formik } from "formik";
 const UserProfile: React.FC = ({ }: any) => {
     const { accountStore, authStore } = useStore();
     const { uploadUserAvatar, getAvatarSrc } = accountStore;
-    const { currentLoginUser } = authStore;
+    const { currentLoginUser, setCurrentLoginUser } = authStore;
 
     async function handleChangeImage(event: any) {
         if (event.target.files && event.target.files[0]) {
             let img = event.target.files[0];
             const imageSrc = await uploadUserAvatar(img);
             setImagePath(imageSrc);
+            setCurrentLoginUser({
+                ...currentLoginUser,
+                avatar: imageSrc
+            });
         }
     }
 
