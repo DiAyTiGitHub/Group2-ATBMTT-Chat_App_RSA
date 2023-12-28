@@ -6,10 +6,15 @@ import Toolbar from '../Toolbar/Toolbar';
 import './ConversationList.css';
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
+import ConversationListItemLoadingSkeleton from './ConversationListItem/ConversationListItemLoadingSkeleton';
 
 function ConversationList() {
   const { chatStore } = useStore();
-  const { joinedRooms } = chatStore;
+  const {
+    joinedRooms,
+    isLoading,
+    setIsLoading
+  } = chatStore;
 
   return (
     <div className="conversation-list flex-column">
@@ -27,10 +32,23 @@ function ConversationList() {
         })
       }
       {
-        !joinedRooms || (joinedRooms.length === 0) && (
+        ((!joinedRooms || (joinedRooms.length === 0)) && !isLoading) && (
           <div className="no-conversation">
             <p>You don't have any conversation, lets add friends and start chatting!</p>
           </div>
+        )
+      }
+      {
+        isLoading && (
+          <>
+            {
+              [1, 2, 3, 4, 5, 6, 7].map(function (_, index) {
+                return (
+                  <ConversationListItemLoadingSkeleton key={index} />
+                );
+              })
+            }
+          </>
         )
       }
     </div>

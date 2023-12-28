@@ -1,5 +1,6 @@
 package com.chatapp.chat.service;
 
+import com.chatapp.chat.model.Message;
 import com.chatapp.chat.model.MessageDTO;
 import com.chatapp.chat.model.RSAKeyDTO;
 
@@ -10,6 +11,8 @@ import java.util.UUID;
 
 public interface MessageService {
     public MessageDTO createMessage(MessageDTO dto);
+
+    public MessageDTO createMessageAttachedUser(MessageDTO dto);
 
     public List<MessageDTO> findTop10PreviousByMileStone(MessageDTO mileStone);
 
