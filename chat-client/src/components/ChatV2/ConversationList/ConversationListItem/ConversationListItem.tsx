@@ -8,7 +8,7 @@ import RSAService from 'src/components/Auth/RSAService';
 
 function ConversationListItem(props: any) {
   const { authStore, chatStore } = useStore();
-  const { setChosenRoom } = chatStore;
+  const { setChosenRoom, chosenRoom } = chatStore;
 
   const { id, avatar, name, code, participants, messages } = props.room;
   function renderConversationName() {
@@ -59,7 +59,7 @@ function ConversationListItem(props: any) {
   }
 
   return (
-    <div className="conversation-list-item" onClick={handleChooseConversation}>
+    <div className={`conversation-list-item ${chosenRoom?.id === id && " conversation-list-item--chosen"}`} onClick={handleChooseConversation}>
       <img className="conversation-photo" src={renderAvatar()} alt="" />
       <div className="conversation-info">
         <h1 className="conversation-title">{renderConversationName()}</h1>

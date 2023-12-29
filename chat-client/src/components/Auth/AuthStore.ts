@@ -52,6 +52,16 @@ class AuthStore {
     }
 
     stompClient = null;
+
+    setStompClient = (sc: any) => {
+        this.stompClient = sc;
+    }
+
+    disconnectStompClient = () => {
+        if (this.stompClient)
+            this.stompClient.disconnect();
+    }
+
     connectToSocket = async () => {
         let Sock = new SockJS('http://localhost:8000/ws');
         this.stompClient = over(Sock);
@@ -67,7 +77,7 @@ class AuthStore {
         const payloadData = JSON.parse(payload.body);
         const senderName = payloadData?.user?.username;
         const currentPage = window.location.pathname;
-        if (currentPage === "/chat-v2") return;
+        if (currentPage === "/chat") return;
         toast.info(senderName + " sended you a message!");
     }
 

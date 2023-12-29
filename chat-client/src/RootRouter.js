@@ -17,7 +17,7 @@ const routes = [
         element: <AuthIndex />
     },
     {
-        path: '/chat-v2',
+        path: '/chat',
         element: <ChatV2Index />
     },
 ];

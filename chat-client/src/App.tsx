@@ -1,7 +1,7 @@
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom';
-import MainApp from './MainApp';
+import MainApp from './layouts/MainApp';
 import './common/CommonStyles.scss';
 import './common/_reboot.scss';
 

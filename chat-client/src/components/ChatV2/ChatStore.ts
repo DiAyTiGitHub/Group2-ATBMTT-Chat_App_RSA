@@ -41,15 +41,15 @@ class ChatStore {
     }
     catch (error) {
       console.log("Error" + error.message);
+      toast.error('RSA encryption error!')
     }
   };
 
   rsaDecrypt = (messageContent: string, type: string, privateKey: any) => {
     let plaintext = "";
     const { n, d } = privateKey;
-    console.log("n:" + n + "\nd:" + d);
 
-    console.log("Chuoi can gia ma la: " + messageContent);
+    console.log("Chuỗi cần giải mã là: " + messageContent);
 
     if (type == "chat") {
       try {
@@ -59,14 +59,15 @@ class ChatStore {
           // Use mang.length instead of charCode.length
           let decryptedCharCode = RSAService.mod(mang[i], d, n);
           plaintext += String.fromCharCode(decryptedCharCode);
-          console.log("running, we are decoding message!");
+          console.log("Running, we are decoding message!");
         }
 
-        console.log("Chuoi giai ma la: " + plaintext);
+        console.log("Chuỗi đã được giải mã là: " + plaintext);
 
         return plaintext;
       } catch (error) {
-        console.log("loi :" + error.message);
+        console.log("Error :" + error.message);
+        toast.error('RSA decryption error!')
       }
     }
 
@@ -108,6 +109,14 @@ class ChatStore {
     if (this.stompClient) return;
     this.connect();
   };
+
+  disconnectStompClient = () => {
+    if (this.stompClient)
+      this.stompClient.disconnect();
+
+    this.joinedRooms = [];
+    this.chosenRoom = null;
+  }
 
   connect = () => {
     let Sock = new SockJS("http://localhost:8000/ws");
@@ -174,10 +183,6 @@ class ChatStore {
     toast.error("Connect to chat server error, please try again!");
   };
 
-
-
-
-
   chosenRoom = null;
   setChosenRoom = (chosenRoom: any) => {
     this.chosenRoom = chosenRoom;
@@ -185,6 +190,9 @@ class ChatStore {
 
   joinedRooms = [];
   getAllJoinedRooms = async () => {
+    this.joinedRooms = [];
+    this.chosenRoom = null;
+
     try {
       const { data } = await getAllJoinedRooms();
       this.joinedRooms = data;

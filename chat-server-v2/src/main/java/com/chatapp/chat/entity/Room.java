@@ -35,7 +35,7 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     private Set<Message> messages;
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<UserRoom> userRooms;
 
     @OneToOne(mappedBy = "room")

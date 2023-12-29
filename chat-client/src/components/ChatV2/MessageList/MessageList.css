@@ -3,7 +3,9 @@
   padding-left: 6px;
   padding-bottom: 24px;
   height: calc(100vh - 165px);
-  background-color: #f7f7f7;
+  background-color: #f4f7ff;
+  border-radius: 10px;
+  box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);
 }
 
 /* Define a style for the track */

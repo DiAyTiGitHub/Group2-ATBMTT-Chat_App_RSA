@@ -20,7 +20,7 @@ function MessageList(props: any) {
   const scrollToBottom = () => {
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
-      console.log(ref.current.scrollHeight)
+      // console.log(ref.current.scrollHeight)
     }
   };
 
@@ -71,7 +71,7 @@ function MessageList(props: any) {
       <Toolbar title="Conversation Title" />
       {!chosenRoom ? (
         <div className="message-list-container" ref={ref}>
-          <div className="no-message"> No conversation was chosen</div>
+          <div className="no-message">No conversation was chosen</div>
         </div>
       )
         :
