@@ -8,13 +8,18 @@ import { object } from 'yup';
 import { observer } from 'mobx-react';
 import { useStore } from 'src/stores';
 import { ConstructionOutlined } from '@mui/icons-material';
+import MessageListLoadingSkeleton from './MessageListLoadingSkeleton';
 
 
 
 function MessageList(props: any) {
   const ref = useRef<HTMLDivElement>(null);
   const { chatStore } = useStore();
-  const { chosenRoom } = chatStore;
+  const {
+    isLoading,
+    chosenRoom
+  } = chatStore;
+  // const isLoading = true;
   const MY_USER_ID = LocalStorage.getLoginUser()?.username;
 
   const scrollToBottom = () => {
@@ -69,20 +74,27 @@ function MessageList(props: any) {
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
-      {!chosenRoom ? (
-        <div className="message-list-container" ref={ref}>
-          <div className="no-message">No conversation was chosen</div>
-        </div>
-      )
-        :
-        (
-          <div className="message-list-container" ref={ref}>
-            {
-              renderMessages()
-            }
-          </div>
-        )
-      }
+      
+      {isLoading ? (
+        <MessageListLoadingSkeleton />
+      ) : (
+        <>
+          {!chosenRoom ? (
+            <div className="message-list-container" ref={ref}>
+              <div className="no-message">No conversation was chosen</div>
+            </div>
+          )
+            :
+            (
+              <div className="message-list-container" ref={ref}>
+                {
+                  renderMessages()
+                }
+              </div>
+            )
+          }
+        </>
+      )}
       <Compose></Compose>
     </div>
   );
