@@ -48,9 +48,8 @@ class ChatStore {
   rsaDecrypt = (messageContent: string, type: string, privateKey: any) => {
     let plaintext = "";
     const { n, d } = privateKey;
-    console.log("n:" + n + "\nd:" + d);
 
-    console.log("Chuoi can gia ma la: " + messageContent);
+    console.log("Chuỗi cần giải mã là: " + messageContent);
 
     if (type == "chat") {
       try {
@@ -60,10 +59,10 @@ class ChatStore {
           // Use mang.length instead of charCode.length
           let decryptedCharCode = RSAService.mod(mang[i], d, n);
           plaintext += String.fromCharCode(decryptedCharCode);
-          console.log("running, we are decoding message!");
+          console.log("Running, we are decoding message!");
         }
 
-        console.log("Chuoi giai ma la: " + plaintext);
+        console.log("Chuỗi đã được giải mã là: " + plaintext);
 
         return plaintext;
       } catch (error) {
@@ -112,7 +111,11 @@ class ChatStore {
   };
 
   disconnectStompClient = () => {
-    this.stompClient.disconnect();
+    if (this.stompClient)
+      this.stompClient.disconnect();
+
+    this.joinedRooms = [];
+    this.chosenRoom = null;
   }
 
   connect = () => {

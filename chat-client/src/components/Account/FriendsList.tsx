@@ -39,7 +39,7 @@ const FriendsList: React.FC = () => {
                     {
 
                       <button className='pointer br-10' onClick={function () {
-                        navigate("/chat-v2");
+                        navigate("/chat");
                       }} type='button'>
                         <h6 className='p-0 m-0'>
                           Nhắn tin

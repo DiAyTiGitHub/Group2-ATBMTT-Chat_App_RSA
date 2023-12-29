@@ -30,7 +30,7 @@ function LoginPage({ handleChangeTab, navigate }: any) {
     const onSubmit = (values: any, props: any) => {
         authenticateUser(values)
             .then(function () {
-                navigate("/chat-v2");
+                navigate("/chat");
                 toast.dismiss();
                 toast.success("Successfully generating keys for conversations!");
                 toast.info("Decrypting old messages in conversations!");

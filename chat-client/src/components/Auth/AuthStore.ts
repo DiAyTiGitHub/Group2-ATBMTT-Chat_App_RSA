@@ -58,7 +58,8 @@ class AuthStore {
     }
 
     disconnectStompClient = () => {
-        this.stompClient.disconnect();
+        if (this.stompClient)
+            this.stompClient.disconnect();
     }
 
     connectToSocket = async () => {
@@ -76,7 +77,7 @@ class AuthStore {
         const payloadData = JSON.parse(payload.body);
         const senderName = payloadData?.user?.username;
         const currentPage = window.location.pathname;
-        if (currentPage === "/chat-v2") return;
+        if (currentPage === "/chat") return;
         toast.info(senderName + " sended you a message!");
     }
 

@@ -17,8 +17,6 @@ function InfoList() {
         isLoading
     } = chatStore;
 
-    console.log(chosenRoom);
-
     function renderRoomName() {
         if (!chosenRoom) return "No info";
         if (!chosenRoom?.name || chosenRoom?.name.length === 0 || chosenRoom?.name.trim() === '') {
