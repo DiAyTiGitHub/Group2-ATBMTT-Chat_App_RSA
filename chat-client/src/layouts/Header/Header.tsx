@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import navigations from 'src/navigation';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './HeaderStyles.scss';
@@ -11,6 +11,7 @@ import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded';
 import LocalStorage from 'src/common/LocalStorage';
 import { observer } from 'mobx-react';
 import HeaderAvatarMenu from './HeaderAvatarMenu';
+import { useStore } from 'src/stores';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Account', 'Friends', , 'Logout'];
@@ -18,7 +19,19 @@ const settings = ['Account', 'Friends', , 'Logout'];
 function Header() {
   const navigate = useNavigate();
 
-  const avatar = LocalStorage.getLoginUser()?.avatar ? LocalStorage.getLoginUser()?.avatar : 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
+  const { authStore, accountStore } = useStore();
+  const { currentLoginUser } = authStore;
+  const { getAvatarSrc } = accountStore;
+
+  const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
+  useEffect(function () {
+    if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "") {
+      const imageSrcPromise = getAvatarSrc(currentLoginUser.avatar);
+      imageSrcPromise.then(function (data) {
+        setImagePath(data);
+      })
+    }
+  }, [currentLoginUser?.avatar]);
 
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
@@ -57,7 +70,7 @@ function Header() {
         <Box sx={{ flexGrow: 0, mr: '20px' }}>
           <Tooltip title="Account and other options">
             <IconButton ref={anchorRef} onClick={function () { setOpenUserMenu(true) }} sx={{ p: 0 }}>
-              <Avatar alt="" src={avatar} />
+              <Avatar alt="" src={imagePath} />
             </IconButton>
           </Tooltip>
 
