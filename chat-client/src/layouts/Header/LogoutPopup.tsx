@@ -5,6 +5,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SendTimeExtensionIcon from '@mui/icons-material/SendTimeExtension';
 import { useStore } from "src/stores";
 import { useNavigate } from "react-router";
+import LocalStorage from "src/common/LocalStorage";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function LogoutPopup(props: any) {
     const navigate = useNavigate();
@@ -16,7 +18,8 @@ function LogoutPopup(props: any) {
     function handleLogout() {
         navigate("/");
     }
-
+    console.log(LocalStorage.getLoginUser().username);
+    
     return (
         <Modal
             className="max-z-index"
@@ -38,17 +41,17 @@ function LogoutPopup(props: any) {
 
                 <div className="flex-center w-100 p-4">
                     <h5>
-                        Are you sure you want to log out of account {currentLoginUser?.usename}
+                        Are you sure you want to log out of account {LocalStorage.getLoginUser().username} ?
                     </h5>
                 </div>
 
-                <div className='flex-center justify-right mt-2'>
+                <div className='flex-center justify-right mt-2 '>
                     <Button
                         variant="contained"
                         onClick={function () {
                             handleClose();
                         }}
-                        className="mr-2"
+                        className="mr-2 "
                     >
                         <ClearIcon
                             className="mr-2"
@@ -60,7 +63,7 @@ function LogoutPopup(props: any) {
                         variant="contained"
                         onClick={handleLogout}
                     >
-                        <SendTimeExtensionIcon
+                        <LogoutIcon
                             className="mr-2"
                         />
                         Log out

@@ -3,6 +3,8 @@ import { observer } from "mobx-react";
 import React, { memo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import LogoutPopup from "./LogoutPopup";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function HeaderAvatarMenu(props: any) {
     const { handleClose, open, anchorRef } = props;
@@ -36,7 +38,8 @@ function HeaderAvatarMenu(props: any) {
                                     aria-labelledby="composition-button"
                                 >
                                     <MenuItem onClick={handleClose}>
-                                        <NavLink to={'account'} className="p-0 px-4 flex" style={{ textDecoration: "none", color: "black" }}>
+                                        <NavLink to={'account'} className="p-0 px-2 flex" style={{ textDecoration: "none", color: "black" }}>
+                                            <AccountBoxIcon className="mr-2"/>
                                             <Typography textAlign="center" fontWeight='500'>ACCOUNT</Typography>
                                         </NavLink>
                                     </MenuItem>
@@ -46,9 +49,10 @@ function HeaderAvatarMenu(props: any) {
                                         </NavLink>
                                     </MenuItem> */}
                                     <MenuItem >
-                                        <div className="p-0 px-4 flex" onClick={function () {
+                                        <div className="p-0 px-2 flex" style={{ textDecoration: "none", color: "black" }} onClick={function () {
                                             setOpenLogoutPopup(true);
                                         }}>
+                                            <LogoutIcon className="mr-2"/>
                                             <Typography textAlign="center" fontWeight='500'>LOGOUT</Typography>
                                         </div>
                                     </MenuItem>
