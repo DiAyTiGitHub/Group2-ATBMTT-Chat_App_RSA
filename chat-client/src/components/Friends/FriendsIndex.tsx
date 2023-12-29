@@ -5,9 +5,8 @@ import { useNavigate } from "react-router";
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Grid, Paper, Avatar, TextField, Button, Typography, Link, Checkbox, FormControlLabel } from '@mui/material'; // Import components from '@mui/material' instead of '@mui/core'
+import { Grid, TextField, Button } from '@mui/material'; // Import components from '@mui/material' instead of '@mui/core'
 import * as Yup from 'yup';
-import { values } from "mobx";
 import UserItem from "./UserItem";
 
 function FriendsIndex() {
