@@ -15,7 +15,7 @@ function Message(props: any) {
     photo,
     sendDate,
   } = props;
-
+  console.log(type);
   const { authStore, chatStore } = useStore();
   const { privateKey } = authStore;
 
@@ -32,33 +32,39 @@ function Message(props: any) {
     >
       {type == "notification" && (
         <div className="notification">
-          {format(parseISO(sendDate), "do MMMM yyyy")}
+          {format(parseISO(sendDate), "do MMMM yyyy")} <br/>
+          {data}
         </div>
       )}
 
       {type == "join" && (
         <div className="notification">
-          {'${author} has joined'}
+          {author} has joined
         </div>
       )}
 
       {type == "left" && (
         <div className="notification">
-          {'${author} has left'}
+          {author} has left
         </div>
       )}
-
-      {startsSequence && <div className="username">{author}</div>}
-      <div className="user-container">
-        {startsSequence && !isMine && (
-          <img className="thumbnail" src={photo} alt=""></img>
-        )}
-        <div className="bubble-container">
-          <div className="bubble">
-            {rsaDecrypt(data, type, privateKey)}
+      
+      {type == "chat" && (
+        <>
+          {startsSequence && <div className="username">{author}</div>}
+          <div className="user-container">
+            {startsSequence && !isMine && (
+              <img className="thumbnail" src={photo} alt=""></img>
+            )}
+            <div className="bubble-container">
+              <div className="bubble">
+                {rsaDecrypt(data, type, privateKey)}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
+      
     </div>
   );
 }

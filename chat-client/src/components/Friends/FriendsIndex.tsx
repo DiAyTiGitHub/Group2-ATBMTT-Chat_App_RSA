@@ -21,7 +21,7 @@ function FriendsIndex() {
         addFriendUsers,
         pendingFriendUsers,
     } = friendsStore;
-
+    console.log(usersList);
     const {
         currentLoginUser
     } = authStore;

@@ -152,11 +152,20 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useStore } from 'src/stores';
 import LocalStorage from 'src/common/LocalStorage';
 import { useNavigate } from 'react-router';
+import AspectRatio from '@mui/joy/AspectRatio';
+import Button from '@mui/joy/Button';
+import Card from '@mui/joy/Card';
+import CardContent from '@mui/joy/CardContent';
+import IconButton from '@mui/joy/IconButton';
+import Typography from '@mui/joy/Typography';
+import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
+
 
 function UserItem({ userInfo }: any) {
     const navigate = useNavigate();
-
+    const MY_USER_ID = LocalStorage.getLoginUser()?.username;
     const { friendsStore, authStore } = useStore();
+    let avatar = userInfo.avatar != null ? userInfo.avatar : 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
     const {
         addFriend,
         addFriendUsers,
@@ -237,41 +246,77 @@ function UserItem({ userInfo }: any) {
     }
 
     return (
-        <div className="appCard flex w-100 br-10  userItem over-hidden">
-            <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="user image"
-                className='w-auto h-88 br-50p'
-            />
-            <div className="userItemContent flex-1 p-3">
-                <h6 className="p-0 m-0 pointer">
-                    {userInfo?.fullname ? (
-                        <>{userInfo?.fullname} - ' ' {userInfo?.username}</>
-                    ) : (
-                        <>{userInfo?.username}</>
-                    )}
-                </h6>
-            </div>
-            <div className="userItemAction flex-center flex-column p-3">
-                {
-                    LocalStorage.getLoginUser()?.id == userInfo?.id ? (
-                        <button className='pointer br-10' onClick={function () {
-                            navigate("/account");
-                        }} type='button'>
-                            <h6 className='p-0 m-0'>
-                                Xem thông tin cá nhân
-                            </h6>
-                        </button>
-                    ) : (
-                        <button className='pointer br-10' onClick={handleClickButton} type='button'>
-                            <h6 className='p-0 m-0'>
-                                {
-                                    friendstatus
-                                }
-                            </h6>
-                        </button>
-                    )
-                }
+        // <div className="appCard flex w-100 br-10  userItem over-hidden">
+        //     <img src="https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg" alt="user image"
+        //         className='w-auto h-88 br-50p'
+        //     />
+        //     <div className="userItemContent flex-1 p-3">
+        //         <h6 className="p-0 m-0 pointer">
+        //             {userInfo?.fullname ? (
+        //                 <>{userInfo?.fullname} - ' ' {userInfo?.username}</>
+        //             ) : (
+        //                 <>{userInfo?.username}</>
+        //             )}
+        //         </h6>
+        //     </div>
+        //     <div className="userItemAction flex-center flex-column p-3">
+        //         {
+        //             LocalStorage.getLoginUser()?.id == userInfo?.id ? (
+        //                 <button className='pointer br-10' onClick={function () {
+        //                     navigate("/account");
+        //                 }} type='button'>
+        //                     <h6 className='p-0 m-0'>
+        //                         Xem thông tin cá nhân
+        //                     </h6>
+        //                 </button>
+        //             ) : (
+        //                 <button className='pointer br-10' onClick={handleClickButton} type='button'>
+        //                     <h6 className='p-0 m-0'>
+        //                         {
+        //                             friendstatus
+        //                         }
+        //                     </h6>
+        //                 </button>
+        //             )
+        //         }
 
-            </div>
+        //     </div>
+        // </div>
+        <div>
+        {MY_USER_ID != userInfo.username && (
+            <Card sx={{ width: 200 }}>
+                <div>
+                    <Typography level="title-lg">
+                        {userInfo.username}    
+                    </Typography>
+                    
+                    { userInfo?.fullname &&
+                        <Typography level="title-lg">
+                            {userInfo?.fullname}
+                        </Typography>
+                    }
+                </div>
+                <AspectRatio minHeight="120px" maxHeight="200px">
+                    <img
+                    src={avatar}
+                    loading="lazy"
+                    alt=""
+                    />
+                </AspectRatio>
+                <CardContent orientation="horizontal">
+                    <Button
+                    variant="solid"
+                    size="md"
+                    color="primary"
+                    aria-label="Explore Bahamas Islands"
+                    sx={{ width:"100%", alignSelf: 'center', fontWeight: 600 }}
+                    onClick={handleClickButton}
+                    >
+                        { friendstatus }
+                    </Button>
+                </CardContent>
+            </Card>
+        )}
         </div>
     );
 
