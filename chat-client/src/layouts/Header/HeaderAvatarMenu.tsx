@@ -40,15 +40,14 @@ function HeaderAvatarMenu(props: any) {
                                             <Typography textAlign="center" fontWeight='500'>ACCOUNT</Typography>
                                         </NavLink>
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose}>
+                                    {/* <MenuItem onClick={handleClose}>
                                         <NavLink to={'/'} className="p-0 px-4 flex" style={{ textDecoration: "none", color: "black" }}>
                                             <Typography textAlign="center" fontWeight='500'>LOGOUT</Typography>
                                         </NavLink>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
+                                    </MenuItem> */}
+                                    <MenuItem >
                                         <div className="p-0 px-4 flex" onClick={function () {
                                             setOpenLogoutPopup(true);
-                                            console.log("cliccked")
                                         }}>
                                             <Typography textAlign="center" fontWeight='500'>LOGOUT</Typography>
                                         </div>
@@ -68,9 +67,7 @@ function HeaderAvatarMenu(props: any) {
                     }}
                 />
             )}
-
         </>
-
     );
 }
 
