@@ -41,6 +41,7 @@ class ChatStore {
     }
     catch (error) {
       console.log("Error" + error.message);
+      toast.error('RSA encryption error!')
     }
   };
 
@@ -66,7 +67,8 @@ class ChatStore {
 
         return plaintext;
       } catch (error) {
-        console.log("loi :" + error.message);
+        console.log("Error :" + error.message);
+        toast.error('RSA decryption error!')
       }
     }
 
@@ -173,10 +175,6 @@ class ChatStore {
     console.log(err);
     toast.error("Connect to chat server error, please try again!");
   };
-
-
-
-
 
   chosenRoom = null;
   setChosenRoom = (chosenRoom: any) => {
