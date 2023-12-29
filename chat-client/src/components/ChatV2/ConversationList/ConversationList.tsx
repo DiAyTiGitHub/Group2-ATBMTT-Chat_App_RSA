@@ -13,7 +13,6 @@ function ConversationList() {
   const {
     joinedRooms,
     isLoading,
-    setIsLoading
   } = chatStore;
 
   return (
@@ -21,36 +20,46 @@ function ConversationList() {
       <Toolbar title="Chat">
         <ConversationSearch />
       </Toolbar>
-      {
-        joinedRooms.map(function (room, index) {
-          return (
-            <ConversationListItem
-              key={index}
-              room={room}
-            />
-          );
-        })
-      }
-      {
-        ((!joinedRooms || (joinedRooms.length === 0)) && !isLoading) && (
-          <div className="no-conversation">
-            <p>You don't have any conversation, lets add friends and start chatting!</p>
-          </div>
-        )
-      }
-      {
-        isLoading && (
-          <>
-            {
-              [1, 2, 3, 4, 5, 6, 7].map(function (_, index) {
-                return (
-                  <ConversationListItemLoadingSkeleton key={index} />
-                );
-              })
-            }
-          </>
-        )
-      }
+
+      <div className="conversationListItemWrapper">
+        {
+          // if is loading, render skeleton
+          isLoading ? (
+            <>
+              {
+                [1, 2, 3, 4, 5, 6, 7].map(function (_, index) {
+                  return (
+                    <ConversationListItemLoadingSkeleton key={index} />
+                  );
+                })
+              }
+            </>
+          )
+            :
+            // if is not loading, render data
+            (
+              <>
+                {
+                  joinedRooms.map(function (room, index) {
+                    return (
+                      <ConversationListItem
+                        key={index}
+                        room={room}
+                      />
+                    );
+                  })
+                }
+                {
+                  ((!joinedRooms || (joinedRooms.length === 0)) && !isLoading) && (
+                    <div className="no-conversation">
+                      <p>You don't have any conversation, lets add friends and start chatting!</p>
+                    </div>
+                  )
+                }
+              </>
+            )
+        }
+      </div>
     </div>
   );
 }

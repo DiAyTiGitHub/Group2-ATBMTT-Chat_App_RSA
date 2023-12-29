@@ -52,6 +52,15 @@ class AuthStore {
     }
 
     stompClient = null;
+
+    setStompClient = (sc: any) => {
+        this.stompClient = sc;
+    }
+
+    disconnectStompClient = () => {
+        this.stompClient.disconnect();
+    }
+
     connectToSocket = async () => {
         let Sock = new SockJS('http://localhost:8000/ws');
         this.stompClient = over(Sock);

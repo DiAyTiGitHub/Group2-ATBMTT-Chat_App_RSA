@@ -7,12 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import { observer } from "mobx-react";
 import { useStore } from "src/stores";
 import LocalStorage from "src/common/LocalStorage";
+import InfoListLoadingSkeleton from "./InfoListLoadingSkeleton";
 
 function InfoList() {
     const { chatStore } = useStore();
 
     const {
-        chosenRoom
+        chosenRoom,
+        isLoading
     } = chatStore;
 
     console.log(chosenRoom);
@@ -41,22 +43,28 @@ function InfoList() {
 
     return (
         <div className="info-list d-lg-flex">
-            {!chosenRoom && (
-                <div className="no-info">
-                    <p>No conversation chosen</p>
-                </div>
-            )}
-            {chosenRoom && (
+            <Toolbar title="Info"></Toolbar>
+            {isLoading ? (
+                <InfoListLoadingSkeleton />
+            ) : (
                 <>
-                    <Toolbar title="Info"></Toolbar>
-                    <img className="info-photo" src={renderAvatar()} alt=""></img>
-                    <div className="info-name"> {renderRoomName()} </div>
-                    <div className="info-icons">
-                        <IconButton>
-                            <AccountCircleIcon />
-                        </IconButton>
-                    </div>
-                    <Popup title="test title" content="lorem ipsum something something" confirmation="true"></Popup>
+                    {!chosenRoom && (
+                        <div className="no-info">
+                            <p>No conversation chosen</p>
+                        </div>
+                    )}
+                    {chosenRoom && (
+                        <>
+                            <img className="info-photo" src={renderAvatar()} alt=""></img>
+                            <div className="info-name"> {renderRoomName()} </div>
+                            <div className="info-icons">
+                                <IconButton>
+                                    <AccountCircleIcon />
+                                </IconButton>
+                            </div>
+                            <Popup title="test title" content="lorem ipsum something something" confirmation="true"></Popup>
+                        </>
+                    )}
                 </>
             )}
         </div>

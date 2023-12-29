@@ -7,6 +7,7 @@ import com.chatapp.chat.repository.RoomRepository;
 import com.chatapp.chat.repository.UserRoomRepository;
 import com.chatapp.chat.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -42,6 +43,9 @@ public class FriendServiceImpl implements FriendService {
 
     @Autowired
     private MessageTypeService messageTypeService;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public FriendDTO sendFriendRequest(UUID receiverId) {
@@ -134,6 +138,10 @@ public class FriendServiceImpl implements FriendService {
             notification = messageService.handlerForNotification(notification);
             messageService.sendMessageTo("/notification", notification);
 
+            for (UserDTO userDto : roomInMessage.getParticipants()) {
+                simpMessagingTemplate.convertAndSendToUser(userDto.getId().toString(), "/privateMessage", notification);
+            }
+
             return new FriendDTO(updatedRelationship);
         }
 
@@ -146,8 +154,6 @@ public class FriendServiceImpl implements FriendService {
 
         if (relationship == null) return;
 
-        friendRepository.delete(relationship);
-
         User currentUser = userService.getCurrentLoginUserEntity();
         if (currentUser == null) return;
         User friendUser = userService.getUserEntityById(userId);
@@ -157,13 +163,16 @@ public class FriendServiceImpl implements FriendService {
         Room willDeleteRoom = roomRepository.findById(relationship.getRoom().getId()).orElse(null);
         if (willDeleteRoom == null) return;
 
-        UserRoom userRoom1 = userRoomRepository.findByUserIdAndRoomId(currentUser.getId(), willDeleteRoom.getId());
-        UserRoom userRoom2 = userRoomRepository.findByUserIdAndRoomId(friendUser.getId(), willDeleteRoom.getId());
+//        UserRoom userRoom1 = userRoomRepository.findByUserIdAndRoomId(currentUser.getId(), willDeleteRoom.getId());
+//        UserRoom userRoom2 = userRoomRepository.findByUserIdAndRoomId(friendUser.getId(), willDeleteRoom.getId());
+//
+//        userRoomRepository.delete(userRoom1);
+//        userRoomRepository.delete(userRoom2);
 
-        userRoomRepository.delete(userRoom1);
-        userRoomRepository.delete(userRoom2);
+//        roomRepository.delete(willDeleteRoom);
 
-        roomRepository.delete(willDeleteRoom);
+        friendRepository.delete(relationship);
+
     }
 
     @Override

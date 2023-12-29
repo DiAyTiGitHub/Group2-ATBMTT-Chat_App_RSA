@@ -109,6 +109,10 @@ class ChatStore {
     this.connect();
   };
 
+  disconnectStompClient = () => {
+    this.stompClient.disconnect();
+  }
+
   connect = () => {
     let Sock = new SockJS("http://localhost:8000/ws");
     this.stompClient = over(Sock);
@@ -185,6 +189,9 @@ class ChatStore {
 
   joinedRooms = [];
   getAllJoinedRooms = async () => {
+    this.joinedRooms = [];
+    this.chosenRoom = null;
+
     try {
       const { data } = await getAllJoinedRooms();
       this.joinedRooms = data;

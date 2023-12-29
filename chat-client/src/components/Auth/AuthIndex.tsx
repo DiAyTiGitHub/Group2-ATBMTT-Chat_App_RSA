@@ -24,11 +24,29 @@ function AuthIndex() {
 
   function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
-    const { chatStore } = useStore();
-    const { setStompClient } = chatStore;
+    const { chatStore, authStore } = useStore();
+    
+    const {
+      stompClient: chatStompClient,
+      setStompClient: chatSetStompClient,
+      disconnectStompClient: disconnectStompClientFromChatStore
+    } = chatStore;
+    const {
+      stompClient: authStompClient,
+      setStompClient: authSetStompClient,
+      disconnectStompClient: disconnectStompClientFromAuthStore
+    } = authStore;
 
     useEffect(function () {
-      setStompClient(null);
+      if (chatStompClient) {
+        disconnectStompClientFromChatStore();
+        chatSetStompClient(null);
+      }
+      if (authStompClient) {
+        disconnectStompClientFromAuthStore();
+        authSetStompClient(null);
+      }
+
     }, []);
 
     return (

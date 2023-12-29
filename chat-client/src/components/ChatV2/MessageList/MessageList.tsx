@@ -71,7 +71,7 @@ function MessageList(props: any) {
       <Toolbar title="Conversation Title" />
       {!chosenRoom ? (
         <div className="message-list-container" ref={ref}>
-          <div className="no-message"> No conversation was chosen</div>
+          <div className="no-message">No conversation was chosen</div>
         </div>
       )
         :
