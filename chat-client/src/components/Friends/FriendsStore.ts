@@ -31,7 +31,7 @@ class FriendsStore {
             return data;
         }
         catch (error) {
-            toast.error("Something went wrong :(");
+            toast.error("Get the list of failed add friends!");
         }
     }
 
@@ -42,7 +42,7 @@ class FriendsStore {
             return data;
         }
         catch (error) {
-            toast.error("Something went wrong :(");
+            toast.error("Get the list of failed friend requests!");
         }
     }
 
@@ -53,7 +53,7 @@ class FriendsStore {
             return data;
         }
         catch (error) {
-            toast.error("Something went wrong :(");
+            toast.error("error getting user list data!");
         }
     }
 
@@ -71,7 +71,7 @@ class FriendsStore {
                 return data;
             }
             catch (error) {
-                toast.error("Something went wrong :(");
+                toast.error("Error searching for users using keywords!");
                 throw new Error(error);
             }
         }
@@ -81,10 +81,10 @@ class FriendsStore {
         try {
             const response = await sendFriendRequest(userInfo?.id);
             console.log('Friend request sent successfully:', response);
-            toast.success("Gửi kết bạn thành công đến người dùng " + userInfo?.username);
+            toast.success("Successfully sent friend request to user " + userInfo?.username);
         } catch (error) {
-            console.error('Error sending friend request:', error.message);
-            toast.error("Gửi kết bạn có lỗi");
+            // console.error('Error sending friend request:', error.message);
+            toast.error("Error sending friend request!");
 
         }
     }
@@ -93,19 +93,20 @@ class FriendsStore {
         try {
             const respronse = await unfriendUser(userInfo?.id);
             // console.log(respronse.data);
-            toast.success("Hủy kết bạn thành công với người dùng " + userInfo?.username);
+            toast.success("Successfully unfriended the user " + userInfo?.username);
         } catch (error) {
-            toast.error("Hủy kết bạn có lỗi");
+            console.log("Unfriending error!");
+            toast.error("Unfriending error!");
         }
     }
 
     acceptFriend = async (relationship: any) => {
         try {
             const response = await acceptFriendRequest(relationship?.id);
-            toast.success("Kết bạn thành công!");
+            toast.success("Successfully accepted the friend request");
         } catch (error) {
-            console.error('Error sending friend request:', error.message);
-            toast.error("Gửi kết bạn có lỗi");
+            // console.error('Error accepting friend request:', error.message);
+            toast.error("Error accepting friend request");
 
         }
     }
@@ -115,8 +116,8 @@ class FriendsStore {
             const { data } = await getAllFriend();
             this.currentFriends = data;
         } catch (error) {
-            console.error('Error sending friend request:', error.message);
-            toast.error("Lấy dữ liệu có lỗi");
+            // console.error('Error retrieving friend list data:', error.message);
+            toast.error("Error retrieving friend list data");
         }
     }
 }
