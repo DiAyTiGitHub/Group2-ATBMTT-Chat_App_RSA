@@ -5,7 +5,7 @@
 .conversation-list {
   overflow-y: auto;
   padding-bottom: 24px;
-  max-height: 80vh;
+  max-height: calc(100vh - 80px);
 }
 
 /* Define a style for the track */
