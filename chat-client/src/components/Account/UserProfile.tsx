@@ -16,13 +16,19 @@ import {
     Typography,
     RadioGroup,
     FormControlLabel,
-    Radio
+    Radio,
+    styled
 } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Field, Form, Formik } from "formik";
 
 const UserProfile: React.FC = ({ }: any) => {
     const { accountStore, authStore } = useStore();
-    const { uploadUserAvatar, getAvatarSrc } = accountStore;
+    const { 
+        uploadUserAvatar,
+        getAvatarSrc,
+        updateUserInfo
+    } = accountStore;
     const { currentLoginUser, setCurrentLoginUser } = authStore;
 
     async function handleChangeImage(event: any) {
@@ -39,11 +45,24 @@ const UserProfile: React.FC = ({ }: any) => {
 
     function handleFormSubmit(values: any) {
         console.log("form values: ", values);
+        updateUserInfo(values);
     }
 
     const [imagePath, setImagePath] = useState("");
 
     const currentUser = LocalStorage.getLoginUser();
+
+    const VisuallyHiddenInput = styled('input')({
+        clip: 'rect(0 0 0 0)',
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
+    });
 
     useEffect(function () {
         if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "" && currentLoginUser) {
@@ -76,9 +95,8 @@ const UserProfile: React.FC = ({ }: any) => {
                                 xs={12}
                                 md={4}
                                 lg={3}
-
                             >
-                                <Card className="flex-center flex-column">
+                                <Card className="flex-center flex-column w-100 h-100">
                                     <CardContent>
                                         <Box
                                             sx={{
@@ -88,12 +106,16 @@ const UserProfile: React.FC = ({ }: any) => {
                                             }}
                                         >
                                             <h3>Avatar</h3>
-                                            <img src={imagePath} alt="" className="userAvatar" />
+                                            <Avatar alt="" src={imagePath} sx={{ width: '70%', height: 'auto', aspectRatio: '1/1' }} />
                                         </Box>
                                     </CardContent>
-                                    <CardActions className="flex-1">
+                                    <Button className="mb-2" component="label" variant="contained" startIcon={<CloudUploadIcon />} onChange={handleChangeImage}>
+                                        Upload file
+                                        <VisuallyHiddenInput type="file" />
+                                    </Button>
+                                    {/* <CardActions className="flex-1 display-none">
                                         <input type="file" name="avatar" onChange={handleChangeImage} />
-                                    </CardActions>
+                                    </CardActions> */}
                                     <Divider />
                                 </Card>
                             </Grid>
@@ -102,9 +124,9 @@ const UserProfile: React.FC = ({ }: any) => {
                                 md={8}
                                 lg={9}
                             >
-                                <Card>
+                                <Card className="w-100 h-100">
                                     <CardContent>
-                                        <h3 className="w-100 flex-center m-0 pb-4">Your info</h3>
+                                        <h3 className="flex-center m-0">Your info</h3>
                                         <Grid container spacing={2}>
                                             <Grid xs={12} md={6}>
                                                 <TextField
