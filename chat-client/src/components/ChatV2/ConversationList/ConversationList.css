@@ -1,7 +1,6 @@
 
 .conversation-list {
   overflow-y: auto;
-  padding-bottom: 24px;
   max-height: calc(100vh - 80px);
 }
 

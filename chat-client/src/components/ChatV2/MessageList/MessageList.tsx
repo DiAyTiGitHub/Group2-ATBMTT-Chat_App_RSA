@@ -74,27 +74,27 @@ function MessageList(props: any) {
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
-      
-      {isLoading ? (
-        <MessageListLoadingSkeleton />
-      ) : (
-        <>
-          {!chosenRoom ? (
-            <div className="message-list-container" ref={ref}>
+
+      <div className="message-list-container" ref={ref}>
+        {isLoading ? (
+          <MessageListLoadingSkeleton />
+        ) : (
+          <>
+            {!chosenRoom ? (
               <div className="no-message">No conversation was chosen</div>
-            </div>
-          )
-            :
-            (
-              <div className="message-list-container" ref={ref}>
-                {
-                  renderMessages()
-                }
-              </div>
             )
-          }
-        </>
-      )}
+              :
+              (
+                <>
+                  {
+                    renderMessages()
+                  }
+                </>
+              )
+            }
+          </>
+        )}
+      </div>
       <Compose></Compose>
     </div>
   );
