@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import LocalStorage from "src/common/LocalStorage";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router";
@@ -8,8 +8,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Grid, TextField, Button } from '@mui/material'; // Import components from '@mui/material' instead of '@mui/core'
 import * as Yup from 'yup';
 import UserItem from "./UserItem";
+import Carousel from "react-material-ui-carousel";
+import { Card, Modal, Typography } from "@mui/material";
 
 function FriendsIndex() {
+    const MY_USER_ID = LocalStorage.getLoginUser()?.username;
     const { friendsStore, authStore } = useStore();
     const {
         searchUserByKeyword,
@@ -21,11 +24,9 @@ function FriendsIndex() {
         addFriendUsers,
         pendingFriendUsers,
     } = friendsStore;
-    console.log(usersList);
     const {
         currentLoginUser
     } = authStore;
-
     const navigate = useNavigate();
 
     useEffect(function () {
@@ -65,67 +66,115 @@ function FriendsIndex() {
     };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-        >
-            {(props) => (
-                <Form autoComplete='off' className="p-0 m-0">
-                    <Grid container spacing={2} className="p-0 m-0 px-4">
-                        <Grid item xs={12} sm={4} md={3}>
-                            <div className="appCard p-3">
+            <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={validationSchema}
+            >
+                {(props) => (
+                    <Form autoComplete='off' className="p-0 m-0">
+                        {/* <Grid container spacing={2} className="p-0 m-0 px-4">
+                            <Grid item xs={12} sm={4} md={3}>
+                                <div className="appCard \\
+                                
+                                
+                                p-3">
 
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <Field
-                                            as={TextField}
-                                            label="Keyword for searching"
-                                            name="keyword"
-                                            placeholder="Enter keyword for searching..."
-                                            fullWidth
-                                        />
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <Field
+                                                as={TextField}
+                                                label="Keyword for searching"
+                                                name="keyword"
+                                                placeholder="Enter keyword for searching..."
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                disabled={props.isSubmitting}
+                                                fullWidth
+                                                className="display-block"
+                                            >
+                                                {props.isSubmitting ? 'Loading' : 'Search'}
+                                            </Button>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            disabled={props.isSubmitting}
-                                            fullWidth
-                                            className="display-block"
-                                        >
-                                            {props.isSubmitting ? 'Loading' : 'Search'}
-                                        </Button>
+
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} sm={8} md={9}>
+                                <div className="appCard p-3 ">
+                                    <Grid container spacing={2} className="m-0 p-0 w-100">
+                                        {
+                                            props?.values?.keyword.trim() == "" && (
+                                                <h5 className="p-0 m-0">All available users </h5>
+                                            )
+                                        }
+                                        <Carousel sx={{width: "200px"}}> 
+                                        {
+                                            // usersList.map(function (user, index) {
+                                            //     return (
+                                            //         <Grid item xs={12} key={index} className="p-0 m-0 w-100 py-2">
+                                            //             <UserItem userInfo={user} />
+                                            //         </Grid>
+                                            //     );
+                                            // })
+                                            usersList.filter((user) => user.username != MY_USER_ID).map((user, index) => (<UserItem key={index} userInfo={user}></UserItem>))
+                                        }
+                                        </Carousel>
                                     </Grid>
-                                </Grid>
-
+                                </div>
+                            </Grid>
+                        </Grid> */
+                        <>
+                            <div className="d-flex mb-5" style={{width: "300px", margin: "auto"}}>
+                                <Typography variant="h6" sx={{ fontWeight: 800 }}>Discover people around you!</Typography>
+                                <div>
+                                    <Field
+                                        as={TextField}
+                                        label="Find someone"
+                                        name="keyword"
+                                        placeholder="Find someone"
+                                    />
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        disabled={props.isSubmitting}
+                                        fullWidth
+                                        className="display-block"
+                                        sx={{marginTop: "5px"}}
+                                    >
+                                        {props.isSubmitting ? 'Loading' : 'Search'}
+                                    </Button>
+                                </div>
                             </div>
-                        </Grid>
-                        <Grid item xs={12} sm={8} md={9}>
-                            <div className="appCard p-3 ">
-                                <Grid container spacing={2} className="m-0 p-0 w-100">
-                                    {
-                                        props?.values?.keyword.trim() == "" && (
-                                            <h5 className="p-0 m-0">All available users </h5>
-                                        )
-                                    }
-                                    {
-                                        usersList.map(function (user, index) {
-                                            return (
-                                                <Grid item xs={12} key={index} className="p-0 m-0 w-100 py-2">
-                                                    <UserItem userInfo={user} />
-                                                </Grid>
-                                            );
-                                        })
-                                    }
-                                </Grid>
-
-                            </div>
-                        </Grid>
-                    </Grid>
-                </Form>
-            )}
-        </Formik>
+                            
+                            <Carousel sx={{width: "300px", mx: "auto"}} 
+                                autoPlay={false}
+                                stopAutoPlayOnHover={false}
+                                indicators={false}
+                                animation="slide"
+                                duration={500}
+                            > 
+                            {
+                                // usersList.map(function (user, index) {
+                                //     return (
+                                //         <Grid item xs={12} key={index} className="p-0 m-0 w-100 py-2">
+                                //             <UserItem userInfo={user} />
+                                //         </Grid>
+                                //     );
+                                // })
+                                usersList.filter((user) => user.username != MY_USER_ID).map((user, index) => (<UserItem key={index} userInfo={user}></UserItem>))
+                            }
+                            </Carousel>
+                        </>
+                        }
+                    </Form>
+                )}
+            </Formik>
     );
 }
 

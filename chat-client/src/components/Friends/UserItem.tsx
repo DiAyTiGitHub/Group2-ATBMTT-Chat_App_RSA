@@ -284,7 +284,7 @@ function UserItem({ userInfo }: any) {
         // </div>
         <div>
         {MY_USER_ID != userInfo.username && (
-            <Card sx={{ width: 200 }}>
+            <Card sx={{ width: 300 }}>
                 <div>
                     <Typography level="title-lg">
                         {userInfo.username}    

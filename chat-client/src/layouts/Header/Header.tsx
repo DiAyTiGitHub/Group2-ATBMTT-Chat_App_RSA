@@ -12,13 +12,14 @@ import LocalStorage from 'src/common/LocalStorage';
 import { observer } from 'mobx-react';
 import HeaderAvatarMenu from './HeaderAvatarMenu';
 import { useStore } from 'src/stores';
+import FriendsModal from 'src/components/Friends/FriendsModal';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Account', 'Friends', , 'Logout'];
 
 function Header() {
   const navigate = useNavigate();
-
+  const [openFriends, setFriends] = useState(false);
   const { authStore, accountStore } = useStore();
   const { currentLoginUser } = authStore;
   const { getAvatarSrc } = accountStore;
@@ -55,16 +56,24 @@ function Header() {
               </Tooltip>
             </Button>
           </NavLink>
-          <NavLink to={'./friends'} className="p-0 px-4 d-flex">
             <Button
-              onClick={function () { navigate("/friends"); }}
+              onClick={function () { setFriends(true) }}
               sx={{ my: 2, color: 'white', display: 'block', fontSize: '20px' }}
+              className="p-0 px-4 d-flex"
             >
               <Tooltip title='Show people and friends' enterDelay={500} leaveDelay={200} arrow>
                 <PeopleRoundedIcon fontSize="large"></PeopleRoundedIcon>
               </Tooltip>
             </Button>
-          </NavLink>
+            {openFriends && (
+              <FriendsModal
+                open={openFriends}
+                handleClose={function () {
+                  setFriends(false);
+                }}
+              />
+            )}
+          
         </Box>
 
         <Box sx={{ flexGrow: 0, mr: '20px' }}>
