@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 function GroupConversationCreator(props: any) {
     const { open, handleClose } = props;
-    console.log(props);
     const { friendsStore, chatStore } = useStore();
     const { allFriends, currentFriends } = friendsStore;
     const { createGroupChat } = chatStore;

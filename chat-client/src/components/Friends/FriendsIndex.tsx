@@ -5,11 +5,11 @@ import { useNavigate } from "react-router";
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Grid, TextField, Button } from '@mui/material'; // Import components from '@mui/material' instead of '@mui/core'
+import { Grid, TextField, Button, Card, Modal, Typography, Grow, IconButton } from '@mui/material'; // Import components from '@mui/material' instead of '@mui/core'
 import * as Yup from 'yup';
 import UserItem from "./UserItem";
 import Carousel from "react-material-ui-carousel";
-import { Card, Modal, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
 
 function FriendsIndex() {
     const MY_USER_ID = LocalStorage.getLoginUser()?.username;
@@ -27,6 +27,8 @@ function FriendsIndex() {
     const {
         currentLoginUser
     } = authStore;
+    const [expanded, setExpanded] = useState(false);
+    
     const navigate = useNavigate();
 
     useEffect(function () {
@@ -64,6 +66,10 @@ function FriendsIndex() {
             });
 
     };
+
+    const toggleIconClick =() => {
+        expanded==true ? setExpanded(false) : setExpanded(true);
+    }
 
     return (
             <Formik
@@ -132,23 +138,34 @@ function FriendsIndex() {
                         <>
                             <div className="d-flex mb-5" style={{width: "300px", margin: "auto"}}>
                                 <Typography variant="h6" sx={{ fontWeight: 800 }}>Discover people around you!</Typography>
-                                <div>
-                                    <Field
-                                        as={TextField}
-                                        label="Find someone"
-                                        name="keyword"
-                                        placeholder="Find someone"
-                                    />
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        disabled={props.isSubmitting}
-                                        fullWidth
-                                        className="display-block"
-                                        sx={{marginTop: "5px"}}
+                                <div className="d-flex">
+                                <Grow in={expanded} timeout={500}>
+                                    <div>
+                                        <Field
+                                            as={TextField}
+                                            label="Find someone"
+                                            name="keyword"
+                                            placeholder="Find someone"
+                                        />
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            disabled={props.isSubmitting}
+                                            fullWidth
+                                            className="display-block"
+                                            sx={{marginTop: "5px"}}
+                                        >
+                                            {props.isSubmitting ? 'Loading' : 'Search'}
+                                        </Button>
+                                    </div>
+                                </Grow>
+                                    <IconButton
+                                        disableFocusRipple={true}
+                                        disableRipple={true}
+                                        onClick={toggleIconClick}
                                     >
-                                        {props.isSubmitting ? 'Loading' : 'Search'}
-                                    </Button>
+                                        <SearchIcon fontSize="large" />
+                                    </IconButton>
                                 </div>
                             </div>
                             
