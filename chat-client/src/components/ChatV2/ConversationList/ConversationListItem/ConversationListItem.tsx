@@ -12,9 +12,9 @@ function ConversationListItem(props: any) {
   const { getAvatarSrc } = accountStore;
 
   const { id, avatar, name, code, participants, messages } = props.room;
-  console.log("id: " + id); 
-  console.log("avatar: " + avatar); 
-  console.log("name: " + name); 
+  console.log("id: " + id);
+  console.log("avatar: " + avatar);
+  console.log("name: " + name);
   console.log("code: " + code);
   console.log("participants: " + participants);
   console.log("messages: " + messages);
@@ -44,18 +44,18 @@ function ConversationListItem(props: any) {
     return "";
   }
 
-  console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);  
+  console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);
 
   const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
 
   function renderAvatar() {
-    if (participants.length === 2) {
+    if (participants && participants.length > 0 && participants.length === 2) {
       const currentUser = LocalStorage.getLoginUser();
       let chattingPerson = null;
       for (let i = 0; i < participants.length; i++) {
         const participant = participants[i];
         if (participant.id !== currentUser.id) {
-          console.log("Avt người dùng khác: "+participant.avatar);
+          console.log("Avt người dùng khác: " + participant.avatar);
           chattingPerson = participant;
           break;
         }
@@ -69,9 +69,9 @@ function ConversationListItem(props: any) {
     }
   }
 
-  useEffect(renderAvatar,[])
-  
-  
+  useEffect(renderAvatar, [])
+
+
 
   function renderSentDate() {
     if (messages && messages.length > 0) {
@@ -85,11 +85,11 @@ function ConversationListItem(props: any) {
 
   function handleChooseConversation() {
     setChosenRoom(props.room);
-  }  
+  }
   return (
     <div className={`conversation-list-item ${chosenRoom?.id === id && " conversation-list-item--chosen"}`} onClick={handleChooseConversation}>
       <img className="conversation-photo" src={imagePath} alt="" />
-      <div className="conversation-info">
+      <div className="conversation-info flex-1">
         <h1 className="conversation-title">{renderConversationName()}</h1>
         <p className="conversation-snippet">{renderLastMessageInConversation()}</p>
       </div>

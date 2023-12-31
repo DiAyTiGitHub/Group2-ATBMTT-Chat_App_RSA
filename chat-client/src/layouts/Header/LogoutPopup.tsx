@@ -19,7 +19,7 @@ function LogoutPopup(props: any) {
         navigate("/");
     }
     console.log(LocalStorage.getLoginUser().username);
-    
+
     return (
         <Modal
             className="max-z-index"
@@ -39,7 +39,7 @@ function LogoutPopup(props: any) {
                     </Button>
                 </div>
 
-                <div className="flex-center w-100 p-4">
+                <div className="flex-center w-100 p-4" style={{ paddingLeft: "0 !important;" }}>
                     <h5>
                         Are you sure you want to log out of account {LocalStorage.getLoginUser().username} ?
                     </h5>

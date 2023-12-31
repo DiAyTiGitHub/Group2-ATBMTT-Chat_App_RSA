@@ -13,7 +13,6 @@ class AccountStore {
     try {
       const { data } = await getAllFriend();
       this.friendList = data;
-      console.log(data);
       return data;
     } catch (error) {
       toast.error("Something went wrong :(");

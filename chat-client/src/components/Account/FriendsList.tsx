@@ -129,72 +129,35 @@
 // export default FriendsList;
 
 // FriendsList.tsx
-import React, { useEffect, useState } from "react";
-import { useObserver } from "mobx-react";
+import React from "react";
+import { observer } from "mobx-react";
 import { useStore } from "src/stores";
-import { Grid, Avatar, Button } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Grid } from "@mui/material";
 import "./FriendsList.css";
+import FriendItemCard from "./FriendItemCard";
+import { memo } from "react";
 
 const FriendsList: React.FC = () => {
-  const navigate = useNavigate();
   const { accountStore } = useStore();
-  const [friendList, setFriendList] = useState([]);
-
-  useEffect(() => {
-    const fetchFriends = async () => {
-      try {
-        const friends = await accountStore.getAllFriends();
-        setFriendList(friends);
-        console.log("Friend List:", friends); // In giá trị friendList ra console
-      } catch (error) {
-        console.error("Error fetching friends:", error);
-      }
-    };
-
-    fetchFriends();
-  }, [accountStore]);
+  const { friendList } = accountStore;
 
   return (
     <div className="p-3">
-      <h2>My Friends</h2>
+      <h3>My Friends</h3>
       <Grid container spacing={2}>
         {friendList.map(function (friend, index) {
-          let avatar =
-            friend.avatar != null
-              ? friend.avatar
-              : "https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg";
           return (
-            <Grid item xs={12} sm={5} md={6} lg={2} key={index}>
-              <div className="friendBlock">
-                <img src={avatar} alt="user image" className="object-cover" />
-                <div className="friendInfo">
-                  <h6 className="friendName">
-                    {friend?.fullname ? (
-                      <>
-                        {friend?.username} - ' ' {friend?.fullname}
-                      </>
-                    ) : (
-                      <>{friend?.username}</>
-                    )}
-                  </h6>
-                  <div className="buttonContainer">
-                    <Button
-                      className="pointer br-10"
-                      onClick={() => navigate("/chat")}
-                      type="button"
-                    >
-                      Send Message
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </Grid>
+            <FriendItemCard friend={friend} key={index} />
           );
         })}
+        {!friendList && (
+          <div className="flex-center">
+            <h5>You have no friend</h5>
+          </div>
+        )}
       </Grid>
     </div>
   );
 };
 
-export default FriendsList;
+export default memo(observer(FriendsList));

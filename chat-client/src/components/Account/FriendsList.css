@@ -1,20 +1,23 @@
-
 .friendBlock {
   position: relative;
   overflow: hidden;
   border: 1px solid #ddd;
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
 }
 
 .friendBlock:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .friendBlock img {
   width: 100%;
-  height: auto;
+  height: 240px;
   display: block;
+  object-fit: cover;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
@@ -43,14 +46,14 @@
 
 .buttonContainer button {
   cursor: pointer;
-  background-color: #2196f3;
+  background-color: #046bc0;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
-  transition: background 0.3s ease;
+  transition: background 0.1s ease;
 }
 
 .buttonContainer button:hover {
-  background-color: #16dc79;
+  background-color: #0921be;
 }

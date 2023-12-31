@@ -8,8 +8,13 @@
 }
 
 .conversationListItemWrapper {
-  background-color: #f9fbff;
   border-radius: 10px;
+  height: 100%;
+}
+
+.conversation-list .flex-column {
+  background-color: #f9fbff;
+
 }
 
 .conversation-list-item:hover {
@@ -17,7 +22,7 @@
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
 
-.conversation-list-item--chosen{
+.conversation-list-item--chosen {
   background: white;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
