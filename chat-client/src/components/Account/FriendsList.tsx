@@ -184,7 +184,7 @@ const FriendsList: React.FC = () => {
                       onClick={() => navigate("/chat")}
                       type="button"
                     >
-                      Nhắn tin
+                      Send Message
                     </Button>
                   </div>
                 </div>
