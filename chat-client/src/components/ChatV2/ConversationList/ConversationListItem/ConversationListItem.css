@@ -3,12 +3,13 @@
   align-items: center;
   padding: 10px;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 6px;
+  height: 100%;
   transition: all linear 0.1s;
 }
 
 .conversationListItemWrapper {
-  border-radius: 10px;
+  border-radius: 6px;
   height: 100%;
 }
 
@@ -18,13 +19,14 @@
 }
 
 .conversation-list-item:hover {
-  background: white;
+  background-color: #f4f7ff;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
 
 .conversation-list-item--chosen {
-  background: white;
+  background-color: #f4f7ff;
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  border-radius: 6px;
 }
 
 .conversation-photo {

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useObserver } from 'mobx-react';
+import React, { memo, useEffect, useState } from "react";
+import { observer } from 'mobx-react';
 import { useStore } from 'src/stores';
 import LocalStorage from 'src/common/LocalStorage';
 import {
@@ -8,12 +8,10 @@ import {
     Card,
     CardActions,
     CardContent,
-    CardHeader,
     Divider,
     TextField,
     Unstable_Grid2 as Grid,
     Avatar,
-    Typography,
     RadioGroup,
     FormControlLabel,
     Radio,
@@ -65,7 +63,7 @@ const UserProfile: React.FC = ({ }: any) => {
     });
 
     useEffect(function () {
-        if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "" && currentLoginUser) {
+        if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "") {
             const imageSrcPromise = getAvatarSrc(currentLoginUser.avatar);
             imageSrcPromise.then(function (data) {
                 setImagePath(data);
@@ -73,7 +71,7 @@ const UserProfile: React.FC = ({ }: any) => {
         }
     }, []);
 
-    return useObserver(() => (
+    return (
         <Formik
             initialValues={currentLoginUser || currentUser}
             onSubmit={handleFormSubmit}
@@ -215,7 +213,7 @@ const UserProfile: React.FC = ({ }: any) => {
             }}
         </Formik>
 
-    ));
+    );
 };
 
-export default UserProfile;
+export default memo(observer(UserProfile));

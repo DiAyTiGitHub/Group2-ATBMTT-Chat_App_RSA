@@ -40,20 +40,11 @@ function FiendItemCard(props: any) {
                         <Button
                             fullWidth
                             className="pointer mb-2"
-                            onClick={() => navigate(`/user-profile?userId=${friend?.id}`)}
+                            onClick={() => navigate("/chat")}
                             type="button"
                         >
                             <PermContactCalendarIcon className="mr-2" />
                             View Profile
-                        </Button>
-                        <Button
-                            fullWidth
-                            className="pointer"
-                            onClick={() => navigate("/chat")}
-                            type="button"
-                        >
-                            <SendIcon className="mr-2" />
-                            Send Message
                         </Button>
                     </div>
                 </div>

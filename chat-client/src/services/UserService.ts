@@ -18,6 +18,11 @@ export function getAllFriend() {
     return axios.get(url);
 }
 
+export function getAllFriendOfUser(userId: string) {
+    const url = API_PATH + '/friends/' + userId;
+    return axios.get(url);
+}
+
 export function searchUsersExcludeSelf(searchObject: any) {
     const url = API_PATH + '/searchExcludeSelf';
     return axios.post(url, searchObject);
@@ -78,7 +83,7 @@ export function uploadUserAvatar(image: any) {
     });
 }
 
-export function getAvatarURL(avatarUrl:string) {
+export function getAvatarURL(avatarUrl: string) {
     return axios.get(avatarUrl, {
         responseType: 'arraybuffer', // Indicate that the response is binary data
     });
