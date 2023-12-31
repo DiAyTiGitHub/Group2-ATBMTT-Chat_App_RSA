@@ -1,0 +1,56 @@
+
+.friendBlock {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.friendBlock:hover {
+  transform: scale(1.05);
+}
+
+.friendBlock img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.friendInfo {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.friendName {
+  margin: 0;
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+}
+
+.buttonContainer button {
+  cursor: pointer;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  transition: background 0.3s ease;
+}
+
+.buttonContainer button:hover {
+  background-color: #16dc79;
+}
