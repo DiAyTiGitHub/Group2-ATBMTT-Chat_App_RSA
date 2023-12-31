@@ -11,6 +11,12 @@ function ConversationListItem(props: any) {
   const { setChosenRoom, chosenRoom } = chatStore;
 
   const { id, avatar, name, code, participants, messages } = props.room;
+  console.log("id: " + id); 
+  console.log("avatar: " + avatar); 
+  console.log("name: " + name); 
+  console.log("code: " + code);
+  console.log("participants: " + participants);
+  console.log("messages: " + messages);
   function renderConversationName() {
     if (!name || name.trim() === '') {
       const currentUser = LocalStorage.getLoginUser();
@@ -37,12 +43,25 @@ function ConversationListItem(props: any) {
     return "";
   }
 
+  console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);
   function renderAvatar() {
-    if (!avatar || avatar.trim() === '') {
-      return 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
+    if (participants.length === 2) {
+      const currentUser = LocalStorage.getLoginUser();
+      for (let i = 0; i < participants.length; i++) {
+        const participant = participants[i];
+        if (participant.id !== currentUser.id) {
+          console.log("Avt người dùng khác: "+participant.avatar);
+          return participant.avatar;
+        }
+      }
+    }else if (!chosenRoom || !chosenRoom?.avatar || chosenRoom?.avatar.trim() === '') {
+      return "https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg";
     }
+    // Nếu không phải cuộc trò chuyện cá nhân, sử dụng avatar của phòng chat
     return avatar;
   }
+  
+  
 
   function renderSentDate() {
     if (messages && messages.length > 0) {
@@ -56,7 +75,7 @@ function ConversationListItem(props: any) {
 
   function handleChooseConversation() {
     setChosenRoom(props.room);
-  }
+  }  
 
   return (
     <div className={`conversation-list-item ${chosenRoom?.id === id && " conversation-list-item--chosen"}`} onClick={handleChooseConversation}>
