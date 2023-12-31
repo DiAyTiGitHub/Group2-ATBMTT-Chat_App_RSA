@@ -128,6 +128,7 @@ public class FriendServiceImpl implements FriendService {
             if (updatedRelationship == null) return null;
 
             //notify receiver that they have received an add friend request
+            room = roomRepository.findById(room.getId()).orElse(null);
             MessageDTO notification = new MessageDTO();
             notification.setUser(new UserDTO(relationship.getRequestSender()));
             RoomDTO roomInMessage = new RoomDTO(room);

@@ -150,9 +150,9 @@ const FriendsList: React.FC = () => {
             <FriendItemCard friend={friend} key={index} />
           );
         })}
-        {!friendList && (
-          <div className="flex-center">
-            <h5>You have no friend</h5>
+        {(!friendList || friendList.length === 0) && (
+          <div className="flex-center w-100">
+            <h5 className="p-0 m-0">You have no friend yet</h5>
           </div>
         )}
       </Grid>

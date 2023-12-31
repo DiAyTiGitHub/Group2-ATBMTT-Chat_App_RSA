@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/friends/{userId}")
     public ResponseEntity<Set<UserDTO>> getAllFriendsOfUser(@PathVariable UUID userId){
-        Set<UserDTO> friends = userService.getAllFiends();
+        Set<UserDTO> friends = userService.getFriendsOfUser(userId);
         if (friends == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<Set<UserDTO>>(friends, HttpStatus.OK);
     }
