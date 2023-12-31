@@ -4,6 +4,12 @@ import { getAllFriend, getAvatarURL, updateUserInfo, uploadUserAvatar } from 'sr
 
 class AccountStore {
   friendList = [];
+  isLoading = true;
+  
+  setIsLoading = (state: boolean) => {
+    if (this.isLoading != state)
+      this.isLoading = state;
+  }
 
   constructor() {
     makeAutoObservable(this);

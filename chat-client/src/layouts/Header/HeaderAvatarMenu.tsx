@@ -36,6 +36,7 @@ function HeaderAvatarMenu(props: any) {
                                     autoFocusItem={open}
                                     id="composition-menu"
                                     aria-labelledby="composition-button"
+                                    className=""
                                 >
                                     <MenuItem onClick={handleClose}>
                                         <NavLink to={'account'} className="p-0 px-2 flex" style={{ textDecoration: "none", color: "black" }}>
