@@ -15,10 +15,8 @@ function Message(props: any) {
     photo,
     sendDate,
   } = props;
-  console.log(type);
   const { authStore, chatStore } = useStore();
   const { privateKey } = authStore;
-
   const { rsaDecrypt } = chatStore;
 
   return (
