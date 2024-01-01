@@ -38,17 +38,26 @@ function MessageList(props: any) {
       let previous = messages[i - 1];
       let current = messages[i];
       let next = messages[i + 1];
+      let prevType = previous && previous.messageType.name;
       let type = current.messageType.name;
+      let nextType = next && next.messageType.name;
+      let prevUser = previous && prevType=="chat" ? previous.user.username : null;
+      let currUser = type=="chat" ? current.user.username : null;
+      let nextUser = next && nextType=="chat" ? next.user.username : null;
+<<<<<<< HEAD
+=======
+      console.log(prevUser + " " + currUser + " " + nextUser);
+>>>>>>> 17144cc083f85158468901e5bf5890b47baa1e31
       let isMine = current.user.username === MY_USER_ID;
       let startsSequence = true;
       let endsSequence = false;
       let photo = !isMine && current.user.avatar != null ? current.user.avatar : 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
       let sendDate = current.sendDate;
-      if (previous && previous.user.username === current.user.username) {
+      if (previous && prevUser === currUser) {
         startsSequence = false
       }
 
-      if (next && next.user.username !== current.user.username) {
+      if (next && nextUser !== currUser) {
         endsSequence = true
       }
 
