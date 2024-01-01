@@ -69,4 +69,11 @@ public class RoomController {
         if (res != null) return new ResponseEntity<RoomDTO>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
+    @PostMapping("/group/{userId}/{roomId}")
+    public ResponseEntity<RoomDTO> addUserIntoGroupChat(@PathVariable UUID userId, @PathVariable UUID roomId){
+        RoomDTO res = roomService.addUserIntoGroupChat(userId, roomId);
+        if (res != null) return new ResponseEntity<RoomDTO>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
 }

@@ -33,4 +33,6 @@ public interface RoomService {
     public RoomDTO createGroupChat(NewGroupChat newGroupChat);
 
     public RoomDTO unjoinGroupChat(UUID groupChatId);
+
+    public RoomDTO addUserIntoGroupChat(UUID userId, UUID roomId);
 }

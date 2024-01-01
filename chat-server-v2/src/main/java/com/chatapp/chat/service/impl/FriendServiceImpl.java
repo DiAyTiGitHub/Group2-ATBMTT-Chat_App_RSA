@@ -132,13 +132,13 @@ public class FriendServiceImpl implements FriendService {
             MessageDTO notification = new MessageDTO();
             notification.setUser(new UserDTO(relationship.getRequestSender()));
             RoomDTO roomInMessage = new RoomDTO(room);
-            roomInMessage.setParticipants(roomService.getAllJoinedUsersByRoomId(roomInMessage.getId()));
             notification.setRoom(roomInMessage);
             notification.setMessageType(new MessageTypeDTO(messageTypeService.getMessageTypeEntityByName("notification")));
             notification.setContent(currentUser.getUsername() + " accepted your add friend request!");
             notification = messageService.handlerForNotification(notification);
             messageService.sendMessageTo("/notification", notification);
             roomInMessage.setParticipants(roomService.getAllJoinedUsersByRoomId(roomInMessage.getId()));
+            notification.setRoom(roomInMessage);
 
             for (UserDTO userDto : roomInMessage.getParticipants()) {
                 simpMessagingTemplate.convertAndSendToUser(userDto.getId().toString(), "/privateMessage", notification);

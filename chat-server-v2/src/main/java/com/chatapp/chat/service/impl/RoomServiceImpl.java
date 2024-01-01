@@ -350,6 +350,41 @@ public class RoomServiceImpl implements RoomService {
         if (userRoom == null) return null;
         userRoomService.deleteUserRoom(userRoom.getId());
         unjoinRoom = roomRepository.findById(groupChatId).orElse(null);
-        return new RoomDTO(unjoinRoom);
+        RoomDTO res = new RoomDTO(unjoinRoom);
+        res.setParticipants(getAllJoinedUsersByRoomId(res.getId()));
+
+        //notify other users that an user had left this conversation
+        
+
+        return res;
+    }
+
+    @Override
+    public RoomDTO addUserIntoGroupChat(UUID userId, UUID roomId) {
+        if (userId == null || roomId == null) return null;
+        UserDTO currentLoginUser = userService.getCurrentLoginUser();
+        if (currentLoginUser == null) return null;
+        User newUser = userService.getUserEntityById(userId);
+        if (newUser == null) return null;
+        Room addedRoom = roomRepository.findById(roomId).orElse(null);
+        if (addedRoom == null) return null;
+
+        //handle add user into room by declare new userroom entity
+        UserRoom newUserRoom = new UserRoom();
+        newUserRoom.setRole("Member");
+        newUserRoom.setNickName(newUser.getUsername());
+        newUserRoom.setRoom(addedRoom);
+        newUserRoom.setUser(newUser);
+
+        UserRoom resEntity = userRoomRepository.save(newUserRoom);
+
+        Room updatedRoom = roomRepository.findById(resEntity.getRoom().getId()).orElse(null);
+        if (updatedRoom == null)
+            return null;
+
+        RoomDTO response = new RoomDTO(updatedRoom);
+        response.setParticipants(getAllJoinedUsersByRoomId(updatedRoom.getId()));
+
+        return response;
     }
 }
