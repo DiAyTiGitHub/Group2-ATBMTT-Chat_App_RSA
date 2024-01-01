@@ -44,10 +44,6 @@ function MessageList(props: any) {
       let prevUser = previous && prevType=="chat" ? previous.user.username : null;
       let currUser = type=="chat" ? current.user.username : null;
       let nextUser = next && nextType=="chat" ? next.user.username : null;
-<<<<<<< HEAD
-=======
-      console.log(prevUser + " " + currUser + " " + nextUser);
->>>>>>> 17144cc083f85158468901e5bf5890b47baa1e31
       let isMine = current.user.username === MY_USER_ID;
       let startsSequence = true;
       let endsSequence = false;
