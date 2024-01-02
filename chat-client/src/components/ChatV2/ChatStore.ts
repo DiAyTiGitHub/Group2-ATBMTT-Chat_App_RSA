@@ -58,6 +58,8 @@ class ChatStore {
           plaintext += String.fromCharCode(decryptedCharCode);
         }
 
+        console.log("Running, we are decoding message!");
+
         return plaintext;
       } catch (error) {
         console.log("Error :" + error.message);

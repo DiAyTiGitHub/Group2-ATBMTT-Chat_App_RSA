@@ -27,7 +27,7 @@
 //         currentLoginUser
 //     } = authStore;
 
-//     const [friendstatus, setFriendStatus] = useState("Kết bạn");
+//     const [friendstatus, setFriendStatus] = useState("Add Friend");
 
 //     useEffect(() => {
 //         // setFriendStatus(checkFriendStatus());
@@ -38,20 +38,20 @@
 //     function checkFriendStatus() {
 //         addFriendUsers.forEach(function (request) {
 //             if (request?.requestSender?.id == userInfo?.id) {
-//                 setFriendStatus("Chấp nhận kết bạn");
+//                 setFriendStatus("Accept Request");
 //             }
 //         });
 //         pendingFriendUsers.forEach(function (request) {
-//             if (request?.receiver?.id == userInfo?.id) setFriendStatus("Hủy gửi kết bạn");
+//             if (request?.receiver?.id == userInfo?.id) setFriendStatus("Cancel Request");
 //         });
 //         currentFriends.forEach(function (request) {
-//             if (request?.id == userInfo?.id) setFriendStatus("Hủy kết bạn");
+//             if (request?.id == userInfo?.id) setFriendStatus("Remove Friend");
 //         })
 //     }
 
 //     function handleClickAddFriend() {
 //         addFriend(userInfo);
-//         setFriendStatus("Hủy gửi kết bạn");
+//         setFriendStatus("Cancel Request");
 //         const notification = {
 //             content: currentLoginUser?.username + " sended you an add friend request!",
 //             user: userInfo
@@ -66,7 +66,7 @@
 //             if (request?.requestSender?.id == userInfo?.id) relationship = request;
 //         });
 //         await acceptFriend(relationship);
-//         setFriendStatus("Hủy kết bạn");
+//         setFriendStatus("Remove Friend");
 //         const notification = {
 //             content: currentLoginUser?.username + " accepted your add friend request!",
 //             user: userInfo
@@ -77,35 +77,35 @@
 
 //     function handleClickUnfriend() {
 //         unFriend(userInfo);
-//         setFriendStatus("Kết bạn");
+//         setFriendStatus("Add Friend");
 //     }
 
 //     function handleClickButton() {
-//         if (friendstatus == "Chấp nhận kết bạn") {
+//         if (friendstatus == "Accept Request") {
 //             handleClickAcceptFriendRequest();
 //         }
-//         else if (friendstatus == "Hủy gửi kết bạn" || friendstatus == "Hủy kết bạn") {
+//         else if (friendstatus == "Cancel Request" || friendstatus == "Remove Friend") {
 //             handleClickUnfriend();
 //         }
-//         else if (friendstatus == "Kết bạn") {
+//         else if (friendstatus == "Add Friend") {
 //             handleClickAddFriend();
 //         }
 //     }
 
 //     function renderButton() {
-//         if (friendstatus == "Chấp nhận kết bạn") {
+//         if (friendstatus == "Accept Request") {
 //             return  <IconButton>
 //                         <PersonAddAlt1Icon fontSize='large'></PersonAddAlt1Icon>
 //                     </IconButton>
                    
                     
 //         }
-//         else if (friendstatus == "Hủy gửi kết bạn" || friendstatus == "Hủy kết bạn") {
+//         else if (friendstatus == "Cancel Request" || friendstatus == "Remove Friend") {
 //             return  <IconButton>
 //                         <PersonRemoveIcon fontSize='large'></PersonRemoveIcon>
 //                     </IconButton>
 //         }
-//         else if (friendstatus == "Kết bạn") {
+//         else if (friendstatus == "Add Friend") {
 //             return  <IconButton>
 //                         <PersonAddAlt1Icon fontSize='large'></PersonAddAlt1Icon>
 //                     </IconButton>
@@ -180,36 +180,36 @@ function UserItem({ userInfo }: any) {
         currentLoginUser
     } = authStore;
 
-    const [friendstatus, setFriendStatus] = useState("Kết bạn");
+    const [friendstatus, setFriendStatus] = useState("Add Friend");
 
     useEffect(() => {
         // setFriendStatus(checkFriendStatus());
         checkFriendStatus();
-        console.log(friendstatus);
+        // console.log(friendstatus);
     }, [addFriendUsers, userInfo]);
 
     function checkFriendStatus() {
         addFriendUsers.forEach(function (request) {
             if (request?.requestSender?.id == userInfo?.id) {
-                setFriendStatus("Chấp nhận kết bạn");
+                setFriendStatus("Accept Request");
             }
         });
         pendingFriendUsers.forEach(function (request) {
-            if (request?.receiver?.id == userInfo?.id) setFriendStatus("Hủy gửi kết bạn");
+            if (request?.receiver?.id == userInfo?.id) setFriendStatus("Cancel Request");
         });
         currentFriends.forEach(function (request) {
-            if (request?.id == userInfo?.id) setFriendStatus("Hủy kết bạn");
+            if (request?.id == userInfo?.id) setFriendStatus("Remove Friend");
         })
     }
 
     function handleClickAddFriend() {
         addFriend(userInfo);
-        setFriendStatus("Hủy gửi kết bạn");
+        setFriendStatus("Cancel Request");
         const notification = {
             content: currentLoginUser?.username + " sended you an add friend request!",
             user: userInfo
         };
-        console.log("checking notification: ", notification);
+        // console.log("checking notification: ", notification);
         // createNotificationForUserByUserId(notification);
     }
 
@@ -219,28 +219,28 @@ function UserItem({ userInfo }: any) {
             if (request?.requestSender?.id == userInfo?.id) relationship = request;
         });
         await acceptFriend(relationship);
-        setFriendStatus("Hủy kết bạn");
+        setFriendStatus("Remove Friend");
         const notification = {
             content: currentLoginUser?.username + " accepted your add friend request!",
             user: userInfo
         };
-        console.log("checking notification: ", notification);
+        // console.log("checking notification: ", notification);
         // createNotificationForUserByUserId(notification);
     }
 
     function handleClickUnfriend() {
         unFriend(userInfo);
-        setFriendStatus("Kết bạn");
+        setFriendStatus("Add Friend");
     }
 
     function handleClickButton() {
-        if (friendstatus == "Chấp nhận kết bạn") {
+        if (friendstatus == "Accept Request") {
             handleClickAcceptFriendRequest();
         }
-        else if (friendstatus == "Hủy gửi kết bạn" || friendstatus == "Hủy kết bạn") {
+        else if (friendstatus == "Cancel Request" || friendstatus == "Remove Friend") {
             handleClickUnfriend();
         }
-        else if (friendstatus == "Kết bạn") {
+        else if (friendstatus == "Add Friend") {
             handleClickAddFriend();
         }
     }

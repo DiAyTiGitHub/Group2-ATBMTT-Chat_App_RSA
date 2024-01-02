@@ -23,6 +23,7 @@ function FriendsIndex() {
         allFriends,
         addFriendUsers,
         pendingFriendUsers,
+        currentFriends
     } = friendsStore;
     const {
         currentLoginUser
@@ -184,7 +185,7 @@ function FriendsIndex() {
                                 //         </Grid>
                                 //     );
                                 // })
-                                usersList.filter((user) => user.username != MY_USER_ID).map((user, index) => (<UserItem key={index} userInfo={user}></UserItem>))
+                                usersList.filter(user => user.username != MY_USER_ID).filter((user1 =>  !currentFriends.some(user2 => user1.id == user2.id))).map((user, index) => (<UserItem key={index} userInfo={user}></UserItem>))
                             }
                             </Carousel>
                         </>
