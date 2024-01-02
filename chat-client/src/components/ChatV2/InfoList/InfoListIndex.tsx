@@ -13,7 +13,7 @@ import InfoListModal from "./InfoListModal";
 
 function InfoList() {
     const { chatStore, accountStore, authStore } = useStore();
-    const [ openModal, setOpenModal ] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const {
         chosenRoom,
         isLoading,
@@ -87,17 +87,18 @@ function InfoList() {
                             <>
                                 <img className="info-photo" src={imagePath} alt=""></img>
                                 <div className="info-name"> {renderRoomName()} </div>
+                                <div className="w-100" style={{backgroundColor: "#DDDDDD"}}>
+                                    <div className="flex-center w-100 pb-2 pt-2">
+                                        <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                    </div>
 
-                                <div className="px-1 flex-center w-100">
-                                    <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
-                                </div>
+                                    <div className="flex-center w-100 participants-container position-relative pb-2">
+                                        <ParticipantIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                    </div>
 
-                                <div className="px-1 flex-center w-100 participants-container position-relative">
-                                    <ParticipantIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
-                                </div>
-
-                                <div className="px-1 flex-center w-100">
-                                    <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                    <div className="flex-center w-100">
+                                        <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                    </div>
                                 </div>
 
                                 {/* <div className="info-icons">

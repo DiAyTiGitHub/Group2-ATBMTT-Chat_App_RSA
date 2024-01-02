@@ -9,10 +9,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button } from "@mui/material";
 import InfoListModal from '../InfoListModal';
 import { useState } from 'react';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import TripOriginIcon from '@mui/icons-material/TripOrigin';
+import PhotoIcon from '@mui/icons-material/Photo';
 
 function CustomizeChatIndex(props: any) {
     const { expanded, handleChangeStateAccordion } = props;
-    const [ openModal, setOpenModal ] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     return (
         <>
@@ -25,11 +28,14 @@ function CustomizeChatIndex(props: any) {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    style={{marginTop: "10px", marginBottom: "10px", minHeight: "0"}}
                 >
-                    <Typography>Customzie Chat</Typography>
+                    <Typography className='' style={{margin: 0}}>
+                        Customzie Chat
+                    </Typography>
                 </AccordionSummary>
-                <AccordionDetails className="m-0 p-0">
-                    <button
+                <AccordionDetails className="m-1 p-0">
+                    {/* <button
                         className="w-100 m-0 p-2"
                         onClick={() => {setOpenModal(true)}}
                     >
@@ -46,10 +52,22 @@ function CustomizeChatIndex(props: any) {
                         onClick={() => {setOpenModal(true)}}
                     >
                         Change conversation photo
-                    </button>
+                    </button> */}
+                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
+                        <BorderColorIcon className='mr-2'/>
+                        Change conversation name
+                    </div>
+                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
+                        <TripOriginIcon className='mr-2' style={{color: "#1A8BDF"}}/>
+                        Change conversation theme
+                    </div>
+                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
+                        <PhotoIcon className='mr-2'/>
+                        Change conversation photo
+                    </div>
                 </AccordionDetails>
             </Accordion>
-            
+
             {openModal && (
                 <InfoListModal
                     open={openModal}

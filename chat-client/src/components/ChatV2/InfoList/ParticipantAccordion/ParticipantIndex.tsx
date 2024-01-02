@@ -28,6 +28,7 @@ function ParticipantIndex(props: any) {
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                style={{marginTop: "10px", marginBottom: "10px", minHeight: "0"}}
             >
                 <Typography>Participants</Typography>
             </AccordionSummary>

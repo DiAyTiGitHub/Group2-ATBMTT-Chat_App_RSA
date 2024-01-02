@@ -52,6 +52,8 @@ const UserProfile: React.FC = ({ }: any) => {
 
     async function handleFormSubmit(values: any) {
         const res = updateUserInfo(values);
+        console.log(values);
+        
         setCurrentLoginUser(res);
     }
 
@@ -174,7 +176,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                         />
                                                     </Grid>
                                                     <Grid xs={12} md={6}>
-                                                        <h6>Gender: {(currentLoginUser.gender == null ? "null" : (currentLoginUser.gender ? "Male" : "Female"))}</h6>
+                                                        <h6>Gender: {(currentLoginUser.gender == null ? "" : (currentLoginUser.gender ? "Male" : "Female"))}</h6>
                                                         <RadioGroup
                                                             row
                                                             name="gender"

@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button } from "@mui/material";
 import InfoListModal from '../InfoListModal';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 function ParticipantIndex(props: any) {
     const { expanded, handleChangeStateAccordion } = props;
@@ -26,11 +27,12 @@ function ParticipantIndex(props: any) {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
+                    style={{marginTop: "10px", marginBottom: "10px", minHeight: "0"}}
                 >
                     <Typography>Other Actions</Typography>
                 </AccordionSummary>
-                <AccordionDetails className="m-0 p-0">
-                    <button
+                <AccordionDetails className="m-1 p-0">
+                    {/* <button
                         className="w-100 m-0 p-2"
                         onClick={() => {setOpenModal(true)}}
                     >
@@ -41,7 +43,11 @@ function ParticipantIndex(props: any) {
                         onClick={() => {setOpenModal(true)}}
                     >
                         Change conversation theme
-                    </button>
+                    </button> */}
+                     <div className='list-item w-100' onClick={() => {setOpenModal(true)}}>
+                        <PersonAddIcon className='mr-2'/>
+                        Add new participant
+                    </div>
                 </AccordionDetails>
             </Accordion>
             {openModal && (

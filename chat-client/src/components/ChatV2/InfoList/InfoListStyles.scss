@@ -115,3 +115,18 @@
   font-weight: 500;
   font-size: 12px;
 }
+
+.list-item{
+  display: flex;
+  align-items: center;
+  padding: 5px 0px 5px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  height: 100%;
+  transition: all linear 0.1s;
+}
+
+.list-item:hover{
+  background-color: #DDDDDD;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
