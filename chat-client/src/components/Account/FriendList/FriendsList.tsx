@@ -12,7 +12,7 @@ const FriendsList: React.FC = () => {
 
   return (
     <div className="p-3">
-      <h3>My Friends</h3>
+      <h4>My Friends</h4>
       <Grid container spacing={2}>
         {friendList.map(function (friend, index) {
           return (

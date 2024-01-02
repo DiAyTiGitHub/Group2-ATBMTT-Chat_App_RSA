@@ -1,17 +1,18 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'react-toastify';
-import { 
-  getAllFriend, 
-  getAvatarURL, 
-  updateUserInfo, 
+import {
+  getAllFriend,
+  getAvatarURL,
+  updateUserInfo,
   uploadUserAvatar,
-  getCurrentLoginUser 
+  addFriendRequests
 } from 'src/services/UserService';
 
 class AccountStore {
   friendList = [];
   isLoading = true;
-  
+  addFriendRequests = [];
+
   setIsLoading = (state: boolean) => {
     if (this.isLoading != state)
       this.isLoading = state;
@@ -24,31 +25,25 @@ class AccountStore {
   getAllFriends = async () => {
     try {
       const { data } = await getAllFriend();
+      const { data: requests } = await addFriendRequests();
+
+      this.addFriendRequests = requests;
       this.friendList = data;
+
       return data;
     } catch (error) {
       toast.error("Something went wrong :(");
     }
   }
 
-  // getCurrentLoginUser = async () => {
-  //   try{
-  //     const data = await getCurrentLoginUser();
-  //     // toast.success("getUser")
-  //     console.log(data);
-  //     return data;
-  //   } catch (error){
-  //     toast.error("Something went wrong :(");
-  //   }
-  // }
-
   updateUserInfo = async (userDTO: any) => {
     try {
-      const updatedUserInfo = await updateUserInfo(userDTO);
-      // Xử lý dữ liệu cập nhật nếu cần thiết
-      console.log('User info updated successfully:', updatedUserInfo);
+      const { data } = await updateUserInfo(userDTO);
+      toast.success("Successfully updated");
+      console.log("uploaded data: ", data);
     } catch (error) {
       console.error('Error updating user info in AccountStore:', error);
+      toast.error("Something went wrong :(");
       // Xử lý lỗi nếu cần thiết
       throw error;
     }
@@ -69,7 +64,7 @@ class AccountStore {
 
   getAvatarSrc = async (avatarUrl: string) => {
     if (!avatarUrl) return;
-    
+
     try {
       const response = await getAvatarURL(avatarUrl);
 
@@ -85,6 +80,7 @@ class AccountStore {
       // Handle errors as needed
     }
   };
+
 }
 
 export default AccountStore;

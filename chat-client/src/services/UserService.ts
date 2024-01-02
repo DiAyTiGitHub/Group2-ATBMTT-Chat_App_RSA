@@ -61,12 +61,7 @@ export function updateUserPublicKey(publicKey: any) {
 export function updateUserInfo(userDTO: any) {
     const url = API_PATH + '/info';
 
-    return axios.put(url, userDTO)
-        .then(response => response.data)
-        .catch(error => {
-            console.error('Error updating user info:', error);
-            throw error;
-        });
+    return axios.put(url, userDTO);
 }
 
 export function uploadUserAvatar(image: any) {

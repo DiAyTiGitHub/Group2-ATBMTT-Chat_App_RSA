@@ -10,6 +10,7 @@ export function AvatarLoadingSkeleton() {
         </>
     );
 }
+
 export function InfoLoadingSkeleton() {
     return (
         <>

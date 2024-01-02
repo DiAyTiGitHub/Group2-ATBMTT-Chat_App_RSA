@@ -47,16 +47,10 @@ const UserProfile: React.FC = ({ }: any) => {
         }
     }
 
-    function handleFormSubmit(values: any) {
+    async function handleFormSubmit(values: any) {
         console.log("form values: ", values);
-        updateUserInfo(values)
-            .then(function () {
-                toast.success("update info successed");
-            })
-            .catch(function (error) {
-                console.error(error);
-                toast.error("update info error")
-            })
+        const res = updateUserInfo(values);
+        setCurrentLoginUser(res);
     }
 
     const [imagePath, setImagePath] = useState("");

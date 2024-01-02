@@ -10,8 +10,6 @@ const FriendsList: React.FC = () => {
   const { userProfileStore } = useStore();
   const { friendList, viewingProfile } = userProfileStore;
 
-  console.log("checking friendlist: ", friendList);
-
   return (
     <div className="p-3">
       <h3>{viewingProfile?.username}'s friends</h3>

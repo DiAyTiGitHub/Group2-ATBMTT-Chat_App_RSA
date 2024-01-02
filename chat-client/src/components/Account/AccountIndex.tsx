@@ -5,20 +5,22 @@ import { useNavigate } from "react-router";
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 import UserProfile from "./UserProfile";
-import FriendsList from "./FriendsList";
+import FriendsList from "./FriendList/FriendsList";
 import './AccountStyles.scss';
+import AddFriendRequests from "./AddFriendRequest/AddFriendRequests";
 
 function AccountIndex() {
     const navigate = useNavigate();
 
-    const { 
-        accountStore, 
-        authStore, 
-        
+    const {
+        accountStore,
+        authStore,
+
     } = useStore();
     const {
         getAllFriends,
-        setIsLoading
+        setIsLoading,
+        addFriendRequests
     } = accountStore;
 
     const { currentLoginUser } = authStore;
@@ -32,9 +34,9 @@ function AccountIndex() {
         else {
             setIsLoading(true);
             getAllFriends()
-            .finally(function () {
-                setIsLoading(false);
-            })
+                .finally(function () {
+                    setIsLoading(false);
+                })
         }
     }, []);
 
@@ -44,6 +46,11 @@ function AccountIndex() {
                 <div className="appCard br-10" style={{ flex: 3 }}>
                     <UserProfile />
                 </div>
+                {(addFriendRequests && addFriendRequests.length > 0) && (
+                    <div className="appCard br-10 mt-4" style={{ flex: 1 }}>
+                        <AddFriendRequests />
+                    </div>
+                )}
                 <div className="appCard br-10 mt-4" style={{ flex: 1 }}>
                     <FriendsList />
                 </div>
