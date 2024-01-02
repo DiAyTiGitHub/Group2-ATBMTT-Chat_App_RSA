@@ -5,13 +5,18 @@ import { Grid, Avatar, Button } from "@mui/material";
 import { useNavigate } from "react-router";
 import SendIcon from '@mui/icons-material/Send';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import { toast } from "react-toastify";
 
 function RequestItem(props: any) {
     const { request } = props;
     const { requestSender } = request;
 
     const { accountStore, friendsStore } = useStore();
-    const { getAvatarSrc } = accountStore;
+    const {
+        getAvatarSrc,
+        setIsLoading: setPageLoading,
+        getAllFriends
+    } = accountStore;
     const {
         acceptFriend,
     } = friendsStore;
@@ -29,20 +34,15 @@ function RequestItem(props: any) {
     }, []);
 
     const [isLoading, setIsLoading] = useState(false);
-
     async function handleAcceptAddFriendRequest() {
         setIsLoading(true);
         console.log("clicked: ", request);
-
-        // let relationship = null;
-        // addFriendUsers.forEach(function (request) {
-        //     if (request?.requestSender?.id == userInfo?.id) relationship = request;
-        // });
-        // await acceptFriend(relationship);
-        // setFriendStatus("Remove Friend");
-
+        await acceptFriend(request);
         setIsLoading(false);
 
+        setPageLoading(true);
+        await getAllFriends();
+        setPageLoading(false);
     }
 
     return (

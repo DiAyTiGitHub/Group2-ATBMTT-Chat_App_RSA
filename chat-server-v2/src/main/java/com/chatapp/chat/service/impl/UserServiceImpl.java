@@ -359,10 +359,18 @@ public class UserServiceImpl implements UserService {
         if (dto == null) return null;
         User entity = getCurrentLoginUserEntity();
         if (entity == null) return null;
-        entity.setAddress(dto.getAddress());
-        entity.setBirthDate(dto.getBirthDate());
-        entity.setFullname(dto.getFullname());
-        entity.setGender(dto.getGender());
+
+        if (dto.getAddress() != null)
+            entity.setAddress(dto.getAddress());
+
+        if (dto.getBirthDate() != null)
+            entity.setBirthDate(dto.getBirthDate());
+
+        if (dto.getFullname() != null)
+            entity.setFullname(dto.getFullname());
+
+        if (dto.getGender() != null)
+            entity.setGender(dto.getGender());
         return new UserDTO(userRepository.save(entity));
     }
 

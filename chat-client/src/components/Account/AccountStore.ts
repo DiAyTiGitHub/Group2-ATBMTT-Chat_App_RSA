@@ -39,10 +39,8 @@ class AccountStore {
   updateUserInfo = async (userDTO: any) => {
     try {
       userDTO = { ...userDTO, gender: userDTO?.gender === "0" ? false : true }
-      console.log("submit data: ", userDTO);
       const { data } = await updateUserInfo(userDTO);
       toast.success("Successfully updated");
-      console.log("uploaded data: ", data);
     } catch (error) {
       console.error('Error updating user info in AccountStore:', error);
       toast.error("Something went wrong :(");

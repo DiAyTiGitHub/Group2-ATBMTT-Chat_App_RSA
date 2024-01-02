@@ -22,6 +22,7 @@ import { Field, Form, Formik } from "formik";
 // import { AvatarLoadingSkeleton, InfoLoadingSkeleton } from "./UserProfileLoadingSkeleton";
 import { AvatarLoadingSkeleton, InfoLoadingSkeleton } from "./UserProfileLoadingSkeleton";
 import { toast } from "react-toastify";
+import UpdateIcon from '@mui/icons-material/Update';
 
 const UserProfile: React.FC = ({ }: any) => {
     const { accountStore, authStore } = useStore();
@@ -188,6 +189,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                             </CardContent>
                                             <CardActions className="w-100 flex justify-right">
                                                 <Button variant="contained" type="submit">
+                                                    <UpdateIcon className="mr-2" />
                                                     Save details
                                                 </Button>
                                             </CardActions>
