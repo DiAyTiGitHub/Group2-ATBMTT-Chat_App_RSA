@@ -96,6 +96,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDTO updateRoom(RoomDTO dto) {
         if (dto == null) return null;
+        if (!isInRoomChat(dto.getId())) return null;
 
         Room entity = roomRepository.findById(dto.getId()).orElse(null);
         if (entity == null) return null;
@@ -224,7 +225,23 @@ public class RoomServiceImpl implements RoomService {
     private String uploadDir;
 
     @Override
+    public boolean isInRoomChat(UUID roomId) {
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return false;
+        Room room = roomRepository.findById(roomId).orElse(null);
+        if (room == null) return false;
+
+        for (UserRoom userRoom : room.getUserRooms()) {
+            if (userRoom.getUser().getId().equals(currentUser.getId())) return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public String uploadRoomAvatar(MultipartFile fileUpload, UUID roomId) {
+        if (!isInRoomChat(roomId)) return null;
+
         LocalDateTime myObj = LocalDateTime.now();
         UserDTO loginUser = userService.getCurrentLoginUser();
         if (loginUser == null) return null;
@@ -349,6 +366,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO unjoinGroupChat(UUID groupChatId) {
+        if (!isInRoomChat(groupChatId)) return null;
+
         User currentUser = userService.getCurrentLoginUserEntity();
         if (currentUser == null) return null;
         Room unjoinRoom = roomRepository.findById(groupChatId).orElse(null);
@@ -373,6 +392,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO addUserIntoGroupChat(UUID userId, UUID roomId) {
+        if (!isInRoomChat(roomId)) return null;
+
         if (userId == null || roomId == null) return null;
         UserDTO currentLoginUser = userService.getCurrentLoginUser();
         if (currentLoginUser == null) return null;
@@ -406,5 +427,31 @@ public class RoomServiceImpl implements RoomService {
 
         response.setParticipants(getAllJoinedUsersByRoomId(updatedRoom.getId()));
         return response;
+    }
+
+    @Override
+    public Set<UserDTO> getListFriendNotInRoom(UUID roomId) {
+        if (!isInRoomChat(roomId)) return null;
+
+        User currentUser = userService.getCurrentLoginUserEntity();
+        if (currentUser == null) return null;
+
+        Room room = roomRepository.findById(roomId).orElse(null);
+        if (room == null) return null;
+
+        Set<UserDTO> joinedUsers = roomService.getAllJoinedUsersByRoomId(roomId);
+        Set<UUID> joinedUserIds = new HashSet<>();
+        for (UserDTO joinedUser : joinedUsers) {
+            joinedUserIds.add(joinedUser.getId());
+        }
+        Set<UserDTO> friendList = userService.getAllUsers();
+        Set<UserDTO> res = new HashSet<>();
+
+        for (UserDTO friendDto : friendList) {
+            if (!joinedUserIds.contains(friendDto.getId())) res.add(friendDto);
+        }
+
+        return res;
+
     }
 }

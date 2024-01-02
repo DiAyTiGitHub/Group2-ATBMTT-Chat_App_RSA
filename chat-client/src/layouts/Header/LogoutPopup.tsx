@@ -28,7 +28,7 @@ function LogoutPopup(props: any) {
         >
             <Box className='modal-container w-80 p-0 m-0' sx={{border: 0, borderRadius: "10px"}}>
                 <div className="modalContainer flex-center justify-between appHeader" style={{borderRadius: "10px 10px 0 0"}}>
-                    <Typography className="pl-2" variant='h5' sx={{ fontWeight: 800, color: "#fff" }}>CONFIRM</Typography>
+                    <Typography className="p-3" variant='h5' sx={{ fontWeight: 800, color: "#fff" }}>CONFIRM</Typography>
                     <Button
                         className="btnClose m-0 p-2 br-50p mw-unset"
                         sx={{color: "#fff"}}
@@ -40,7 +40,7 @@ function LogoutPopup(props: any) {
                     </Button>
                 </div>
 
-                <div className="flex-center w-100 pt-4 pb-4" style={{ paddingLeft: "0 !important;" }}>
+                <div className="flex-center w-100 p-3" style={{ paddingLeft: "0 !important;" }}>
                     <h5>
                         Are you sure you want to log out of account {LocalStorage.getLoginUser().username} ?
                     </h5>

@@ -33,4 +33,6 @@ public interface MessageService {
     public String encryptMessage(String message, RSAKeyDTO publicKeyDto);
 
     public String decryptMessage(String message, RSAKeyDTO privateKeyDto);
+
+    public boolean isInRoomChat(MessageDTO dto);
 }

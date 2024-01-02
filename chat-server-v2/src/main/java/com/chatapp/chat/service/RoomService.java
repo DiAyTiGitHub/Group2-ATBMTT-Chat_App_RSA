@@ -35,4 +35,8 @@ public interface RoomService {
     public RoomDTO unjoinGroupChat(UUID groupChatId);
 
     public RoomDTO addUserIntoGroupChat(UUID userId, UUID roomId);
+
+    public boolean isInRoomChat(UUID roomId);
+
+    public Set<UserDTO> getListFriendNotInRoom(UUID roomId);
 }

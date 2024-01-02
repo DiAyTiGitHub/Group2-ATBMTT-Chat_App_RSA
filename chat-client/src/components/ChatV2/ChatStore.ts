@@ -49,20 +49,14 @@ class ChatStore {
     let plaintext = "";
     const { n, d } = privateKey;
 
-    console.log("Chuỗi cần giải mã là: " + messageContent);
-
     if (type == "chat") {
       try {
         var mang = messageContent.split(",").map(Number);
 
         for (let i = 0; i < mang.length; i++) {
-          // Use mang.length instead of charCode.length
           let decryptedCharCode = RSAService.mod(mang[i], d, n);
           plaintext += String.fromCharCode(decryptedCharCode);
-          //console.log("Running, we are decoding message!");
         }
-
-        //console.log("Chuỗi đã được giải mã là: " + plaintext);
 
         return plaintext;
       } catch (error) {
@@ -95,8 +89,12 @@ class ChatStore {
         JSON.stringify(chatMessage)
       );
     } catch (err) {
-      console.log(err);
-      toast.error("Error occured when sending message, please try again :(");
+      if (err?.response?.status === 401)
+        toast.error("You don't have permission to access this conversation anymore :(");
+      else {
+        console.log(err);
+        toast.error("Error occured when sending message, please try again :(");
+      }
       throw new Error(err);
     }
   };
@@ -162,7 +160,6 @@ class ChatStore {
       }
       this.joinedRooms[0] = temp;
       this.joinedRooms = [...this.joinedRooms];
-      console.log("catched 1");
     } else {
       const newRoom = payloadData.room;
       const firstMessage = {
@@ -172,9 +169,6 @@ class ChatStore {
       newRoom.messages = [firstMessage];
       this.joinedRooms.unshift(newRoom);
       this.joinedRooms = [...this.joinedRooms];
-      console.log("catched 2: new room must be catched");
-      console.log("newRoom", newRoom);
-      console.log("this.joinedRooms", this.joinedRooms);
     }
   };
 
