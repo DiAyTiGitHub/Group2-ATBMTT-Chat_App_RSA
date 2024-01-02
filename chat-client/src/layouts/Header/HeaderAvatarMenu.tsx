@@ -26,8 +26,7 @@ function HeaderAvatarMenu(props: any) {
                     <Grow
                         {...TransitionProps}
                         style={{
-                            transformOrigin:
-                                placement === 'bottom-start' ? 'left top' : 'left bottom',
+                            transformOrigin: 'top right'
                         }}
                     >
                         <Paper>

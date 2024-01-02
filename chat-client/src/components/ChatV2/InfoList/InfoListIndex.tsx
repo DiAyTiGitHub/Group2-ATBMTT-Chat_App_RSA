@@ -9,10 +9,11 @@ import CustomizeChatIndex from "./CustomizeChatAccordion/CustomizeChatIndex";
 import ParticipantIndex from "./ParticipantAccordion/ParticipantIndex";
 import OtherActionsIndex from "./OtherActionsAccordion/OtherActionsIndex";
 import { Accordion } from "@mui/material";
+import InfoListModal from "./InfoListModal";
 
 function InfoList() {
     const { chatStore, accountStore, authStore } = useStore();
-
+    const [ openModal, setOpenModal ] = useState(false);
     const {
         chosenRoom,
         isLoading,
@@ -69,46 +70,56 @@ function InfoList() {
         };
 
     return (
-        <div className="info-list d-lg-flex">
-            <Toolbar title="Info"></Toolbar>
-            {isLoading ? (
-                <InfoListLoadingSkeleton />
-            ) : (
-                <>
-                    {!chosenRoom && (
-                        <div className="no-info">
-                            <p>No conversation chosen</p>
-                        </div>
-                    )}
-
-                    {chosenRoom && (
-                        <>
-                            <img className="info-photo" src={imagePath} alt=""></img>
-                            <div className="info-name"> {renderRoomName()} </div>
-
-                            <div className="px-1 flex-center w-100">
-                                <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+        <>
+            <div className="info-list d-lg-flex">
+                <Toolbar title="Info"></Toolbar>
+                {isLoading ? (
+                    <InfoListLoadingSkeleton />
+                ) : (
+                    <>
+                        {!chosenRoom && (
+                            <div className="no-info">
+                                <p>No conversation chosen</p>
                             </div>
+                        )}
 
-                            <div className="px-1 flex-center w-100">
-                                <ParticipantIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
-                            </div>
+                        {chosenRoom && (
+                            <>
+                                <img className="info-photo" src={imagePath} alt=""></img>
+                                <div className="info-name"> {renderRoomName()} </div>
 
-                            <div className="px-1 flex-center w-100">
-                                <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
-                            </div>
+                                <div className="px-1 flex-center w-100">
+                                    <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                </div>
 
-                            {/* <div className="info-icons">
-                                <IconButton>
-                                    <AccountCircleIcon />
-                                </IconButton>
-                            </div> */}
-                            {/* <Popup title="test title" content="lorem ipsum something something" confirmation="true"></Popup> */}
-                        </>
-                    )}
-                </>
+                                <div className="px-1 flex-center w-100 participants-container position-relative">
+                                    <ParticipantIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                </div>
+
+                                <div className="px-1 flex-center w-100">
+                                    <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                </div>
+
+                                {/* <div className="info-icons">
+                                    <IconButton>
+                                        <AccountCircleIcon />
+                                    </IconButton>
+                                </div> */}
+                                {/* <Popup title="test title" content="lorem ipsum something something" confirmation="true"></Popup> */}
+                            </>
+                        )}
+                    </>
+                )}
+            </div>
+            {openModal && (
+                <InfoListModal
+                    open={openModal}
+                    handleClose={function () {
+                        setOpenModal(false);
+                    }}
+                />
             )}
-        </div>
+        </>
     )
 }
 

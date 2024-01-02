@@ -10,6 +10,7 @@ function ConversationListItem(props: any) {
   const { authStore, chatStore, accountStore } = useStore();
   const { setChosenRoom, chosenRoom } = chatStore;
   const { getAvatarSrc } = accountStore;
+  const currentUser = LocalStorage.getLoginUser();
 
   const { id, avatar, name, code, participants, messages } = props.room;
   
@@ -43,7 +44,6 @@ function ConversationListItem(props: any) {
 
   function renderAvatar() {
     if (participants && participants.length > 0 && participants.length === 2) {
-      const currentUser = LocalStorage.getLoginUser();
       let chattingPerson = null;
       for (let i = 0; i < participants.length; i++) {
         const participant = participants[i];

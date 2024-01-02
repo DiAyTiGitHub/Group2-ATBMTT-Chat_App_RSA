@@ -56,6 +56,36 @@
   border-radius: 6px;
 }
 
+.participants-container {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.participants-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Define a style for the handle or thumb */
+.participants-container::-webkit-scrollbar-thumb {
+  background-color: #43a4ff; /* Change the color as needed */
+  border-radius: 4px;
+}
+
+/* Define a style for the track */
+.participants-container::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Change the color as needed */
+}
+
+/* Optional: Change the appearance on hover */
+.participants-container::-webkit-scrollbar-thumb:hover {
+  background-color: #006bb3; /* Change the color as needed */
+}
+
+/* Optional: Change the appearance when dragging */
+.participants-container::-webkit-scrollbar-thumb:active {
+  background-color: #2574c3; /* Change the color as needed */
+}
+
 .participant-photo {
   width: 40px;
   height: 40px;
