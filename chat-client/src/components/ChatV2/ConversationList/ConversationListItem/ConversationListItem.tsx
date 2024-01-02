@@ -12,12 +12,12 @@ function ConversationListItem(props: any) {
   const { getAvatarSrc } = accountStore;
 
   const { id, avatar, name, code, participants, messages } = props.room;
-  console.log("id: " + id);
-  console.log("avatar: " + avatar);
-  console.log("name: " + name);
-  console.log("code: " + code);
-  console.log("participants: " + participants);
-  console.log("messages: " + messages);
+  // console.log("id: " + id);
+  // console.log("avatar: " + avatar);
+  // console.log("name: " + name);
+  // console.log("code: " + code);
+  // console.log("participants: " + participants);
+  // console.log("messages: " + messages);
   function renderConversationName() {
     if (!name || name.trim() === '') {
       const currentUser = LocalStorage.getLoginUser();
@@ -44,7 +44,7 @@ function ConversationListItem(props: any) {
     return "";
   }
 
-  console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);
+  // console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);
 
   const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
 
@@ -55,7 +55,7 @@ function ConversationListItem(props: any) {
       for (let i = 0; i < participants.length; i++) {
         const participant = participants[i];
         if (participant.id !== currentUser.id) {
-          console.log("Avt người dùng khác: " + participant.avatar);
+          // console.log("Avt người dùng khác: " + participant.avatar);
           chattingPerson = participant;
           break;
         }

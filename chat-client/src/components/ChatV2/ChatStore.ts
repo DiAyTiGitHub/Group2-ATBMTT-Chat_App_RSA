@@ -59,10 +59,10 @@ class ChatStore {
           // Use mang.length instead of charCode.length
           let decryptedCharCode = RSAService.mod(mang[i], d, n);
           plaintext += String.fromCharCode(decryptedCharCode);
-          //console.log("Running, we are decoding message!");
+          console.log("Running, we are decoding message!");
         }
 
-        //console.log("Chuỗi đã được giải mã là: " + plaintext);
+        console.log("Chuỗi đã được giải mã là: " + plaintext);
 
         return plaintext;
       } catch (error) {
