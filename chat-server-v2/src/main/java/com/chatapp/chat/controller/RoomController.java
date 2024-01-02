@@ -3,6 +3,7 @@ package com.chatapp.chat.controller;
 import com.chatapp.chat.model.NewGroupChat;
 import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.SeachObject;
+import com.chatapp.chat.model.UserDTO;
 import com.chatapp.chat.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -75,6 +77,13 @@ public class RoomController {
     public ResponseEntity<RoomDTO> addUserIntoGroupChat(@PathVariable UUID userId, @PathVariable UUID roomId){
         RoomDTO res = roomService.addUserIntoGroupChat(userId, roomId);
         if (res != null) return new ResponseEntity<RoomDTO>(res, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/group/not-in/{roomId}")
+    public ResponseEntity<Set<UserDTO>> getListFriendNotInRoom(@PathVariable UUID roomId){
+        Set<UserDTO> res = roomService.getListFriendNotInRoom(roomId);
+        if (res != null) return new ResponseEntity<>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

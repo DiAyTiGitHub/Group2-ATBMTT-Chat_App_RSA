@@ -15,5 +15,4 @@ public interface FriendService {
     public FriendDTO getRelationshipByFriendId(UUID friendId);
 
     public Friend getRelationshipEntityByFriendId(UUID friendId);
-
 }

@@ -150,7 +150,24 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public boolean isInRoomChat(MessageDTO messageDTO){
+        if (messageDTO.getUser() == null) return false;
+        User currentUser = userService.getUserEntityById(messageDTO.getUser().getId());
+
+        Room roomEntity = roomRepository.findById(messageDTO.getRoom().getId()).orElse(null);
+        if (roomEntity == null) return false;
+
+        for(UserRoom userRoom: roomEntity.getUserRooms()){
+            if(userRoom.getUser().getId().equals(currentUser.getId())) return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public MessageDTO sendPrivateMessage(MessageDTO messageDTO) {
+        if(!isInRoomChat(messageDTO)) return null;
+
         if (messageDTO == null) return null;
         if (messageDTO.getUser() == null) return null;
         User currentUser = userService.getUserEntityById(messageDTO.getUser().getId());

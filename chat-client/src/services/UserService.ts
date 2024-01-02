@@ -71,7 +71,6 @@ export function updateUserInfo(userDTO: any) {
 
 export function uploadUserAvatar(image: any) {
     const url = API_PATH + '/avatar';
-    // return axios.post(image);
 
     const formData = new FormData();
     formData.append("fileUpload", image);
