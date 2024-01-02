@@ -164,8 +164,18 @@ import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
 function UserItem({ userInfo }: any) {
     const navigate = useNavigate();
     const MY_USER_ID = LocalStorage.getLoginUser()?.username;
-    const { friendsStore, authStore } = useStore();
-    let avatar = userInfo.avatar != null ? userInfo.avatar : 'https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg';
+    const { friendsStore, authStore, accountStore } = useStore();
+    const {getAvatarSrc} = accountStore;
+    const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
+    useEffect(function () {
+        if (userInfo && userInfo.avatar && userInfo.avatar != "") {
+            const imageSrcPromise = getAvatarSrc(userInfo.avatar);
+            imageSrcPromise.then(function (data) {
+                setImagePath(data);
+            })
+        }
+    }, []);
+
     const {
         addFriend,
         addFriendUsers,
@@ -284,7 +294,7 @@ function UserItem({ userInfo }: any) {
         // </div>
         <div>
         {MY_USER_ID != userInfo.username && (
-            <Card sx={{ width: 300 }}>
+            <Card sx={{ width: 400, height: 350 }}>
                 <div>
                     <Typography level="title-lg">
                         {userInfo.username}    
@@ -298,7 +308,7 @@ function UserItem({ userInfo }: any) {
                 </div>
                 <AspectRatio minHeight="120px" maxHeight="200px">
                     <img
-                    src={avatar}
+                    src={imagePath}
                     loading="lazy"
                     alt=""
                     />
@@ -309,7 +319,7 @@ function UserItem({ userInfo }: any) {
                     size="md"
                     color="primary"
                     aria-label="Explore Bahamas Islands"
-                    sx={{ width:"100%", alignSelf: 'center', fontWeight: 600 }}
+                    sx={{ width:"100%", alignSelf: 'center', fontWeight: 600}}
                     onClick={handleClickButton}
                     >
                         { friendstatus }

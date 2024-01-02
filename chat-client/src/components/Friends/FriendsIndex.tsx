@@ -25,7 +25,7 @@ function FriendsIndex() {
         pendingFriendUsers,
         currentFriends
     } = friendsStore;
-    
+    console.log(usersList)
     const {
         currentLoginUser
     } = authStore;
@@ -58,7 +58,6 @@ function FriendsIndex() {
     // console.log(addFriendUsers, pendingFriendUsers)
 
     const handleSubmit = (values: any, props: any) => {
-        console.log("chekcing values :", values);
         searchUserByKeyword(values.keyword)
             .catch(function (error) {
                 console.error(error);
@@ -138,29 +137,30 @@ function FriendsIndex() {
                             </Grid>
                         </Grid> */
                         <>
-                            <div className="d-flex mb-5" style={{width: "300px", margin: "auto"}}>
+                            <div className="d-flex mb-5" style={{width: "500px", margin: "auto", marginRight: 0}}>
                                 <Typography variant="h6" sx={{ fontWeight: 800 }}>Discover people around you!</Typography>
                                 <div className="d-flex">
-                                <Grow in={expanded} timeout={500}>
-                                    <div>
-                                        <Field
-                                            as={TextField}
-                                            label="Find someone"
-                                            name="keyword"
-                                            placeholder="Find someone"
-                                        />
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            disabled={props.isSubmitting}
-                                            fullWidth
-                                            className="display-block"
-                                            sx={{marginTop: "5px"}}
-                                        >
-                                            {props.isSubmitting ? 'Loading' : 'Search'}
-                                        </Button>
-                                    </div>
-                                </Grow>
+                                    <Grow in={expanded} timeout={500}>
+                                        <div>
+                                            <Field
+                                                as={TextField}
+                                                label="Find someone"
+                                                name="keyword"
+                                                placeholder="Find someone"
+                                                fullWidth
+                                            />
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                disabled={props.isSubmitting}
+                                                fullWidth
+                                                className="display-block"
+                                                sx={{marginTop: "5px"}}
+                                            >
+                                                {props.isSubmitting ? 'Loading' : 'Search'}
+                                            </Button>
+                                        </div>
+                                    </Grow>
                                     <IconButton
                                         disableFocusRipple={true}
                                         disableRipple={true}
@@ -171,7 +171,7 @@ function FriendsIndex() {
                                 </div>
                             </div>
                             
-                            <Carousel sx={{width: "300px", mx: "auto"}} 
+                            <Carousel sx={{width: "400px", height:"350px", mx: "auto"}} 
                                 autoPlay={false}
                                 stopAutoPlayOnHover={false}
                                 indicators={false}

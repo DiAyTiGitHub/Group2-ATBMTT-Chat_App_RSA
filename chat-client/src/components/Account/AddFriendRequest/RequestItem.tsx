@@ -53,7 +53,7 @@ function RequestItem(props: any) {
                     <h6 className="friendName">
                         {requestSender?.fullname ? (
                             <>
-                                {requestSender?.username} - ' ' {requestSender?.fullname}
+                                {requestSender?.username} - {requestSender?.fullname}
                             </>
                         ) : (
                             <>{requestSender?.username}</>
