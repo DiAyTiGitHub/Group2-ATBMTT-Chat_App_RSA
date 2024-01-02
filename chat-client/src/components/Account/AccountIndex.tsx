@@ -11,9 +11,14 @@ import './AccountStyles.scss';
 function AccountIndex() {
     const navigate = useNavigate();
 
-    const { accountStore, authStore } = useStore();
+    const { 
+        accountStore, 
+        authStore, 
+        
+    } = useStore();
     const {
-        getAllFriends
+        getAllFriends,
+        setIsLoading
     } = accountStore;
 
     const { currentLoginUser } = authStore;
@@ -25,7 +30,11 @@ function AccountIndex() {
             navigate("/");
         }
         else {
-            getAllFriends();
+            setIsLoading(true);
+            getAllFriends()
+            .finally(function () {
+                setIsLoading(false);
+            })
         }
     }, []);
 

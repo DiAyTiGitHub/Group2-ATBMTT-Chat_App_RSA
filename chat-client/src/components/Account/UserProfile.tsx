@@ -19,7 +19,9 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Field, Form, Formik } from "formik";
+// import { AvatarLoadingSkeleton, InfoLoadingSkeleton } from "./UserProfileLoadingSkeleton";
 import { AvatarLoadingSkeleton, InfoLoadingSkeleton } from "./UserProfileLoadingSkeleton";
+import { toast } from "react-toastify";
 
 const UserProfile: React.FC = ({ }: any) => {
     const { accountStore, authStore } = useStore();
@@ -27,9 +29,11 @@ const UserProfile: React.FC = ({ }: any) => {
         uploadUserAvatar,
         getAvatarSrc,
         updateUserInfo,
-        // isLoading
+        // getCurrentLoginUser,
+        isLoading
     } = accountStore;
-    const isLoading = true;
+
+    // const isLoading = false;
     const { currentLoginUser, setCurrentLoginUser } = authStore;
     async function handleChangeImage(event: any) {
         if (event.target.files && event.target.files[0]) {
@@ -45,12 +49,20 @@ const UserProfile: React.FC = ({ }: any) => {
 
     function handleFormSubmit(values: any) {
         console.log("form values: ", values);
-        updateUserInfo(values);
+        updateUserInfo(values)
+            .then(function () {
+                toast.success("update info successed");
+            })
+            .catch(function (error) {
+                console.error(error);
+                toast.error("update info error")
+            })
     }
 
     const [imagePath, setImagePath] = useState("");
 
     const currentUser = LocalStorage.getLoginUser();
+    console.log(currentUser);
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -110,7 +122,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                         flexDirection: 'column',
                                                     }}
                                                 >
-                                                    <Avatar alt="" src={imagePath} sx={{ width: '70%', height: 'auto', aspectRatio: '1/1' }} />
+                                                    <Avatar alt="" src={imagePath} variant="rounded" sx={{ width: '70%', height: 'auto', aspectRatio: '1/1', borderRadius: '10px' }} />
                                                 </Box>
                                             </CardContent>
                                             <Button className="mb-2" component="label" variant="contained" startIcon={<CloudUploadIcon />} onChange={handleChangeImage}>
@@ -152,7 +164,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                             name="fullname"
                                                             label="fullname"
                                                             fullWidth
-                                                            value={values.fullname || ""}
+                                                            value={values?.fullname || ""}
                                                             placeholder="Not have yet"
                                                             onChange={change.bind(null, "fullname")}
                                                         />
@@ -167,38 +179,8 @@ const UserProfile: React.FC = ({ }: any) => {
                                                             onChange={change.bind(null, "address")}
                                                         />
                                                     </Grid>
-                                                    {/* <Grid xs={12} md={6}>
-                                                    <h6>Gender:</h6>
-                                                    <div className="flex">
-                                                        <div className="optionRadio flex-center">
-                                                            <input
-                                                                type="radio"
-                                                                name="gender"
-                                                                value="1"
-                                                                checked={values.gender === "1"}
-                                                                onChange={() => setFieldValue("gender", "1")}
-                                                            />
-                                                            <h6 className="m-0 ml-2">
-                                                                Male
-                                                            </h6>
-                                                        </div>
-    
-                                                        <div className="optionRadio flex-center ml-3">
-                                                            <input
-                                                                type="radio"
-                                                                name="gender"
-                                                                value="0"
-                                                                checked={values.gender === "0"}
-                                                                onChange={() => setFieldValue("gender", "0")}
-                                                            />
-                                                            <h6 className="m-0 ml-2">
-                                                                Female
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                </Grid> */}
                                                     <Grid xs={12} md={6}>
-                                                        <h6>Gender:</h6>
+                                                        <h6>Gender: {(currentLoginUser.gender == null ? "null" : (currentLoginUser.gender ? "Male" : "Female"))}</h6>
                                                         <RadioGroup
                                                             row
                                                             name="gender"
