@@ -35,7 +35,7 @@ function ParticipantIndex(props: any) {
                 <button
                     className="w-100 m-0 p-2"
                 >
-                    Change conversation theme
+                    Leave this conversation
                 </button>
             </AccordionDetails>
         </Accordion>
