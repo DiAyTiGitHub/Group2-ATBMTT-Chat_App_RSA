@@ -1,7 +1,7 @@
 import { memo, useState, useEffect } from "react";
 import Toolbar from "../Toolbar/Toolbar";
 import Popup from "../Popup/Popup";
-import './InfoList.css';
+import './InfoListStyles.scss';
 import { observer } from "mobx-react";
 import { useStore } from "src/stores";
 import InfoListLoadingSkeleton from "./InfoListLoadingSkeleton";

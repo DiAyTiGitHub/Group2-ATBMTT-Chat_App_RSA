@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from "react-router";
 import ConversationList from './ConversationList/ConversationList';
 import MessageList from './MessageList/MessageList';
-import InfoList from './InfoList/InfoList';
+import InfoList from './InfoList/InfoListIndex';
 import Box from '@mui/material';
 import './ChatV2Index.css';
 

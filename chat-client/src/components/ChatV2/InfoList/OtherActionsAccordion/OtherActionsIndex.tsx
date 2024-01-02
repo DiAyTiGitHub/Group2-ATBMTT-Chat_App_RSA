@@ -18,13 +18,13 @@ function ParticipantIndex() {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                <Typography>Customzie Chat</Typography>
+                <Typography>Other Actions</Typography>
             </AccordionSummary>
             <AccordionDetails className="m-0 p-0">
                 <button
                     className="w-100 m-0 p-2"
                 >
-                    Change conversation name
+                    Add new participant
                 </button>
                 <button
                     className="w-100 m-0 p-2"

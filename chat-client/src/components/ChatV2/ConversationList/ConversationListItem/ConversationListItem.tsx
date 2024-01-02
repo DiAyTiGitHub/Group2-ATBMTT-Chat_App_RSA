@@ -61,9 +61,7 @@ function ConversationListItem(props: any) {
     }
   }
 
-  useEffect(renderAvatar, [])
-
-
+  useEffect(renderAvatar, []);
 
   function renderSentDate() {
     if (messages && messages.length > 0) {
