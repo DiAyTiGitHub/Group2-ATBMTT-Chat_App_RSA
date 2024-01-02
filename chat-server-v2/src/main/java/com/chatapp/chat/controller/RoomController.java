@@ -5,6 +5,8 @@ import com.chatapp.chat.model.RoomDTO;
 import com.chatapp.chat.model.SeachObject;
 import com.chatapp.chat.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +48,6 @@ public class RoomController {
         if (res == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<List<RoomDTO>>(res, HttpStatus.OK);
     }
-
     @PostMapping("/avatar/{roomId}")
     public ResponseEntity<String> updloadRoomAvatar(@RequestParam("fileUpload") MultipartFile fileUpload, @PathVariable UUID roomId) {
         String res = roomService.uploadRoomAvatar(fileUpload, roomId);

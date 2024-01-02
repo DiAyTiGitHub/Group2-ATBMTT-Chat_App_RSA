@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react';
 import React, { memo } from 'react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import IconButton from '@mui/material/IconButton';
 import { useStore } from "src/stores";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -36,6 +34,11 @@ function CustomizeChatIndex(props: any) {
                     className="w-100 m-0 p-2"
                 >
                     Change conversation theme
+                </button>
+                <button
+                    className="w-100 m-0 p-2"
+                >
+                    Change conversation photo
                 </button>
             </AccordionDetails>
         </Accordion>

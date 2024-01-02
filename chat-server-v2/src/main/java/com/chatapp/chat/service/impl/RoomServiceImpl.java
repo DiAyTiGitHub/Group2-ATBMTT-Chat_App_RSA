@@ -1,5 +1,6 @@
 package com.chatapp.chat.service.impl;
 
+import com.chatapp.chat.controller.UserController;
 import com.chatapp.chat.entity.*;
 import com.chatapp.chat.entity.Message;
 import com.chatapp.chat.model.*;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -224,10 +226,8 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public String uploadRoomAvatar(MultipartFile fileUpload, UUID roomId) {
         LocalDateTime myObj = LocalDateTime.now();
-        User currentUser = userService.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
-        Room needUpdateRoom = roomRepository.findById(roomId).orElse(null);
-        if (needUpdateRoom == null) return null;
+        UserDTO loginUser = userService.getCurrentLoginUser();
+        if (loginUser == null) return null;
 
         try {
             Path pathImg = Paths.get(uploadDir);
@@ -237,14 +237,21 @@ public class RoomServiceImpl implements RoomService {
             DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyyHHmmss");
 
             String formattedDate = myObj.format(myFormatObj);
-            String nameFile = currentUser.getUsername() + "_" + formattedDate + "." + ext;
+            String nameFile = loginUser.getUsername() + "_" + formattedDate + "." + ext;
             Files.copy(inputStream, pathImg.resolve(nameFile),
                     StandardCopyOption.REPLACE_EXISTING);
+
+            String url = MvcUriComponentsBuilder
+                    .fromMethodName(UserController.class, "getFile", nameFile).build().toString();
+
+            Room needUpdateRoom = roomRepository.findById(roomId).orElse(null);
+            if (needUpdateRoom == null) return null;
 
             needUpdateRoom.setAvatar(nameFile);
             Room res = roomRepository.save(needUpdateRoom);
 
-            return uploadDir + "/" + res.getAvatar();
+            if (res == null) return null;
+            return res.getAvatar();
         } catch (Exception e) {
             System.err.println(e);
             return null;
@@ -392,7 +399,7 @@ public class RoomServiceImpl implements RoomService {
         //notify other users that an user had joined this conversation
         MessageDTO joinMessageDto = new MessageDTO();
         joinMessageDto.setRoom(response);
-        joinMessageDto.setContent(currentLoginUser.getUsername()+ " added "+ newUser.getUsername() + " to this conversation");
+        joinMessageDto.setContent(currentLoginUser.getUsername() + " added " + newUser.getUsername() + " to this conversation");
         joinMessageDto.setUser(new UserDTO(newUser));
         joinMessageDto.setMessageType(messageTypeService.getMessageTypeByName("join"));
         messageService.sendPrivateMessage(joinMessageDto);
