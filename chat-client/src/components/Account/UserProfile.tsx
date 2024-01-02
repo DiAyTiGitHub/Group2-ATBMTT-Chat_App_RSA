@@ -29,7 +29,6 @@ const UserProfile: React.FC = ({ }: any) => {
         uploadUserAvatar,
         getAvatarSrc,
         updateUserInfo,
-        // getCurrentLoginUser,
         isLoading
     } = accountStore;
 
@@ -45,10 +44,12 @@ const UserProfile: React.FC = ({ }: any) => {
                 avatar: imageSrc
             });
         }
+        else {
+            toast.error("Invalid avatar to set file");
+        }
     }
 
     async function handleFormSubmit(values: any) {
-        console.log("form values: ", values);
         const res = updateUserInfo(values);
         setCurrentLoginUser(res);
     }
@@ -56,8 +57,6 @@ const UserProfile: React.FC = ({ }: any) => {
     const [imagePath, setImagePath] = useState("");
 
     const currentUser = LocalStorage.getLoginUser();
-    console.log(currentUser);
-
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
         clipPath: 'inset(50%)',

@@ -133,7 +133,7 @@ public class UserController {
     }
 
     @PutMapping("/info")
-    public ResponseEntity<UserDTO> updateUserInfo(UserDTO dto) {
+    public ResponseEntity<UserDTO> updateUserInfo(@RequestBody UserDTO dto) {
         UserDTO res = userService.updateUserInfo(dto);
         if (res != null) return new ResponseEntity<UserDTO>(res, HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
