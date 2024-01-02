@@ -44,7 +44,7 @@ function ConversationListItem(props: any) {
     return "";
   }
 
-  console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);
+  // console.log("chosenRoom.participants.length: " + chosenRoom?.participants.length);
 
   const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
 
@@ -62,7 +62,7 @@ function ConversationListItem(props: any) {
       }
       if (chattingPerson && chattingPerson.avatar && chattingPerson.avatar != "") {
         const imageSrcPromise = getAvatarSrc(chattingPerson.avatar);
-        imageSrcPromise.then(function (data) {
+        imageSrcPromise.then(function (data) {          
           setImagePath(data);
         })
       }

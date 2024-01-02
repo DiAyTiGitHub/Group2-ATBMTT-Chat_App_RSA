@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import Toolbar from "../Toolbar/Toolbar";
 import Popup from "../Popup/Popup";
 import './InfoList.css';
@@ -10,12 +10,14 @@ import LocalStorage from "src/common/LocalStorage";
 import InfoListLoadingSkeleton from "./InfoListLoadingSkeleton";
 
 function InfoList() {
-    const { chatStore } = useStore();
+    const { chatStore, accountStore } = useStore();
 
     const {
         chosenRoom,
         isLoading
     } = chatStore;
+
+  const { getAvatarSrc } = accountStore;
 
     function renderRoomName() {
         if (!chosenRoom) return "No info";
@@ -32,13 +34,33 @@ function InfoList() {
         return chosenRoom.name;
     }
 
-    function renderAvatar() {
-        if (!chosenRoom || !chosenRoom?.avatar || chosenRoom?.avatar.trim() === '') {
-            return "https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg";
-        }
-        return chosenRoom?.avatar;
-    }
+    const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
 
+    function renderAvatar() {
+        if (chosenRoom?.participants && chosenRoom?.participants.length > 0 && chosenRoom?.participants.length === 2) {
+          const currentUser = LocalStorage.getLoginUser();
+          let chattingPerson = null;
+          for (let i = 0; i < chosenRoom?.participants.length; i++) {
+            const participant = chosenRoom?.participants[i];
+            if (participant.id !== currentUser.id) {
+              console.log("Avt người dùng khác: " + participant.avatar);
+              chattingPerson = participant;
+              break;
+            }
+        }
+        if (chattingPerson && chattingPerson.avatar && chattingPerson.avatar != "") {
+            const imageSrcPromise = getAvatarSrc(chattingPerson.avatar);
+            imageSrcPromise.then(function (data) {   
+                console.log("Data: "+data);
+                       
+              setImagePath(data);
+            })
+          }
+        }
+    }
+    
+    useEffect(renderAvatar,[])
+    
     return (
         <div className="info-list d-lg-flex">
             <Toolbar title="Info"></Toolbar>
@@ -53,7 +75,7 @@ function InfoList() {
                     )}
                     {chosenRoom && (
                         <>
-                            <img className="info-photo" src={renderAvatar()} alt=""></img>
+                            <img className="info-photo" src={imagePath} alt=""></img>
                             <div className="info-name"> {renderRoomName()} </div>
                             <div className="info-icons">
                                 <IconButton>
