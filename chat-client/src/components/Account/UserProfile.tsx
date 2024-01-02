@@ -83,6 +83,7 @@ const UserProfile: React.FC = ({ }: any) => {
         <Formik
             initialValues={currentLoginUser || currentUser}
             onSubmit={handleFormSubmit}
+            enableReinitialize
         >
             {({ values, handleChange, setFieldTouched, setFieldValue }) => {
                 const change = (name: any, e: any) => {

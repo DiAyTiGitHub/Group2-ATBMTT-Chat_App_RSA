@@ -30,7 +30,7 @@ function FiendItemCard(props: any) {
                     <h6 className="friendName">
                         {friend?.fullname ? (
                             <>
-                                {friend?.username} - ' ' {friend?.fullname}
+                                {friend?.username} - {friend?.fullname}
                             </>
                         ) : (
                             <>{friend?.username}</>
