@@ -18,8 +18,8 @@ function ConversationList() {
   return (
     <div>
       <Toolbar title="Chat">
-          <ConversationSearch />
-        </Toolbar>
+        <ConversationSearch />
+      </Toolbar>
       <div className="conversation-list flex-column">
         <div className="conversationListItemWrapper">
           {

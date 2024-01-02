@@ -1,6 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 import { toast } from 'react-toastify';
-import { getAllFriend, getAvatarURL, updateUserInfo, uploadUserAvatar } from 'src/services/UserService';
+import { 
+  getAllFriend, 
+  getAvatarURL, 
+  updateUserInfo, 
+  uploadUserAvatar,
+  getCurrentLoginUser 
+} from 'src/services/UserService';
 
 class AccountStore {
   friendList = [];
@@ -24,6 +30,17 @@ class AccountStore {
       toast.error("Something went wrong :(");
     }
   }
+
+  // getCurrentLoginUser = async () => {
+  //   try{
+  //     const data = await getCurrentLoginUser();
+  //     // toast.success("getUser")
+  //     console.log(data);
+  //     return data;
+  //   } catch (error){
+  //     toast.error("Something went wrong :(");
+  //   }
+  // }
 
   updateUserInfo = async (userDTO: any) => {
     try {
