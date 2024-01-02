@@ -34,7 +34,7 @@ function FriendsModal(props: any) {
             >
             <Box sx={{...style}}>
                 { 
-                    !usersList.filter(user => user.username != MY_USER_ID).filter((user1 =>  !currentFriends.some(user2 => user1.id == user2.id))) ?
+                    usersList.filter(user => user.username != MY_USER_ID).filter((user1 =>  !currentFriends.some(user2 => user1.id == user2.id))) ?
                         <FriendsIndex></FriendsIndex>
                     :   <Typography variant="h4" sx={{textAlign: "center", p: 10, lineHeight: 2, fontWeight: 500}}>There's no one to discover here :(( </Typography>
                 }
