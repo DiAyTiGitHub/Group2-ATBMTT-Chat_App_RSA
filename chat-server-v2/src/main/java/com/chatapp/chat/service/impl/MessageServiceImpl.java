@@ -158,14 +158,17 @@ public class MessageServiceImpl implements MessageService {
         Room roomEntity = roomRepository.findById(messageDTO.getRoom().getId()).orElse(null);
         if (roomEntity == null) return null;
 
-        // content is decrypted by room public key
-        RSAKey privateKey = roomEntity.getPrivateKey();
-        String decryptedContent = handleDecryptMessage(messageDTO.getContent(), new RSAKeyDTO(privateKey));
+        String decryptedContent = messageDTO.getContent();
+        // content is decrypted by room public key if this message is private for chat
+        if (messageDTO.getMessageType() == null) return null;
+        if (messageDTO.getMessageType().getName().equals("chat")) {
+            RSAKey privateKey = roomEntity.getPrivateKey();
+            decryptedContent = handleDecryptMessage(messageDTO.getContent(), new RSAKeyDTO(privateKey));
+        }
 
         Message messageEntity = new Message();
         messageEntity.setRoom(roomEntity);
         messageEntity.setContent(decryptedContent);
-        if (messageDTO.getMessageType() == null) return null;
         MessageType messageTypeEntity = messageTypeService.getMessageTypeEntityByName(messageDTO.getMessageType().getName());
         if (messageTypeEntity == null) {
             setupDataService.setupData();
@@ -198,10 +201,15 @@ public class MessageServiceImpl implements MessageService {
         for (User user : users) {
             if (currentUser.getId() != user.getId()) {
                 RSAKey publicKey = user.getPublicKey();
-                String encryptedMessage = handleEncryptMessage(intactContent, new RSAKeyDTO(publicKey));
+
+                String encryptedMessage = intactContent;
+                if (resDto.getMessageType().getName().equals("chat"))
+                    encryptedMessage = handleEncryptMessage(intactContent, new RSAKeyDTO(publicKey));
+
                 resDto.setContent(encryptedMessage);
                 for (MessageDTO messageToUser : resDto.getRoom().getMessages()) {
-                    messageToUser.setContent(handleEncryptMessage(messageToUser.getContent(), new RSAKeyDTO(publicKey)));
+                    if (messageToUser.getMessageType().getName().equals("chat"))
+                        messageToUser.setContent(handleEncryptMessage(messageToUser.getContent(), new RSAKeyDTO(publicKey)));
                 }
                 simpMessagingTemplate.convertAndSendToUser(user.getId().toString(), "/privateMessage", resDto);
             }

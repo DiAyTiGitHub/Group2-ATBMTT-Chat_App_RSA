@@ -354,7 +354,12 @@ public class RoomServiceImpl implements RoomService {
         res.setParticipants(getAllJoinedUsersByRoomId(res.getId()));
 
         //notify other users that an user had left this conversation
-        
+        MessageDTO leftMessageDto = new MessageDTO();
+        leftMessageDto.setRoom(res);
+        leftMessageDto.setContent(currentUser.getUsername() + " left this conversation");
+        leftMessageDto.setUser(new UserDTO(currentUser));
+        leftMessageDto.setMessageType(messageTypeService.getMessageTypeByName("left"));
+        messageService.sendPrivateMessage(leftMessageDto);
 
         return res;
     }
@@ -383,8 +388,16 @@ public class RoomServiceImpl implements RoomService {
             return null;
 
         RoomDTO response = new RoomDTO(updatedRoom);
-        response.setParticipants(getAllJoinedUsersByRoomId(updatedRoom.getId()));
 
+        //notify other users that an user had joined this conversation
+        MessageDTO joinMessageDto = new MessageDTO();
+        joinMessageDto.setRoom(response);
+        joinMessageDto.setContent(currentLoginUser.getUsername()+ " added "+ newUser.getUsername() + " to this conversation");
+        joinMessageDto.setUser(new UserDTO(newUser));
+        joinMessageDto.setMessageType(messageTypeService.getMessageTypeByName("join"));
+        messageService.sendPrivateMessage(joinMessageDto);
+
+        response.setParticipants(getAllJoinedUsersByRoomId(updatedRoom.getId()));
         return response;
     }
 }

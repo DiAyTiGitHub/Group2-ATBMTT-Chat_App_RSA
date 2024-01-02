@@ -20,17 +20,16 @@ function Message(props: any) {
   const { rsaDecrypt } = chatStore;
   const { getAvatarSrc } = accountStore;
   const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
-  
-  
-  
+
+
+
   function renderPhoto() {
     if (photo && photo != "") {
       const imageSrcPromise = getAvatarSrc(photo);
       imageSrcPromise.then(function (data) {
-        console.log("Photo: "+data);
-          setImagePath(data);
-        })
-      }
+        setImagePath(data);
+      });
+    }
   }
 
   useEffect(renderPhoto, [])
@@ -47,23 +46,23 @@ function Message(props: any) {
     >
       {type == "notification" && (
         <div className="notification">
-          {format(parseISO(sendDate), "do MMMM yyyy")} <br/>
+          {format(parseISO(sendDate), "do MMMM yyyy")} <br />
           {data}
         </div>
       )}
 
       {type == "join" && (
         <div className="notification">
-          {author} has joined
+          {data}
         </div>
       )}
 
       {type == "left" && (
         <div className="notification">
-          {author} has left
+          {data}
         </div>
       )}
-      
+
       {type == "chat" && (
         <>
           {startsSequence && <div className="username">{author}</div>}
@@ -79,7 +78,7 @@ function Message(props: any) {
           </div>
         </>
       )}
-      
+
     </div>
   );
 }
