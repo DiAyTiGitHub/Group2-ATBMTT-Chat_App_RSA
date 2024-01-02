@@ -95,18 +95,29 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO updateRoom(RoomDTO dto) {
+        if (!isInRoomChat(dto.getId())) return null;
+
         if (dto == null) return null;
         if (!isInRoomChat(dto.getId())) return null;
 
         Room entity = roomRepository.findById(dto.getId()).orElse(null);
         if (entity == null) return null;
 
-        entity.setCode(dto.getCode());
-        entity.setAvatar(dto.getAvatar());
-        entity.setColor(dto.getColor());
-        entity.setName(dto.getName());
-        entity.setDescription(dto.getDescription());
-        entity.setCreateDate(new Date());
+        if (dto.getCode() != null)
+            entity.setCode(dto.getCode());
+
+        if (dto.getAvatar() != null)
+            entity.setAvatar(dto.getAvatar());
+
+        if (dto.getColor() != null)
+            entity.setColor(dto.getColor());
+
+        if (dto.getName() != null)
+            entity.setName(dto.getName());
+
+        if (dto.getDescription() != null)
+            entity.setDescription(dto.getDescription());
+
         if (dto.getRoomType() != null && dto.getRoomType().getId() != entity.getRoomType().getId()) {
             RoomType roomType = roomTypeService.getRoomTypeEntityById(dto.getRoomType().getId());
             if (roomType == null) roomType = roomTypeService.getRoomTypeEntityByName(dto.getRoomType().getName());

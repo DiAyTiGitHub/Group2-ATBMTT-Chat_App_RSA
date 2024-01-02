@@ -111,8 +111,8 @@ const UserProfile: React.FC = ({ }: any) => {
                                         name="gender"
                                         value={(viewingProfile?.gender == null ? "" : (viewingProfile?.gender ? "1" : "0"))}
                                     >
-                                        <FormControlLabel value="1" control={<Radio />} label="Male" disabled />
-                                        <FormControlLabel value="0" control={<Radio />} label="Female" disabled />
+                                        <FormControlLabel value={true} control={<Radio />} label="Male" disabled />
+                                        <FormControlLabel value={false} control={<Radio />} label="Female" disabled />
                                     </RadioGroup>
                                 </Grid>
                             </Grid>

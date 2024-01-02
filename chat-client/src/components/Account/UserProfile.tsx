@@ -22,6 +22,7 @@ import { Field, Form, Formik } from "formik";
 // import { AvatarLoadingSkeleton, InfoLoadingSkeleton } from "./UserProfileLoadingSkeleton";
 import { AvatarLoadingSkeleton, InfoLoadingSkeleton } from "./UserProfileLoadingSkeleton";
 import { toast } from "react-toastify";
+import UpdateIcon from '@mui/icons-material/Update';
 
 const UserProfile: React.FC = ({ }: any) => {
     const { accountStore, authStore } = useStore();
@@ -29,7 +30,6 @@ const UserProfile: React.FC = ({ }: any) => {
         uploadUserAvatar,
         getAvatarSrc,
         updateUserInfo,
-        // getCurrentLoginUser,
         isLoading
     } = accountStore;
 
@@ -45,10 +45,12 @@ const UserProfile: React.FC = ({ }: any) => {
                 avatar: imageSrc
             });
         }
+        else {
+            toast.error("Invalid avatar to set file");
+        }
     }
 
     async function handleFormSubmit(values: any) {
-        console.log("form values: ", values);
         const res = updateUserInfo(values);
         setCurrentLoginUser(res);
     }
@@ -56,8 +58,6 @@ const UserProfile: React.FC = ({ }: any) => {
     const [imagePath, setImagePath] = useState("");
 
     const currentUser = LocalStorage.getLoginUser();
-    console.log(currentUser);
-
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
         clipPath: 'inset(50%)',
@@ -83,6 +83,7 @@ const UserProfile: React.FC = ({ }: any) => {
         <Formik
             initialValues={currentLoginUser || currentUser}
             onSubmit={handleFormSubmit}
+            enableReinitialize
         >
             {({ values, handleChange, setFieldTouched, setFieldValue }) => {
                 const change = (name: any, e: any) => {
@@ -189,6 +190,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                             </CardContent>
                                             <CardActions className="w-100 flex justify-right">
                                                 <Button variant="contained" type="submit">
+                                                    <UpdateIcon className="mr-2" />
                                                     Save details
                                                 </Button>
                                             </CardActions>
