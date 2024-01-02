@@ -5,13 +5,15 @@ import {
   getAvatarURL,
   updateUserInfo,
   uploadUserAvatar,
-  addFriendRequests
+  addFriendRequests,
+  getCurrentLoginUser
 } from 'src/services/UserService';
 
 class AccountStore {
   friendList = [];
-  isLoading = true;
   addFriendRequests = [];
+  currentUser = null;
+  isLoading = true;
 
   setIsLoading = (state: boolean) => {
     if (this.isLoading != state)
@@ -20,6 +22,15 @@ class AccountStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  getCurrentUser = async () => {
+    try{
+      const {data} = await getCurrentLoginUser();
+      this.currentUser = data;     
+    }catch(error){
+      toast.error("Something went wrong :(");
+    }
   }
 
   getAllFriends = async () => {

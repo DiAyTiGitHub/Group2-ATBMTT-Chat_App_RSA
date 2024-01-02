@@ -30,6 +30,8 @@ const UserProfile: React.FC = ({ }: any) => {
         uploadUserAvatar,
         getAvatarSrc,
         updateUserInfo,
+        getCurrentUser,
+        currentUser,
         isLoading
     } = accountStore;
 
@@ -53,13 +55,13 @@ const UserProfile: React.FC = ({ }: any) => {
     async function handleFormSubmit(values: any) {
         const res = updateUserInfo(values);
         console.log(values);
-        
         setCurrentLoginUser(res);
     }
 
     const [imagePath, setImagePath] = useState("");
-
-    const currentUser = LocalStorage.getLoginUser();
+    console.log(currentUser?.username);
+    
+    // const currentUser = LocalStorage.getLoginUser();
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
         clipPath: 'inset(50%)',
@@ -71,6 +73,7 @@ const UserProfile: React.FC = ({ }: any) => {
         whiteSpace: 'nowrap',
         width: 1,
     });
+    
 
     useEffect(function () {
         if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "") {
@@ -79,11 +82,12 @@ const UserProfile: React.FC = ({ }: any) => {
                 setImagePath(data);
             })
         }
+        getCurrentUser();
     }, []);
 
     return (
         <Formik
-            initialValues={currentLoginUser || currentUser}
+            initialValues={currentUser}
             onSubmit={handleFormSubmit}
             enableReinitialize
         >
@@ -153,7 +157,7 @@ const UserProfile: React.FC = ({ }: any) => {
                                                             label="username"
                                                             fullWidth
                                                             disabled
-                                                            value={values.username || ""}
+                                                            value={values?.username || ""}
                                                         />
                                                     </Grid>
                                                     <Grid xs={12} md={6}>
@@ -171,17 +175,17 @@ const UserProfile: React.FC = ({ }: any) => {
                                                             name="address"
                                                             label="address"
                                                             fullWidth
-                                                            value={values.address || ""}
+                                                            value={values?.address || ""}
                                                             placeholder="Not have yet"
                                                             onChange={change.bind(null, "address")}
                                                         />
                                                     </Grid>
                                                     <Grid xs={12} md={6}>
-                                                        <h6>Gender: {(currentUser.gender == null ? "" : (currentUser.gender ? "Male" : "Female"))}</h6>
+                                                        <h6>Gender: {(values?.gender == null ? "" : (values?.gender ? "Male" : "Female"))}</h6>
                                                         <RadioGroup
                                                             row
                                                             name="gender"
-                                                            value={values.gender || ""}
+                                                            value={values?.gender || ""}
                                                             onChange={handleChange}
                                                         >
                                                             <FormControlLabel value="1" control={<Radio />} label="Male" />
