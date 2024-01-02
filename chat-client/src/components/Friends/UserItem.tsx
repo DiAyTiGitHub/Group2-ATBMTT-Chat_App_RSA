@@ -284,7 +284,7 @@ function UserItem({ userInfo }: any) {
         // </div>
         <div>
         {MY_USER_ID != userInfo.username && (
-            <Card sx={{ width: 300 }}>
+            <Card sx={{ width: 400, height: 350 }}>
                 <div>
                     <Typography level="title-lg">
                         {userInfo.username}    
@@ -309,7 +309,7 @@ function UserItem({ userInfo }: any) {
                     size="md"
                     color="primary"
                     aria-label="Explore Bahamas Islands"
-                    sx={{ width:"100%", alignSelf: 'center', fontWeight: 600 }}
+                    sx={{ width:"100%", alignSelf: 'center', fontWeight: 600}}
                     onClick={handleClickButton}
                     >
                         { friendstatus }
