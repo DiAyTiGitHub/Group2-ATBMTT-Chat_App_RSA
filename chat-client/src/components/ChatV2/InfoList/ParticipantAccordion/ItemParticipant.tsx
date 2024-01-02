@@ -27,7 +27,7 @@ function ItemParticipant(props: any) {
     useEffect(renderAvatar, []);
 
     return (
-        <div className="flex-center py-2 px-4 justify-left list-item" onClick={() => navigate(`/user-profile?userId=${participant?.id}`)}>
+        <div className="flex-center py-2 px-4 justify-left list-item m-1" onClick={() => navigate(`/user-profile?userId=${participant?.id}`)}>
             <img className="participant-photo" src={imagePath} alt=""/>
             <div className="participant-info flex-1">
                 <h1 className="participant-title">{participant?.username}</h1>

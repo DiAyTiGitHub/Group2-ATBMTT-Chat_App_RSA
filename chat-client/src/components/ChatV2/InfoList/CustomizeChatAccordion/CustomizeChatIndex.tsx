@@ -28,9 +28,9 @@ function CustomizeChatIndex(props: any) {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                    style={{marginTop: "10px", marginBottom: "10px", minHeight: "0"}}
+                    style={{ minHeight: "0"}}
                 >
-                    <Typography className='' style={{margin: 0}}>
+                    <Typography>
                         Customzie Chat
                     </Typography>
                 </AccordionSummary>
