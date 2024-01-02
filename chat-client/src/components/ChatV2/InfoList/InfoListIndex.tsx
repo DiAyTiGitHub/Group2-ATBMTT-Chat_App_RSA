@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect } from "react";
 import Toolbar from "../Toolbar/Toolbar";
 import Popup from "../Popup/Popup";
 import './InfoListStyles.scss';
@@ -8,6 +8,7 @@ import InfoListLoadingSkeleton from "./InfoListLoadingSkeleton";
 import CustomizeChatIndex from "./CustomizeChatAccordion/CustomizeChatIndex";
 import ParticipantIndex from "./ParticipantAccordion/ParticipantIndex";
 import OtherActionsIndex from "./OtherActionsAccordion/OtherActionsIndex";
+import { Accordion } from "@mui/material";
 
 function InfoList() {
     const { chatStore, accountStore, authStore } = useStore();
@@ -17,7 +18,7 @@ function InfoList() {
         isLoading,
     } = chatStore;
 
-    const {currentLoginUser}= authStore;
+    const { currentLoginUser } = authStore;
 
     const { getAvatarSrc } = accountStore;
 
@@ -60,6 +61,13 @@ function InfoList() {
 
     useEffect(renderAvatar, []);
 
+    const [expanded, setExpanded] = React.useState<string | false>(false);
+
+    const handleChangeStateAccordion =
+        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+            setExpanded(isExpanded ? panel : false);
+        };
+
     return (
         <div className="info-list d-lg-flex">
             <Toolbar title="Info"></Toolbar>
@@ -79,15 +87,15 @@ function InfoList() {
                             <div className="info-name"> {renderRoomName()} </div>
 
                             <div className="px-1 flex-center w-100">
-                                <CustomizeChatIndex/>
+                                <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
                             </div>
 
                             <div className="px-1 flex-center w-100">
-                                <ParticipantIndex/>
+                                <ParticipantIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
                             </div>
 
                             <div className="px-1 flex-center w-100">
-                                <OtherActionsIndex/>
+                                <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
                             </div>
 
                             {/* <div className="info-icons">

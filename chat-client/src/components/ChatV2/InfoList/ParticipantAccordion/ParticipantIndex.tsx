@@ -11,13 +11,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button } from "@mui/material";
 import ItemParticipant from './ItemParticipant';
 
-function ParticipantIndex() {
+function ParticipantIndex(props: any) {
+    const { expanded, handleChangeStateAccordion } = props;
+
     const { chatStore } = useStore();
 
     const { chosenRoom } = chatStore;
 
     return (
-        <Accordion className="w-100">
+        <Accordion
+            className="w-100"
+            expanded={expanded === 'panel2'}
+            onChange={handleChangeStateAccordion('panel2')}
+        >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"

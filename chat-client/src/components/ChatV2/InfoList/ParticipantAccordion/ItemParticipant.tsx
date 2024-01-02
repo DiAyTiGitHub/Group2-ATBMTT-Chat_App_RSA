@@ -25,11 +25,11 @@ function ItemParticipant(props: any) {
 
     return (
         <div className="flex-center py-2 px-4 justify-left">
-            <img className="conversation-photo" src={imagePath} alt="" />
-            <div className="conversation-info flex-1">
-                <h1 className="conversation-title"></h1>
+            <img className="participant-photo" src={imagePath} alt="" />
+            <div className="participant-info flex-1">
+                <h1 className="participant-title"></h1>
             </div>
-            <div className="conversation-timestamp">
+            <div className="participant-timestamp">
                 <Tooltip title='View this user profile' enterDelay={100} leaveDelay={100} arrow>
                     <AccountCircleIcon></AccountCircleIcon>
                 </Tooltip>
