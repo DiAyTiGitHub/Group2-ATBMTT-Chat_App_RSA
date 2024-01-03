@@ -4,7 +4,6 @@ import LocalStorage from 'src/common/LocalStorage';
 import { useStore } from 'src/stores';
 import { observer } from 'mobx-react';
 import { format, parseISO } from 'date-fns';
-import RSAService from 'src/components/Auth/RSAService';
 
 function ConversationListItem(props: any) {
   const { authStore, chatStore, accountStore } = useStore();
@@ -60,23 +59,25 @@ function ConversationListItem(props: any) {
           setImagePath(data);
         })
       }
+      else {
+        setImagePath("https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg");
+      }
     }
 
     if (participants && participants.length > 0 && participants.length >= 3) {
-      if (chosenRoom?.avatar && chosenRoom.avatar.length > 0) {
-        const imageSrcPromise = getAvatarSrc(chosenRoom.avatar);
+      if (avatar && avatar.length > 0) {
+        const imageSrcPromise = getAvatarSrc(avatar);
         imageSrcPromise.then(function (data) {
           setImagePath(data);
         })
       }
       else {
-        console.log("catched")
         setImagePath("https://cdn.pixabay.com/photo/2020/05/29/13/26/icons-5235125_1280.png");
       }
     }
   }
 
-  useEffect(renderAvatar, []);
+  useEffect(renderAvatar, [id, avatar]);
 
   function renderSentDate() {
     if (messages && messages.length > 0) {

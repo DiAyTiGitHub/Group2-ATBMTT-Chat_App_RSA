@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import LocalStorage from "src/common/LocalStorage";
-import { getAllJoinedRooms } from "src/services/UserService";
+import { getAllJoinedRooms, getAvatarURL } from "src/services/UserService";
 import {
   searchJoinedRooms,
   createGroupChat,
@@ -11,7 +11,8 @@ import {
   unjoinAnGroupChat,
   addSingleUserIntoGroupChat,
   getListFriendNotInRoom,
-  addMultipleUsersIntoGroupChat
+  addMultipleUsersIntoGroupChat,
+  uploadRoomAvatar
 } from "src/services/RoomService";
 import RSAService from "../Auth/RSAService";
 
@@ -157,7 +158,7 @@ class ChatStore {
         this.joinedRooms[i] = { ...currentRoom };
         isExisted = i;
 
-        if (currentRoom.id === this.chosenRoom.id) {
+        if (currentRoom?.id === this?.chosenRoom?.id) {
           this.chosenRoom = { ...currentRoom };
         }
       }
@@ -247,7 +248,7 @@ class ChatStore {
       }
 
       const { data } = await createGroupChat(room);
-      console.log("new group chat: ", data);
+      // console.log("new group chat: ", data);
       await this.getAllJoinedRooms();
 
       this.setIsLoading(false);
@@ -282,7 +283,7 @@ class ChatStore {
 
       console.log("updated group chat: ", data);
 
-      await this.getAllJoinedRooms();
+      // await this.getAllJoinedRooms();
       this.setIsLoading(false);
 
       return data;
@@ -396,7 +397,44 @@ class ChatStore {
     }
   }
 
+  uploadRoomAvatar = async (image: any) => {
+    try {
+      this.setIsLoading(true);
 
+      const { data } = await uploadRoomAvatar(image, this.chosenRoom?.id);
+      console.log("image path: " + data);
+      const imageSrc = await this.getAvatarSrc(data);
+
+      await this.getAllJoinedRooms();
+      
+      this.setIsLoading(false);
+      
+      return imageSrc;
+    } catch (error) {
+      console.error('Error updating user info in AccountStore:', error);
+      // Xử lý lỗi nếu cần thiết
+      throw error;
+    }
+  }
+
+  getAvatarSrc = async (avatarUrl: string) => {
+    if (!avatarUrl) return;
+
+    try {
+      const response = await getAvatarURL(avatarUrl);
+
+      // Convert the binary data to a base64 string
+      const base64Image = btoa(
+        new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+
+      // Set the base64 string as the source for the img element
+      return (`data:${response.headers['content-type']};base64,${base64Image}`);
+    } catch (error) {
+      console.error('Error getting avatar:', error);
+      // Handle errors as needed
+    }
+  }
 }
 
 export default ChatStore;

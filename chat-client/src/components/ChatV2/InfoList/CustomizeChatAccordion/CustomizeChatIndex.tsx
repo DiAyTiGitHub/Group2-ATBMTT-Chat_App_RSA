@@ -7,7 +7,6 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button } from "@mui/material";
-import InfoListModal from '../InfoListModal';
 import { useState } from 'react';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';

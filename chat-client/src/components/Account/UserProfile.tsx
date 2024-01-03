@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { observer } from 'mobx-react';
 import { useStore } from 'src/stores';
-import LocalStorage from 'src/common/LocalStorage';
 import {
     Box,
     Button,
@@ -35,7 +34,6 @@ const UserProfile: React.FC = ({ }: any) => {
         isLoading
     } = accountStore;
 
-    // const isLoading = false;
     const { currentLoginUser, setCurrentLoginUser } = authStore;
     async function handleChangeImage(event: any) {
         if (event.target.files && event.target.files[0]) {
@@ -54,12 +52,10 @@ const UserProfile: React.FC = ({ }: any) => {
 
     async function handleFormSubmit(values: any) {
         const res = updateUserInfo(values);
-        console.log(values);
         setCurrentLoginUser(res);
     }
 
     const [imagePath, setImagePath] = useState("");
-    console.log(currentUser?.username);
     
     // const currentUser = LocalStorage.getLoginUser();
     const VisuallyHiddenInput = styled('input')({
