@@ -195,20 +195,23 @@ class ChatStore {
 
   joinedRooms = [];
   getAllJoinedRooms = async () => {
+    if (!this.stompClient) {
+      toast.error(
+        "You haven't connected to chat server! Please login again!"
+      );
+      return;
+    }
+
     this.joinedRooms = [];
     this.chosenRoom = null;
 
     try {
+
       const { data } = await getAllJoinedRooms();
       this.joinedRooms = data;
       this.chosenRoom = data[0];
 
-      if (!this.stompClient) {
-        toast.error(
-          "You haven't connected to chat server! Please login again!"
-        );
-        return;
-      }
+
     } catch (error) {
       console.log(error);
       toast.error("Load conversation fail, please try again!");
@@ -237,8 +240,9 @@ class ChatStore {
   };
 
   createGroupChat = async (room: any) => {
+    toast.info("Please wait, we're handling your request!");
     try {
-      this.setIsLoading(false);
+      this.setIsLoading(true);
       if (!this.stompClient) {
         toast.error(
           "You haven't connected to chat server! Please login again!"
@@ -384,8 +388,6 @@ class ChatStore {
 
       const { data } = await addMultipleUsersIntoGroupChat(userIds, this.chosenRoom?.id);
 
-      console.log("updated group chat: ", data);
-
       await this.getAllJoinedRooms();
       this.setIsLoading(false);
 
@@ -406,9 +408,9 @@ class ChatStore {
       const imageSrc = await this.getAvatarSrc(data);
 
       await this.getAllJoinedRooms();
-      
+
       this.setIsLoading(false);
-      
+
       return imageSrc;
     } catch (error) {
       console.error('Error updating user info in AccountStore:', error);

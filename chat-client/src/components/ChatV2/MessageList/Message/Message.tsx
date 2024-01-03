@@ -4,7 +4,7 @@ import { format, parseISO } from "date-fns";
 import { observer } from "mobx-react";
 import { useStore } from "src/stores";
 
-function lightOrDark(color) {
+function lightOrDark(color:any) {
 
   var r: any, g: any, b: any, hsp: any;
 

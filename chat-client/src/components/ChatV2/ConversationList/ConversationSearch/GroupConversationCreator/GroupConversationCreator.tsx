@@ -34,6 +34,7 @@ function GroupConversationCreator(props: any) {
   const [isUpdating, setIsUpdating] = useState(false);
   async function handleCreateNewGroupChat() {
     setIsUpdating(true);
+    setIsLoading(true);
 
     const sendData = {
       name: conversationName,
@@ -42,14 +43,16 @@ function GroupConversationCreator(props: any) {
 
     if (sendData.joinUserIds.length < 2) {
       toast.info("Please choose at least 2 other people to use this feature");
+      setIsUpdating(false);
+      setIsLoading(false);
       return;
     }
 
-
-    const { data } = await createGroupChat(sendData);
+    const data = await createGroupChat(sendData);
     toast.success("Create group chat " + data.name + " successfully");
 
     setIsUpdating(false);
+    setIsLoading(false);
     handleClose();
   }
 
@@ -92,6 +95,7 @@ function GroupConversationCreator(props: any) {
             onChange={handleChangeConversationName}
             value={conversationName}
             className="w-100 py-1"
+            disabled={isLoading || isUpdating}
           />
 
           <List dense sx={{ width: "100%" }} className="flex-column">
@@ -131,6 +135,7 @@ function GroupConversationCreator(props: any) {
 
             <Button
               variant="contained"
+              color="success"
               onClick={handleCreateNewGroupChat}
               disabled={isUpdating}
             >
