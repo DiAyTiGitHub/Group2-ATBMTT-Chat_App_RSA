@@ -69,6 +69,25 @@ html {
     }
 }
 
+@for $i from 0 through 20{
+    $value: $i * 5px;
+    .brtr-#{$i} {
+        border-top-right-radius: $value !important;
+    }
+    .brtl-#{$i} {
+        border-top-left-radius: $value !important;
+    }
+    .brbr-#{$i} {
+        border-bottom-right-radius: $value !important;
+    }
+    .brbl-#{$i} {
+        border-bottom-left-radius: $value !important;
+    }
+    .br-#{$i} {
+        border-radius: $value !important;
+    }    
+}
+
 .m-auto {
     margin: auto !important;
 }
@@ -324,3 +343,4 @@ html {
 .max-z-index{
     z-index: 10000;
 }
+
