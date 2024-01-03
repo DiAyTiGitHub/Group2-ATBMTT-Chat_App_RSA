@@ -12,10 +12,13 @@ import { Button } from "@mui/material";
 import InfoListModal from '../InfoListModal';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ConfirmLeavePopup from './ConfirmLeavePopup';
+import AddNewParticipantPopup from './AddNewParticipantPopup';
 
 function ParticipantIndex(props: any) {
     const { expanded, handleChangeStateAccordion } = props;
-    const [openModal, setOpenModal] = useState(false);
+    const [confirmLeave, setConfirmLeave] = useState(false);
+    const [addNewParticipants, setAddNewParticipants] = useState(false);
 
     return (
         <>
@@ -33,21 +36,31 @@ function ParticipantIndex(props: any) {
                     <Typography>Other Actions</Typography>
                 </AccordionSummary>
                 <AccordionDetails className="m-1 p-0">
-                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
+                    <div className='list-item w-100' onClick={() => { setAddNewParticipants(true) }}>
                         <PersonAddIcon className='mr-2' />
                         Add new participant
                     </div>
-                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
+                    <div className='list-item w-100' onClick={() => { setConfirmLeave(true) }}>
                         <LogoutIcon className='mr-2' />
                         Leave this conversation
                     </div>
                 </AccordionDetails>
             </Accordion>
-            {openModal && (
-                <InfoListModal
-                    open={openModal}
+
+            {confirmLeave && (
+                <ConfirmLeavePopup
+                    open={confirmLeave}
                     handleClose={function () {
-                        setOpenModal(false);
+                        setConfirmLeave(false);
+                    }}
+                />
+            )}
+
+            {addNewParticipants && (
+                <AddNewParticipantPopup
+                    open={addNewParticipants}
+                    handleClose={function () {
+                        setAddNewParticipants(false);
                     }}
                 />
             )}

@@ -35,7 +35,7 @@ function ChooseUserItem(props: any) {
 
     return (
         <ListItem
-            className="p-0"
+            className="p-0 br-10"
             secondaryAction={
                 <Checkbox
                     edge="end"
@@ -47,7 +47,7 @@ function ChooseUserItem(props: any) {
             disablePadding
         >
             <ListItemButton
-                className="p-0 py-2"
+                className="p-2 py-2"
             >
                 <ListItemAvatar>
                     <Avatar
