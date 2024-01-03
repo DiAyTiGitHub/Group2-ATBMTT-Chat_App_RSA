@@ -6,6 +6,7 @@ import { useStore } from "src/stores";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Field, Form, Formik } from "formik";
 import { toast } from "react-toastify";
+import { HexColorPicker } from "react-colorful";
 
 function ChangeConversationNamePopup(props: any) {
     const { open, handleClose } = props;
@@ -14,19 +15,23 @@ function ChangeConversationNamePopup(props: any) {
     const { chosenRoom, updateRoomInfo } = chatStore;
 
     const [isUpdating, setIsUpdating] = useState(false);
+    const [color, setColor] = useState(chosenRoom?.color);
+
+    const ColorPicker = (props: any) => {
+        // const [color, setColor] = useState(chosenRoom?.color);
+        return <HexColorPicker color={props.color} onChange={setColor} />
+    };
+    
     async function handleChangeConversationTheme(values: any) {
         setIsUpdating(true);
         toast.info("Please await! We're updating this conversation");
 
         await updateRoomInfo(values);
-        // console.log("submit values: ", values)
+        console.log("submit values: ", values)
         toast.success("This conversation is updated!");
         setIsUpdating(false);
         handleClose();
     }
-
-    console.log("chosenRoom: ", chosenRoom)
-
 
     return (
 
@@ -55,7 +60,7 @@ function ChangeConversationNamePopup(props: any) {
                                 </Button>
                             </div>
                             <div className="flex-center w-100 p-3">
-                                <Field
+                                {/* <Field
                                     as={TextField}
                                     label="New conversation theme"
                                     name="color"
@@ -63,7 +68,15 @@ function ChangeConversationNamePopup(props: any) {
                                     fullWidth
                                     required
                                     disabled={isUpdating}
-                                />
+                                /> */}
+                                <Field 
+                                    name="color"
+                                    as={ColorPicker}
+                                    color={color}
+                                ></Field>
+                                <div className="value" style={{ borderLeftColor: color }}>
+                                    Current color is {color}
+                                </div>
                             </div>
 
                             <div className='flex-center justify-right p-3'>
