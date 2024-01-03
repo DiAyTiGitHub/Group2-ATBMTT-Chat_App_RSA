@@ -7,14 +7,22 @@ import SendTimeExtensionIcon from "@mui/icons-material/SendTimeExtension";
 import ClearIcon from "@mui/icons-material/Clear";
 import { toast } from "react-toastify";
 import "./GroupConversationCreator.css";
+import FaceBookCircularProgress from "src/common/FaceBookCircularProgress";
 function GroupConversationCreator(props: any) {
   const { open, handleClose } = props;
   const { friendsStore, chatStore } = useStore();
   const { allFriends, currentFriends } = friendsStore;
   const { createGroupChat } = chatStore;
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(function () {
-    allFriends();
+    setIsLoading(true);
+
+    allFriends()
+      .finally(function () {
+        setIsLoading(false);
+      })
   }, []);
 
   const [conversationName, setConversationName] = useState("");
@@ -23,20 +31,26 @@ function GroupConversationCreator(props: any) {
     setConversationName(value);
   }
 
-  function handleCreateNewGroupChat() {
+  const [isUpdating, setIsUpdating] = useState(false);
+  async function handleCreateNewGroupChat() {
+    setIsUpdating(true);
+
     const sendData = {
       name: conversationName,
       joinUserIds: joinUserIds,
     };
+
     if (sendData.joinUserIds.length < 2) {
       toast.info("Please choose at least 2 other people to use this feature");
       return;
     }
-    console.log("checking send data...", sendData);
-    createGroupChat(sendData).then(function (data) {
-      toast.success("Create group chat " + data.name + " successfully");
-      handleClose();
-    });
+
+
+    const { data } = await createGroupChat(sendData);
+    toast.success("Create group chat " + data.name + " successfully");
+
+    setIsUpdating(false);
+    handleClose();
   }
 
   const [joinUserIds, setJoinUserIds] = useState([]);
@@ -49,37 +63,12 @@ function GroupConversationCreator(props: any) {
       aria-describedby="modal-modal-description"
     >
       <Box className="modal-container w-80 ">
-        {/* <div
-          className="modalContainer w-full flex-center justify-between"
-          style={{ background: "#0047ab",borderRadius: "20px" }}
-        >
-            <div>
-
-            </div>
-          <Typography
-            className="p-3"
-            variant="h5"
-            sx={{ fontWeight: 800, color: "#fff" }}
-          >
-            Create new group chat
-          </Typography>
-          <Button
-            className="btnClose m-0 p-2 br-50p mw-unset"
-            sx={{ color: "#fff" }}
-            onClick={function () {
-              handleClose();
-            }}
-          >
-            <ClearIcon />
-          </Button>
-        </div> */}
         <div
-          className="modalContainer w-full flex-center justify-between"
-          style={{ background: "#0047ab", borderTopLeftRadius: "20px", borderTopRightRadius: "20px"}}
+          className=" w-full flex-center justify-between p-3"
+          style={{ background: "#0047ab", borderTopLeftRadius: "20px", borderTopRightRadius: "20px" }}
         >
           <div>
             <Typography
-              className="p-3"
               variant="h5"
               sx={{ fontWeight: 800, color: "#fff" }}
             >
@@ -94,7 +83,8 @@ function GroupConversationCreator(props: any) {
             <ClearIcon />
           </Button>
         </div>
-        <div className="modal-container-content">
+
+        <div className="modal-container-content p-3">
           <TextField
             id="standard-basic"
             label="Enter new conversation name..."
@@ -104,8 +94,14 @@ function GroupConversationCreator(props: any) {
             className="w-100 py-1"
           />
 
-          <List dense sx={{ width: "100%" }}>
-            {currentFriends.map((user, index) => {
+          <List dense sx={{ width: "100%" }} className="flex-column">
+            {isLoading && (
+              <div className="flex-center w-100">
+                <FaceBookCircularProgress />
+              </div>
+            )}
+
+            {!isLoading && currentFriends.map((user, index) => {
               const labelId = `checkbox-list-secondary-label-${index}`;
 
               return (
@@ -120,19 +116,24 @@ function GroupConversationCreator(props: any) {
             })}
           </List>
 
-          <div className="flex-center justify-right mt-2">
+          <div className="flex-center justify-right ">
             <Button
               variant="contained"
               onClick={function () {
                 handleClose();
               }}
               className="mr-2"
+              disabled={isUpdating}
             >
               <ClearIcon className="mr-2" />
               Cancel
             </Button>
 
-            <Button variant="contained" onClick={handleCreateNewGroupChat}>
+            <Button
+              variant="contained"
+              onClick={handleCreateNewGroupChat}
+              disabled={isUpdating}
+            >
               <SendTimeExtensionIcon className="mr-2" />
               Confirm
             </Button>
