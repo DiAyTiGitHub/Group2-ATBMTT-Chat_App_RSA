@@ -60,7 +60,7 @@ function InfoList() {
         }
     }
 
-    useEffect(renderAvatar, []);
+    useEffect(renderAvatar, [chosenRoom]);
 
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -87,7 +87,7 @@ function InfoList() {
                             <>
                                 <img className="info-photo" src={imagePath} alt=""></img>
                                 <div className="info-name"> {renderRoomName()} </div>
-                                <div className="w-100" style={{backgroundColor: "#DDDDDD"}}>
+                                <div className="w-100" style={{backgroundColor: "#f6f6f6"}}>
                                     <div className="flex-center w-100 pb-2 pt-2">
                                         <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
                                     </div>

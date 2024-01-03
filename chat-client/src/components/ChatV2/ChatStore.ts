@@ -4,7 +4,11 @@ import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import LocalStorage from "src/common/LocalStorage";
 import { getAllJoinedRooms } from "src/services/UserService";
-import { searchJoinedRooms, createGroupChat } from "src/services/RoomService";
+import {
+  searchJoinedRooms,
+  createGroupChat,
+  updateRoomInfo
+} from "src/services/RoomService";
 import RSAService from "../Auth/RSAService";
 
 class ChatStore {
@@ -242,6 +246,41 @@ class ChatStore {
     } catch (err) {
       console.log(err);
       toast.error("Create new group chat fail, please try again!");
+      throw new Error(err);
+    }
+  }
+
+  updateRoomInfo = async (room: any) => {
+
+    try {
+      this.setIsLoading(true);
+
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        return;
+      }
+
+      const incomingRoom = { ...this.chosenRoom };
+
+      if (room?.color) incomingRoom.color = room.color;
+      if (room?.name) incomingRoom.name = room.name;
+
+      const { data } = await updateRoomInfo(incomingRoom);
+
+      console.log("updated group chat: ", data);
+      this.chosenRoom.color = data.color;
+      this.chosenRoom.name = data.name;
+      this.chosenRoom = { ...this.chosenRoom };
+      console.log("final room chat: ", data);
+      await this.getAllJoinedRooms();
+      this.setIsLoading(false);
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Update this conversation info fail, please try again!");
       throw new Error(err);
     }
   }

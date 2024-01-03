@@ -12,10 +12,16 @@ import { useState } from 'react';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import PhotoIcon from '@mui/icons-material/Photo';
+import ChangeConversationNamePopup from './ChangeConversationNamePopup';
+import ChangeConversationAvatarPopup from './ChangeConversationAvatarPopup';
+import ChangeConversationThemePopup from './ChangeConversationThemePopup';
 
 function CustomizeChatIndex(props: any) {
     const { expanded, handleChangeStateAccordion } = props;
-    const [openModal, setOpenModal] = useState(false);
+
+    const [openChangeName, setOpenChangeName] = useState(false);
+    const [openChangeTheme, setOpenChangeTheme] = useState(false);
+    const [openChangeAvatar, setOpenChangeAvatar] = useState(false);
 
     return (
         <>
@@ -28,54 +34,55 @@ function CustomizeChatIndex(props: any) {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
-                    style={{ minHeight: "0"}}
+                    style={{ minHeight: "0" }}
                 >
                     <Typography>
                         Customzie Chat
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails className="m-1 p-0">
-                    {/* <button
-                        className="w-100 m-0 p-2"
-                        onClick={() => {setOpenModal(true)}}
-                    >
-                        Change conversation name
-                    </button>
-                    <button
-                        className="w-100 m-0 p-2"
-                        onClick={() => {setOpenModal(true)}}
-                    >
-                        Change conversation theme
-                    </button>
-                    <button
-                        className="w-100 m-0 p-2"
-                        onClick={() => {setOpenModal(true)}}
-                    >
-                        Change conversation photo
-                    </button> */}
-                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
-                        <BorderColorIcon className='mr-2'/>
+                    <div className='list-item w-100' onClick={() => { setOpenChangeName(true) }}>
+                        <BorderColorIcon className='mr-2' />
                         Change conversation name
                     </div>
-                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
-                        <TripOriginIcon className='mr-2' style={{color: "#1A8BDF"}}/>
+                    <div className='list-item w-100' onClick={() => { setOpenChangeTheme(true) }}>
+                        <TripOriginIcon className='mr-2' style={{ color: "#1A8BDF" }} />
                         Change conversation theme
                     </div>
-                    <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
-                        <PhotoIcon className='mr-2'/>
+                    <div className='list-item w-100' onClick={() => { setOpenChangeAvatar(true) }}>
+                        <PhotoIcon className='mr-2' />
                         Change conversation photo
                     </div>
                 </AccordionDetails>
             </Accordion>
 
-            {openModal && (
-                <InfoListModal
-                    open={openModal}
+            {openChangeName && (
+                <ChangeConversationNamePopup
+                    open={openChangeName}
                     handleClose={function () {
-                        setOpenModal(false);
+                        setOpenChangeName(false);
                     }}
                 />
             )}
+
+            {openChangeTheme && (
+                <ChangeConversationThemePopup
+                    open={openChangeTheme}
+                    handleClose={function () {
+                        setOpenChangeTheme(false);
+                    }}
+                />
+            )}
+
+            {openChangeAvatar && (
+                <ChangeConversationAvatarPopup
+                    open={openChangeAvatar}
+                    handleClose={function () {
+                        setOpenChangeAvatar(false);
+                    }}
+                />
+            )}
+
         </>
     );
 }

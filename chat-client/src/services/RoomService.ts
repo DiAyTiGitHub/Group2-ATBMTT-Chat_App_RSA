@@ -13,7 +13,7 @@ export function createGroupChat(room: any) {
     return axios.post(url, room);
 }
 
-export function updateGroupChat(room: any) {
+export function updateRoomInfo(room: any) {
     const url = API_PATH;
     return axios.put(url, room);
 }
