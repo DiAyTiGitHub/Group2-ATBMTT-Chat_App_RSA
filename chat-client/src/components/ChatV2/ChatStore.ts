@@ -266,6 +266,7 @@ class ChatStore {
 
       if (room?.color) incomingRoom.color = room.color;
       if (room?.name) incomingRoom.name = room.name;
+      if (room?.description) incomingRoom.description = room.description;
 
       const { data } = await updateRoomInfo(incomingRoom);
 
