@@ -5,6 +5,12 @@ import { getAllFriendOfUser, getUserById } from 'src/services/UserService';
 class AccountStore {
   friendList = [];
   viewingProfile = null;
+  isLoading = true;
+
+  setIsLoading = (state: boolean) => {
+    if (this.isLoading != state)
+      this.isLoading = state;
+  }
 
   constructor() {
     makeAutoObservable(this);

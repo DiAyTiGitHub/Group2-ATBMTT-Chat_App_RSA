@@ -14,8 +14,10 @@ function UserProfileIndex() {
     const navigate = useNavigate();
 
     const { userProfileStore, authStore } = useStore();
+
     const {
-        getUserById
+        getUserById,
+        setIsLoading
     } = userProfileStore;
 
     const { currentLoginUser } = authStore;
@@ -27,7 +29,11 @@ function UserProfileIndex() {
             navigate("/");
         }
         else {
-            getUserById(userId);
+            setIsLoading(true);
+            getUserById(userId)
+                .finally(() => {
+                    setIsLoading(false);
+                })
         }
     }, []);
 

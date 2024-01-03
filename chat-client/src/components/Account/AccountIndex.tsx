@@ -22,7 +22,6 @@ function AccountIndex() {
         setIsLoading,
         addFriendRequests
     } = accountStore;
-
     const { currentLoginUser } = authStore;
 
     useEffect(function () {
