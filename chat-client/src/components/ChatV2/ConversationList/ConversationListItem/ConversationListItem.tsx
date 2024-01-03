@@ -13,7 +13,7 @@ function ConversationListItem(props: any) {
   const currentUser = LocalStorage.getLoginUser();
 
   const { id, avatar, name, code, participants, messages } = props.room;
-  
+
   function renderConversationName() {
     if (!name || name.trim() === '') {
       const currentUser = LocalStorage.getLoginUser();
@@ -45,6 +45,7 @@ function ConversationListItem(props: any) {
   function renderAvatar() {
     if (participants && participants.length > 0 && participants.length === 2) {
       let chattingPerson = null;
+
       for (let i = 0; i < participants.length; i++) {
         const participant = participants[i];
         if (participant.id !== currentUser.id) {
@@ -52,11 +53,25 @@ function ConversationListItem(props: any) {
           break;
         }
       }
+
       if (chattingPerson && chattingPerson.avatar && chattingPerson.avatar != "") {
         const imageSrcPromise = getAvatarSrc(chattingPerson.avatar);
-        imageSrcPromise.then(function (data) {          
+        imageSrcPromise.then(function (data) {
           setImagePath(data);
         })
+      }
+    }
+
+    if (participants && participants.length > 0 && participants.length >= 3) {
+      if (chosenRoom?.avatar && chosenRoom.avatar.length > 0) {
+        const imageSrcPromise = getAvatarSrc(chosenRoom.avatar);
+        imageSrcPromise.then(function (data) {
+          setImagePath(data);
+        })
+      }
+      else {
+        console.log("catched")
+        setImagePath("https://cdn.pixabay.com/photo/2020/05/29/13/26/icons-5235125_1280.png");
       }
     }
   }
@@ -76,6 +91,7 @@ function ConversationListItem(props: any) {
   function handleChooseConversation() {
     setChosenRoom(props.room);
   }
+
   return (
     <div className={`conversation-list-item ${chosenRoom?.id === id && " conversation-list-item--chosen"}`} onClick={handleChooseConversation}>
       <img className="conversation-photo" src={imagePath} alt="" />

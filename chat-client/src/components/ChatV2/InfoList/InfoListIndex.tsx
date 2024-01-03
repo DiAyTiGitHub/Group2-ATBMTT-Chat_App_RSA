@@ -8,7 +8,7 @@ import InfoListLoadingSkeleton from "./InfoListLoadingSkeleton";
 import CustomizeChatIndex from "./CustomizeChatAccordion/CustomizeChatIndex";
 import ParticipantIndex from "./ParticipantAccordion/ParticipantIndex";
 import OtherActionsIndex from "./OtherActionsAccordion/OtherActionsIndex";
-import { Accordion } from "@mui/material";
+import { Accordion, Skeleton } from "@mui/material";
 import InfoListModal from "./InfoListModal";
 
 function InfoList() {
@@ -47,28 +47,52 @@ function InfoList() {
     }
 
     const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
-
+    const [imgSkeleton, setImageSkeleton] = useState(true);
     function renderAvatar() {
-        if (chosenRoom?.participants && chosenRoom?.participants.length > 0 && chosenRoom?.participants.length === 2) {
-            const currentUser = currentLoginUser;
-            let chattingPerson = null;
-            for (let i = 0; i < chosenRoom?.participants.length; i++) {
-                const participant = chosenRoom?.participants[i];
-                if (participant.id !== currentUser.id) {
-                    chattingPerson = participant;
-                    break;
+        setImageSkeleton(true);
+
+        if (chosenRoom) {
+            const { participants } = chosenRoom;
+
+            if (participants && participants.length > 0 && participants.length === 2) {
+                let chattingPerson = null;
+
+                for (let i = 0; i < participants.length; i++) {
+                    const participant = participants[i];
+                    if (participant.id !== currentLoginUser?.id) {
+                        chattingPerson = participant;
+                        break;
+                    }
+                }
+
+                if (chattingPerson && chattingPerson.avatar && chattingPerson.avatar != "") {
+                    const imageSrcPromise = getAvatarSrc(chattingPerson.avatar);
+                    imageSrcPromise.then(function (data) {
+                        setImagePath(data);
+                    })
+                }
+                else {
+                    setImagePath("https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg");
                 }
             }
-            if (chattingPerson && chattingPerson.avatar && chattingPerson.avatar != "") {
-                const imageSrcPromise = getAvatarSrc(chattingPerson.avatar);
-                imageSrcPromise.then(function (data) {
-                    setImagePath(data);
-                })
+
+            if (participants && participants.length > 0 && participants.length >= 3) {
+                if (chosenRoom?.avatar && chosenRoom.avatar.length > 0) {
+                    const imageSrcPromise = getAvatarSrc(chosenRoom.avatar);
+                    imageSrcPromise.then(function (data) {
+                        setImagePath(data);
+                    })
+                }
+                else {
+                    setImagePath("https://cdn.pixabay.com/photo/2020/05/29/13/26/icons-5235125_1280.png");
+                }
             }
         }
+
+        setImageSkeleton(false);
     }
 
-    useEffect(renderAvatar, [chosenRoom]);
+    useEffect(renderAvatar, [chosenRoom, chosenRoom?.avatar]);
 
     const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -93,7 +117,18 @@ function InfoList() {
 
                         {chosenRoom && (
                             <>
-                                <img className="info-photo" src={imagePath} alt=""></img>
+                                {
+                                    imgSkeleton && (
+                                        <Skeleton animation="wave" variant="circular" width={150} height={150} className="pr-3 mt-3" />
+                                    )
+                                }
+
+                                {
+                                    !imgSkeleton && (
+                                        <img className="info-photo" src={imagePath} alt=""></img>
+                                    )
+                                }
+
                                 <div className="info-name"> {renderRoomName()} </div>
                                 <div className="info-description"> {renderDescription()} </div>
                                 <div className="w-100" style={{ backgroundColor: "#f4f7ff" }}>
