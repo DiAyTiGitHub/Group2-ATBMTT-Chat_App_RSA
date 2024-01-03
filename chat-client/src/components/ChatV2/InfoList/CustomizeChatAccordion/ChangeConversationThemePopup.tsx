@@ -55,12 +55,14 @@ function ChangeConversationNamePopup(props: any) {
                                 </Button>
                             </div>
                             <div className="flex-center w-100 p-3 justify-left flex-column">
-                                <HexColorPicker color={values?.color} onChange={function (newColor:any) {
+                                <HexColorPicker color={values?.color} onChange={function (newColor: any) {
                                     setFieldValue("color", newColor);
                                 }} />
 
                                 <div className="value" style={{ borderLeftColor: values?.color }}>
-                                    Room color will be "{values?.color}"
+                                    <h5 className="m-0 pt-2" style={{ color: values?.color }}>
+                                        Room color will be "{values?.color}"
+                                    </h5>
                                 </div>
                             </div>
 

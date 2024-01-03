@@ -9,11 +9,9 @@ import CustomizeChatIndex from "./CustomizeChatAccordion/CustomizeChatIndex";
 import ParticipantIndex from "./ParticipantAccordion/ParticipantIndex";
 import OtherActionsIndex from "./OtherActionsAccordion/OtherActionsIndex";
 import { Accordion, Skeleton } from "@mui/material";
-import InfoListModal from "./InfoListModal";
 
 function InfoList() {
     const { chatStore, accountStore, authStore } = useStore();
-    const [openModal, setOpenModal] = useState(false);
     const {
         chosenRoom,
         isLoading,
@@ -154,14 +152,6 @@ function InfoList() {
                     </>
                 )}
             </div>
-            {openModal && (
-                <InfoListModal
-                    open={openModal}
-                    handleClose={function () {
-                        setOpenModal(false);
-                    }}
-                />
-            )}
         </>
     )
 }

@@ -25,12 +25,12 @@ function LogoutPopup(props: any) {
             open={open}
             onClose={handleClose}
         >
-            <Box className='modal-container w-80 p-0 m-0' sx={{border: 0, borderRadius: "10px"}}>
-                <div className="modalContainer flex-center justify-between appHeader" style={{borderRadius: "10px 10px 0 0"}}>
+            <Box className='modal-container w-80 p-0 m-0' sx={{ border: 0, borderRadius: "10px" }}>
+                <div className="modalContainer flex-center justify-between appHeader" style={{ borderRadius: "10px 10px 0 0" }}>
                     <Typography className="p-3" variant='h5' sx={{ fontWeight: 800, color: "#fff" }}>CONFIRM</Typography>
                     <Button
                         className="btnClose m-0 p-2 br-50p mw-unset"
-                        sx={{color: "#fff"}}
+                        sx={{ color: "#fff" }}
                         onClick={function () {
                             handleClose();
                         }}
@@ -61,6 +61,7 @@ function LogoutPopup(props: any) {
 
                     <Button
                         variant="contained"
+                        color="error"
                         onClick={handleLogout}
                     >
                         <LogoutIcon

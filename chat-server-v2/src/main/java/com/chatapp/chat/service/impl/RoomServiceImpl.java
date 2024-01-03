@@ -309,6 +309,16 @@ public class RoomServiceImpl implements RoomService {
             Room res = roomRepository.save(needUpdateRoom);
 
             if (res == null) return null;
+
+            MessageDTO notification = new MessageDTO();
+            UserDTO currentUser = userService.getCurrentLoginUser();
+            notification.setContent(currentUser.getUsername() + " updated this conversation's avatar");
+            notification.setUser(currentUser);
+            notification.setMessageType(messageTypeService.getMessageTypeByName("notification"));
+            notification.setRoom(new RoomDTO(res));
+
+            messageService.sendPrivateMessage(notification);
+
             return res.getAvatar();
         } catch (Exception e) {
             System.err.println(e);
@@ -397,6 +407,7 @@ public class RoomServiceImpl implements RoomService {
 
         responseDto.setMessages(spreadMessages);
         for (MessageDTO messageDTO : spreadMessages) {
+            messageDTO.getRoom().setParticipants(roomService.getAllJoinedUsersByRoomId(messageDTO.getRoom().getId()));
             for (User userIn : joiningUsers) {
                 simpMessagingTemplate.convertAndSendToUser(userIn.getId().toString(), "/privateMessage", messageDTO);
             }

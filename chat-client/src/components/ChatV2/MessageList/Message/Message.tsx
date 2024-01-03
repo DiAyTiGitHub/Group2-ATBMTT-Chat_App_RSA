@@ -48,7 +48,7 @@ function Message(props: any) {
   const { getAvatarSrc } = accountStore;
   const [imagePath, setImagePath] = useState('https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg');
   const [bubbleBackground, setBubbleBackground] = useState(chosenRoom?.color);
-  
+
   useEffect(() => {
     bubbleBackground && setBubbleBackground(bubbleBackground);
     let bubble = document.querySelector(".message.mine .bubble-container .bubble") as HTMLElement;
@@ -73,8 +73,6 @@ function Message(props: any) {
   }
 
   useEffect(renderPhoto, [])
-
-
 
   return (
     <div

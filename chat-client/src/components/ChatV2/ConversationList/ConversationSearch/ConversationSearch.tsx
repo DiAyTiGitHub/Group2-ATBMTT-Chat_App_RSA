@@ -8,18 +8,20 @@ import GroupConversationCreator from './GroupConversationCreator/GroupConversati
 
 function ConversationSearch() {
   const { chatStore } = useStore();
-  const { searchJoinedRooms } = chatStore;
+  const { searchJoinedRooms, setIsLoading } = chatStore;
 
   const [searchKeyword, setSearchKeyword] = useState();
 
   function handleChange(event: any) {
     const { value } = event.target;
     setSearchKeyword(value);
-    handleSearch(value);
+    // handleSearch(value);
   }
 
-  function handleSearch(keyword: string) {
-    searchJoinedRooms(keyword);
+  async function handleSearch(keyword: string) {
+    setIsLoading(true);
+    await searchJoinedRooms(keyword);
+    setIsLoading(false);
   }
 
   function handleOnKeyDown(event: any) {

@@ -42,7 +42,7 @@ function ConversationList() {
                     joinedRooms.map(function (room, index) {
                       return (
                         <ConversationListItem
-                          key={index}
+                          key={room?.id}
                           room={room}
                         />
                       );

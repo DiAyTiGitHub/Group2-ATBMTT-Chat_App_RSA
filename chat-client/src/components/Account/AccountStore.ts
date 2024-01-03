@@ -63,7 +63,6 @@ class AccountStore {
   uploadUserAvatar = async (image: any) => {
     try {
       const { data } = await uploadUserAvatar(image);
-      console.log("image path: " + data);
       const imageSrc = await this.getAvatarSrc(data);
       return imageSrc;
     } catch (error) {
