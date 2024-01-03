@@ -7,6 +7,7 @@ import { Form, Formik } from "formik";
 import { toast } from "react-toastify";
 import ChooseUserItem from "../../ConversationList/ConversationSearch/GroupConversationCreator/ChooseUserItem";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import FaceBookCircularProgress from "src/common/FaceBookCircularProgress";
 
 function AddNewParticipantPopup(props: any) {
     const { open, handleClose } = props;
@@ -16,8 +17,13 @@ function AddNewParticipantPopup(props: any) {
     const { addMultipleUsersIntoGroupChat } = chatStore;
     const [joinUserIds, setJoinUserIds] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(function () {
-        getListFriendNotInRoom();
+        setIsLoading(true);
+        getListFriendNotInRoom()
+            .finally(function () {
+                setIsLoading(false);
+            })
     }, []);
 
     async function handleConfirmLeave() {
@@ -58,21 +64,27 @@ function AddNewParticipantPopup(props: any) {
                             </div>
 
                             <div className="flex-center w-100 p-3">
-                                <List dense sx={{ width: '100%' }}>
-                                    {notJoinedFriends.map((user: any, index: number) => {
-                                        const labelId = `checkbox-list-secondary-label-${index}`;
+                                {isLoading && (
+                                    <FaceBookCircularProgress />
+                                )}
 
-                                        return (
-                                            <ChooseUserItem
-                                                key={index}
-                                                labelId={labelId}
-                                                user={user}
-                                                joinUserIds={joinUserIds}
-                                                setJoinUserIds={setJoinUserIds}
-                                            />
-                                        );
-                                    })}
-                                </List>
+                                {!isLoading && (
+                                    <List dense sx={{ width: '100%' }}>
+                                        {notJoinedFriends.map((user: any, index: number) => {
+                                            const labelId = `checkbox-list-secondary-label-${index}`;
+
+                                            return (
+                                                <ChooseUserItem
+                                                    key={index}
+                                                    labelId={labelId}
+                                                    user={user}
+                                                    joinUserIds={joinUserIds}
+                                                    setJoinUserIds={setJoinUserIds}
+                                                />
+                                            );
+                                        })}
+                                    </List>
+                                )}
                             </div>
 
                             <div className='flex-center justify-right p-3 '>

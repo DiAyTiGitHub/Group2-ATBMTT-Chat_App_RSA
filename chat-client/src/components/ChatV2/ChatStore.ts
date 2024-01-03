@@ -248,6 +248,8 @@ class ChatStore {
 
       const { data } = await createGroupChat(room);
       console.log("new group chat: ", data);
+      await this.getAllJoinedRooms();
+
       this.setIsLoading(false);
       return data;
     } catch (err) {

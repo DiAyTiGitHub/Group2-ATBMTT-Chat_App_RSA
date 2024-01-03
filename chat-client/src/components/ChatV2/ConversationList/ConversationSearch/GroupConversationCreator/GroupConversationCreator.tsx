@@ -6,6 +6,7 @@ import ChooseUserItem from "./ChooseUserItem";
 import SendTimeExtensionIcon from '@mui/icons-material/SendTimeExtension';
 import ClearIcon from '@mui/icons-material/Clear';
 import { toast } from "react-toastify";
+import FaceBookCircularProgress from "src/common/FaceBookCircularProgress";
 
 function GroupConversationCreator(props: any) {
     const { open, handleClose } = props;
@@ -13,8 +14,13 @@ function GroupConversationCreator(props: any) {
     const { allFriends, currentFriends } = friendsStore;
     const { createGroupChat } = chatStore;
 
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(function () {
-        allFriends();
+        setIsLoading(true);
+        allFriends()
+            .finally(function () {
+                setIsLoading(false);
+            })
     }, []);
 
     const [conversationName, setConversationName] = useState("");
@@ -23,25 +29,31 @@ function GroupConversationCreator(props: any) {
         setConversationName(value);
     }
 
-    function handleCreateNewGroupChat() {
+    async function handleCreateNewGroupChat() {
+        setIsUpdating(true);
+        toast.info("Please await! We're handling your requirement");
+
         const sendData = {
             name: conversationName,
             joinUserIds: joinUserIds
         };
         if (sendData.joinUserIds.length < 2) {
             toast.info("Please choose at least 2 other people to use this feature");
+            setIsUpdating(false);
             return;
         }
-        console.log("checking send data...", sendData);
-        createGroupChat(sendData)
-            .then(function (data) {
-                toast.success("Create group chat " + data.name + " successfully");
-                handleClose();
-            });
+
+        const data = await createGroupChat(sendData);
+
+        toast.success("Create group chat " + data.name + " successfully");
+
+        setIsUpdating(false);
+        handleClose();
 
     }
 
     const [joinUserIds, setJoinUserIds] = useState([]);
+    const [isUpdating, setIsUpdating] = useState(false);
 
     return (
         <Modal
@@ -73,20 +85,29 @@ function GroupConversationCreator(props: any) {
                     className="w-100 py-1"
                 />
 
-                <List dense sx={{ width: '100%' }}>
-                    {currentFriends.map((user, index) => {
-                        const labelId = `checkbox-list-secondary-label-${index}`;
+                <List dense className="w-100 flex-center flex-column">
+                    {isLoading && (
+                        <FaceBookCircularProgress />
+                    )}
 
-                        return (
-                            <ChooseUserItem
-                                key={index}
-                                labelId={labelId}
-                                user={user}
-                                joinUserIds={joinUserIds}
-                                setJoinUserIds={setJoinUserIds}
-                            />
-                        );
-                    })}
+                    {!isLoading && (
+                        <>
+                            {currentFriends.map((user, index) => {
+                                const labelId = `checkbox-list-secondary-label-${index}`;
+
+                                return (
+                                    <ChooseUserItem
+                                        key={index}
+                                        labelId={labelId}
+                                        user={user}
+                                        joinUserIds={joinUserIds}
+                                        setJoinUserIds={setJoinUserIds}
+                                    />
+                                );
+                            })}
+                        </>
+                    )}
+
                 </List>
 
                 <div className='flex-center justify-right mt-2'>
@@ -96,6 +117,8 @@ function GroupConversationCreator(props: any) {
                             handleClose();
                         }}
                         className="mr-2"
+                        disabled={isUpdating}
+
                     >
                         <ClearIcon
                             className="mr-2"
@@ -106,6 +129,7 @@ function GroupConversationCreator(props: any) {
                     <Button
                         variant="contained"
                         onClick={handleCreateNewGroupChat}
+                        disabled={isUpdating}
                     >
                         <SendTimeExtensionIcon
                             className="mr-2"
