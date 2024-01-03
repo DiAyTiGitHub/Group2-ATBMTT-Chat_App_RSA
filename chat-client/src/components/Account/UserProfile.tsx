@@ -52,7 +52,12 @@ const UserProfile: React.FC = ({ }: any) => {
 
     async function handleFormSubmit(values: any) {
         const res = updateUserInfo(values);
-        setCurrentLoginUser(res);
+        setCurrentLoginUser({
+            ...currentLoginUser,
+            fullname: values?.fullname,
+            address: values?.address,
+            gender: values?.gender
+        });
     }
 
     const [imagePath, setImagePath] = useState("");
@@ -69,18 +74,18 @@ const UserProfile: React.FC = ({ }: any) => {
         whiteSpace: 'nowrap',
         width: 1,
     });
-    
 
     useEffect(function () {
         if (currentLoginUser && currentLoginUser.avatar && currentLoginUser.avatar != "") {
             const imageSrcPromise = getAvatarSrc(currentLoginUser.avatar);
             imageSrcPromise.then(function (data) {
                 setImagePath(data);
+                console.log(data);
             })
         }
         getCurrentUser();
     }, []);
-
+    // console.log(imagePath);
     return (
         <Formik
             initialValues={currentUser}

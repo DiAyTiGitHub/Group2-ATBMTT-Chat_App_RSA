@@ -52,6 +52,7 @@ class AccountStore {
       userDTO = { ...userDTO, gender: userDTO?.gender === "0" ? false : true }
       const { data } = await updateUserInfo(userDTO);
       toast.success("Successfully updated");
+      return data;
     } catch (error) {
       console.error('Error updating user info in AccountStore:', error);
       toast.error("Something went wrong :(");
