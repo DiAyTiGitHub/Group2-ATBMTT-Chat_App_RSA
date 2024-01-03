@@ -36,7 +36,7 @@ function ChangeConversationNamePopup(props: any) {
             onClose={handleClose}
         >
             <Formik
-                initialValues={{ name: chosenRoom?.color }}
+                initialValues={{ color: chosenRoom?.color }}
                 onSubmit={handleChangeConversationTheme}
             >
                 {(props) => (

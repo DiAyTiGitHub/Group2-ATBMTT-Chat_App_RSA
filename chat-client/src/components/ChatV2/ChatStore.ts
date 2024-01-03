@@ -270,10 +270,7 @@ class ChatStore {
       const { data } = await updateRoomInfo(incomingRoom);
 
       console.log("updated group chat: ", data);
-      this.chosenRoom.color = data.color;
-      this.chosenRoom.name = data.name;
-      this.chosenRoom = { ...this.chosenRoom };
-      console.log("final room chat: ", data);
+      
       await this.getAllJoinedRooms();
       this.setIsLoading(false);
 
