@@ -87,26 +87,24 @@ function InfoList() {
                             <>
                                 <img className="info-photo" src={imagePath} alt=""></img>
                                 <div className="info-name"> {renderRoomName()} </div>
-                                <div className="w-100" style={{backgroundColor: "#f6f6f6"}}>
-                                    <div className="flex-center w-100 pb-2 pt-2">
+                                <div className="w-100" style={{ backgroundColor: "#f4f7ff" }}>
+                                    <div className="flex-center w-100 p-1">
                                         <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
                                     </div>
 
-                                    <div className="flex-center w-100 participants-container position-relative pb-2">
+                                    <div className="flex-center w-100 participants-container position-relative p-1">
                                         <ParticipantIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
                                     </div>
 
-                                    <div className="flex-center w-100">
-                                        <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
-                                    </div>
+                                    {
+                                        !(chosenRoom?.roomType?.name === "private") && (
+                                            <div className="flex-center w-100 p-1">
+                                                <OtherActionsIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
+                                            </div>
+                                        )
+                                    }
                                 </div>
 
-                                {/* <div className="info-icons">
-                                    <IconButton>
-                                        <AccountCircleIcon />
-                                    </IconButton>
-                                </div> */}
-                                {/* <Popup title="test title" content="lorem ipsum something something" confirmation="true"></Popup> */}
                             </>
                         )}
                     </>

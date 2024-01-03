@@ -1,9 +1,28 @@
 import { observer } from "mobx-react";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Modal, Box, Typography, TextField, Button } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { useStore } from "src/stores";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Field, Form, Formik } from "formik";
+import { toast } from "react-toastify";
 
-function ConfirmLogoutPopup(props: any) {
+function ConfirmLeavePopup(props: any) {
     const { open, handleClose } = props;
+    const [isUpdating, setIsUpdating] = useState(false);
+    const { chatStore } = useStore();
+    const { chosenRoom, leaveConversation } = chatStore;
+
+    async function handleConfirmLeave() {
+        setIsUpdating(true);
+        toast.info("Please await! We're handling your requirement");
+
+        await leaveConversation();
+
+        toast.success("You left this conversation!");
+        setIsUpdating(false);
+        handleClose();
+    }
 
     return (
         <Modal
@@ -11,17 +30,15 @@ function ConfirmLogoutPopup(props: any) {
             open={open}
             onClose={handleClose}
         >
-            <>
-            </>
-            {/* <Formik
+            <Formik
                 initialValues={{ name: chosenRoom?.name }}
-                onSubmit={handleChangeConversationName}
+                onSubmit={handleConfirmLeave}
             >
                 {(props) => (
                     <Form autoComplete='off'>
                         <Box className='modal-container w-80 p-0 m-0' sx={{ border: 0, borderRadius: "10px" }}>
                             <div className="modalContainer flex-center justify-between appHeader" style={{ borderRadius: "10px 10px 0 0" }}>
-                                <Typography className="p-3" variant='h5' sx={{ fontWeight: 800, color: "#fff" }}>MODAL</Typography>
+                                <Typography className="p-3" variant='h5' sx={{ fontWeight: 800, color: "#fff" }}>Confirm!!!</Typography>
                                 <Button
                                     className="btnClose m-0 p-2 br-50p mw-unset"
                                     sx={{ color: "#fff" }}
@@ -34,25 +51,20 @@ function ConfirmLogoutPopup(props: any) {
                             </div>
 
                             <div className="flex-center w-100 p-3">
-
-                                <Field
-                                    as={TextField}
-                                    label="Conversation name"
-                                    name="name"
-                                    placeholder="Enter new conversation name"
-                                    fullWidth
-                                    required
-                                    disabled={isUpdating}
-                                />
-
+                                <h6 className="m-0 p-0 text-center">
+                                    Are you sure you want to leave this conversation?
+                                    <br></br>
+                                    You can't go back until your friends in this conversation add you back.
+                                </h6>
                             </div>
 
-                            <div className='flex-center justify-right m-2 '>
+                            <div className='flex-center justify-right p-3 '>
                                 <Button
                                     variant="contained"
                                     onClick={function () {
                                         handleClose();
                                     }}
+                                    className="mr-2 flex-center"
                                     disabled={isUpdating}
                                 >
                                     <ClearIcon
@@ -63,22 +75,24 @@ function ConfirmLogoutPopup(props: any) {
 
                                 <Button
                                     variant="contained"
-                                    color="success"
+                                    color="error"
                                     disabled={isUpdating}
-                                    className="mr-2"
+                                    className="flex-center"
+                                    type="submit"
                                 >
                                     <LogoutIcon
                                         className="mr-2"
                                     />
-                                    Update
+                                    Still
+                                    Leave
                                 </Button>
                             </div>
                         </Box>
                     </Form>
                 )}
-            </Formik> */}
+            </Formik>
         </Modal >
     );
 }
 
-export default memo(observer(ConfirmLogoutPopup));
+export default memo(observer(ConfirmLeavePopup));
