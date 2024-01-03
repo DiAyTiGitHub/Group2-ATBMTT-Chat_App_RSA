@@ -106,17 +106,29 @@ public class RoomServiceImpl implements RoomService {
         if (dto.getCode() != null)
             entity.setCode(dto.getCode());
 
-        if (dto.getAvatar() != null)
+        boolean isUpdateAvatar = false;
+        if (dto.getAvatar() != null) {
             entity.setAvatar(dto.getAvatar());
+            isUpdateAvatar = true;
+        }
 
-        if (dto.getColor() != null)
+        boolean isUpdateColor = false;
+        if (dto.getColor() != null) {
+            isUpdateColor = true;
             entity.setColor(dto.getColor());
+        }
 
-        if (dto.getName() != null)
+        boolean isUpdateName = false;
+        if (dto.getName() != null) {
+            isUpdateName = true;
             entity.setName(dto.getName());
+        }
 
-        if (dto.getDescription() != null)
+        boolean isUpdateDescription = false;
+        if (dto.getDescription() != null) {
+            isUpdateDescription = true;
             entity.setDescription(dto.getDescription());
+        }
 
         if (dto.getRoomType() != null && dto.getRoomType().getId() != entity.getRoomType().getId()) {
             RoomType roomType = roomTypeService.getRoomTypeEntityById(dto.getRoomType().getId());
@@ -125,8 +137,26 @@ public class RoomServiceImpl implements RoomService {
         }
 
         Room responseEntity = roomRepository.save(entity);
+        RoomDTO responseDto = new RoomDTO(responseEntity);
 
-        return new RoomDTO(responseEntity);
+        MessageDTO notification = new MessageDTO();
+        UserDTO currentUser = userService.getCurrentLoginUser();
+        if (isUpdateDescription)
+            notification.setContent(currentUser.getUsername() + " updated this conversation's description");
+        else if (isUpdateAvatar)
+            notification.setContent(currentUser.getUsername() + " updated this conversation's avatar");
+        else if (isUpdateColor)
+            notification.setContent(currentUser.getUsername() + " updated this conversation's color");
+        else if (isUpdateName)
+            notification.setContent(currentUser.getUsername() + " updated this conversation's name");
+
+        notification.setUser(currentUser);
+        notification.setMessageType(messageTypeService.getMessageTypeByName("notification"));
+        notification.setRoom(responseDto);
+
+        messageService.sendPrivateMessage(notification);
+
+        return responseDto;
     }
 
     @Override
