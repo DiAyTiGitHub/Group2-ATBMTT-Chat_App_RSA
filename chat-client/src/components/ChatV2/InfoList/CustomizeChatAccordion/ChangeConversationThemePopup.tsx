@@ -61,7 +61,7 @@ function ChangeConversationNamePopup(props: any) {
 
                                 <div className="value" style={{ borderLeftColor: values?.color }}>
                                     <h5 className="m-0 pt-2" style={{ color: values?.color }}>
-                                        Room color will be "{values?.color}"
+                                        Conversation's color will be "{values?.color}"
                                     </h5>
                                 </div>
                             </div>

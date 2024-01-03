@@ -305,7 +305,7 @@ public class RoomServiceImpl implements RoomService {
             Room needUpdateRoom = roomRepository.findById(roomId).orElse(null);
             if (needUpdateRoom == null) return null;
 
-            needUpdateRoom.setAvatar(nameFile);
+            needUpdateRoom.setAvatar(url);
             Room res = roomRepository.save(needUpdateRoom);
 
             if (res == null) return null;

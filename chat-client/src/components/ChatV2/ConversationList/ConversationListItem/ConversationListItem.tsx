@@ -59,13 +59,14 @@ function ConversationListItem(props: any) {
           setImagePath(data);
         })
       }
-    } else {
-      setImagePath("https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg");
+      else {
+        setImagePath("https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg");
+      }
     }
 
     if (participants && participants.length > 0 && participants.length >= 3) {
-      if (chosenRoom?.avatar && chosenRoom.avatar.length > 0) {
-        const imageSrcPromise = getAvatarSrc(chosenRoom.avatar);
+      if (avatar && avatar.length > 0) {
+        const imageSrcPromise = getAvatarSrc(avatar);
         imageSrcPromise.then(function (data) {
           setImagePath(data);
         })
