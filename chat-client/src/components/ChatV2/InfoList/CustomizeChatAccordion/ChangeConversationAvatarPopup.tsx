@@ -22,7 +22,6 @@ function ChangeConversationNamePopup(props: any) {
     }
 
     return (
-
         <Modal
             className="max-z-index"
             open={open}

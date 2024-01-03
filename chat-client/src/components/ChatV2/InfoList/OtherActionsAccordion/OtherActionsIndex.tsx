@@ -33,18 +33,6 @@ function ParticipantIndex(props: any) {
                     <Typography>Other Actions</Typography>
                 </AccordionSummary>
                 <AccordionDetails className="m-1 p-0">
-                    {/* <button
-                        className="w-100 m-0 p-2"
-                        onClick={() => {setOpenModal(true)}}
-                    >
-                        Add new participant
-                    </button>
-                    <button
-                        className="w-100 m-0 p-2"
-                        onClick={() => {setOpenModal(true)}}
-                    >
-                        Change conversation theme
-                    </button> */}
                     <div className='list-item w-100' onClick={() => { setOpenModal(true) }}>
                         <PersonAddIcon className='mr-2' />
                         Add new participant
