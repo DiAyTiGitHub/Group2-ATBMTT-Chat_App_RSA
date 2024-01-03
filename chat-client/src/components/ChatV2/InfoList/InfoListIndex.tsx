@@ -23,6 +23,14 @@ function InfoList() {
 
     const { getAvatarSrc } = accountStore;
 
+    function renderDescription() {
+        if (!chosenRoom) return "No info";
+        if (!chosenRoom?.description || chosenRoom?.description.length === 0 || chosenRoom?.description.trim() === '') {
+            return "";
+        }
+        return chosenRoom.description;
+    }
+
     function renderRoomName() {
         if (!chosenRoom) return "No info";
         if (!chosenRoom?.name || chosenRoom?.name.length === 0 || chosenRoom?.name.trim() === '') {
@@ -87,6 +95,7 @@ function InfoList() {
                             <>
                                 <img className="info-photo" src={imagePath} alt=""></img>
                                 <div className="info-name"> {renderRoomName()} </div>
+                                <div className="info-description"> {renderDescription()} </div>
                                 <div className="w-100" style={{ backgroundColor: "#f4f7ff" }}>
                                     <div className="flex-center w-100 p-1">
                                         <CustomizeChatIndex expanded={expanded} handleChangeStateAccordion={handleChangeStateAccordion} />
