@@ -10,8 +10,6 @@ import { useStore } from 'src/stores';
 import { ConstructionOutlined } from '@mui/icons-material';
 import MessageListLoadingSkeleton from './MessageListLoadingSkeleton';
 
-
-
 function MessageList(props: any) {
   const ref = useRef<HTMLDivElement>(null);
   const { chatStore } = useStore();

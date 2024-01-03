@@ -415,11 +415,10 @@ public class RoomServiceImpl implements RoomService {
         if (unjoinRoom == null) return null;
         UserRoom userRoom = userRoomRepository.findByUserIdAndRoomId(currentUser.getId(), unjoinRoom.getId());
         if (userRoom == null) return null;
-        userRoomService.deleteUserRoom(userRoom.getId());
+
         unjoinRoom = roomRepository.findById(groupChatId).orElse(null);
         RoomDTO res = new RoomDTO(unjoinRoom);
         res.setParticipants(getAllJoinedUsersByRoomId(res.getId()));
-
         //notify other users that an user had left this conversation
         MessageDTO leftMessageDto = new MessageDTO();
         leftMessageDto.setRoom(res);
@@ -427,6 +426,8 @@ public class RoomServiceImpl implements RoomService {
         leftMessageDto.setUser(new UserDTO(currentUser));
         leftMessageDto.setMessageType(messageTypeService.getMessageTypeByName("left"));
         messageService.sendPrivateMessage(leftMessageDto);
+
+        userRoomService.deleteUserRoom(userRoom.getId());
 
         return res;
     }
@@ -493,6 +494,21 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return res;
+    }
 
+    @Override
+    public RoomDTO addMultipleUsersIntoGroupChat(UUID[] userIds, UUID roomId) {
+        if (userIds == null) return null;
+        for (UUID userId : userIds) {
+            addUserIntoGroupChat(userId, roomId);
+        }
+
+        Room updatedRoom = roomRepository.findById(roomId).orElse(null);
+        if (updatedRoom == null)
+            return null;
+
+        RoomDTO response = new RoomDTO(updatedRoom);
+        response.setParticipants(getAllJoinedUsersByRoomId(updatedRoom.getId()));
+        return response;
     }
 }

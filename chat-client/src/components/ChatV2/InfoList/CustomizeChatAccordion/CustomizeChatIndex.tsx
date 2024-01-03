@@ -12,16 +12,18 @@ import { useState } from 'react';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import PhotoIcon from '@mui/icons-material/Photo';
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import ChangeConversationNamePopup from './ChangeConversationNamePopup';
 import ChangeConversationAvatarPopup from './ChangeConversationAvatarPopup';
 import ChangeConversationThemePopup from './ChangeConversationThemePopup';
-
+import ChangeConversationDescriptionPopup from './ChangeConversationDescriptionPopup';
 function CustomizeChatIndex(props: any) {
     const { expanded, handleChangeStateAccordion } = props;
 
     const [openChangeName, setOpenChangeName] = useState(false);
     const [openChangeTheme, setOpenChangeTheme] = useState(false);
     const [openChangeAvatar, setOpenChangeAvatar] = useState(false);
+    const [openChangeDescription, setOpenChangeDescription] = useState(false);
 
     return (
         <>
@@ -53,6 +55,10 @@ function CustomizeChatIndex(props: any) {
                         <PhotoIcon className='mr-2' />
                         Change conversation photo
                     </div>
+                    <div className='list-item w-100' onClick={() => { setOpenChangeDescription(true) }}>
+                        <FormatQuoteIcon className='mr-2' />
+                        Change conversation description
+                    </div>
                 </AccordionDetails>
             </Accordion>
 
@@ -82,7 +88,16 @@ function CustomizeChatIndex(props: any) {
                     }}
                 />
             )}
-
+            {
+            openChangeDescription && (
+                <ChangeConversationDescriptionPopup
+                    open={openChangeDescription}
+                    handleClose={() => {
+                        setOpenChangeDescription(false);
+                    }}
+                />
+            )
+            }
         </>
     );
 }

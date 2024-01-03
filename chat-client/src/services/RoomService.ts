@@ -23,9 +23,14 @@ export function getListFriendNotInRoom(roomId: string) {
     return axios.get(url);
 }
 
-export function addUserIntoGroupChat(userId: string, roomId: string) {
+export function addSingleUserIntoGroupChat(userId: string, roomId: string) {
     const url = API_PATH + "/group/" + userId + "/" + roomId;
     return axios.post(url);
+}
+
+export function addMultipleUsersIntoGroupChat(userIds: any, roomId: string) {
+    const url = API_PATH + "/group/" + roomId;
+    return axios.post(url, userIds);
 }
 
 export function unjoinAnGroupChat(roomId: string) {
@@ -33,7 +38,7 @@ export function unjoinAnGroupChat(roomId: string) {
     return axios.delete(url);
 }
 
-export function uploadRoomAvatar(image: any, roomId:string) {
+export function uploadRoomAvatar(image: any, roomId: string) {
     const url = API_PATH + '/avatar/' + roomId;
 
     const formData = new FormData();

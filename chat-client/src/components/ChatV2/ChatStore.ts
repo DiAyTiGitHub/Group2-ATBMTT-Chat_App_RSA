@@ -7,7 +7,11 @@ import { getAllJoinedRooms } from "src/services/UserService";
 import {
   searchJoinedRooms,
   createGroupChat,
-  updateRoomInfo
+  updateRoomInfo,
+  unjoinAnGroupChat,
+  addSingleUserIntoGroupChat,
+  getListFriendNotInRoom,
+  addMultipleUsersIntoGroupChat
 } from "src/services/RoomService";
 import RSAService from "../Auth/RSAService";
 
@@ -233,15 +237,20 @@ class ChatStore {
 
   createGroupChat = async (room: any) => {
     try {
+      this.setIsLoading(false);
       if (!this.stompClient) {
         toast.error(
           "You haven't connected to chat server! Please login again!"
         );
+        this.setIsLoading(false);
         return;
       }
 
       const { data } = await createGroupChat(room);
       console.log("new group chat: ", data);
+      await this.getAllJoinedRooms();
+
+      this.setIsLoading(false);
       return data;
     } catch (err) {
       console.log(err);
@@ -259,6 +268,7 @@ class ChatStore {
         toast.error(
           "You haven't connected to chat server! Please login again!"
         );
+        this.setIsLoading(false);
         return;
       }
 
@@ -266,11 +276,115 @@ class ChatStore {
 
       if (room?.color) incomingRoom.color = room.color;
       if (room?.name) incomingRoom.name = room.name;
+      if (room?.description) incomingRoom.description = room.description;
 
       const { data } = await updateRoomInfo(incomingRoom);
 
       console.log("updated group chat: ", data);
-      
+
+      await this.getAllJoinedRooms();
+      this.setIsLoading(false);
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Update this conversation info fail, please try again!");
+      throw new Error(err);
+    }
+  }
+
+  leaveConversation = async () => {
+    try {
+      this.setIsLoading(true);
+
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        this.setIsLoading(false);
+        return;
+      }
+
+      const { data } = await unjoinAnGroupChat(this.chosenRoom?.id);
+
+      console.log("updated group chat: ", data);
+
+      await this.getAllJoinedRooms();
+      this.setIsLoading(false);
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Update this conversation info fail, please try again!");
+      throw new Error(err);
+    }
+  }
+
+  addNewParticipant = async (userId: string) => {
+    try {
+      this.setIsLoading(true);
+
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        this.setIsLoading(false);
+        return;
+      }
+
+      const { data } = await addSingleUserIntoGroupChat(userId, this.chosenRoom?.id);
+
+      console.log("updated group chat: ", data);
+
+      await this.getAllJoinedRooms();
+      this.setIsLoading(false);
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Update this conversation info fail, please try again!");
+      throw new Error(err);
+    }
+  }
+
+  notJoinedFriends = [];
+  getListFriendNotInRoom = async () => {
+    try {
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        return;
+      }
+
+      const { data } = await getListFriendNotInRoom(this.chosenRoom?.id);
+
+      this.notJoinedFriends = data;
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      toast.error("Cannot get list unjoined friends, please try again!");
+      throw new Error(err);
+    }
+  }
+
+  addMultipleUsersIntoGroupChat = async (userIds: any) => {
+    try {
+      this.setIsLoading(true);
+
+      if (!this.stompClient) {
+        toast.error(
+          "You haven't connected to chat server! Please login again!"
+        );
+        this.setIsLoading(false);
+        return;
+      }
+
+      const { data } = await addMultipleUsersIntoGroupChat(userIds, this.chosenRoom?.id);
+
+      console.log("updated group chat: ", data);
+
       await this.getAllJoinedRooms();
       this.setIsLoading(false);
 

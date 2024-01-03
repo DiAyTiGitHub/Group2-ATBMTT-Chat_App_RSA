@@ -95,7 +95,10 @@ class AuthStore {
 
     onError = (err: any) => {
         console.error(err);
-        toast.error("Connect to chat server error, please login again!");
+        toast.error("Connect to chat server error, please login again! Auto redirect in 5 seconds...", { autoClose: 5000 });
+        setTimeout(function () {
+            window.location.href = "/";
+        }, 5000);
     }
 
     onReceivedNotification = (payload: any) => {
