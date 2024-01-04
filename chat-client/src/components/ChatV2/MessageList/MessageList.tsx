@@ -39,9 +39,9 @@ function MessageList(props: any) {
       let prevType = previous && previous.messageType.name;
       let type = current.messageType.name;
       let nextType = next && next.messageType.name;
-      let prevUser = previous && prevType=="chat" ? previous.user.username : null;
-      let currUser = type=="chat" ? current.user.username : null;
-      let nextUser = next && nextType=="chat" ? next.user.username : null;
+      let prevUser = previous && prevType == "chat" ? previous.user.username : null;
+      let currUser = type == "chat" ? current.user.username : null;
+      let nextUser = next && nextType == "chat" ? next.user.username : null;
       let isMine = current.user.username === MY_USER_ID;
       let startsSequence = true;
       let endsSequence = false;
@@ -72,13 +72,17 @@ function MessageList(props: any) {
     }
     return tempArray;
   }
-  scrollToBottom();
+
+  useEffect(function () {
+    scrollToBottom();
+
+  }, [chosenRoom?.messages?.length, chosenRoom]);
 
   return (
     <div className="message-list">
       <Toolbar title="Conversation Title" />
 
-      <div className="message-list-container" ref={ref}>
+      <div className="message-list-container" id="messageListContainer" ref={ref}>
         {isLoading ? (
           <MessageListLoadingSkeleton />
         ) : (

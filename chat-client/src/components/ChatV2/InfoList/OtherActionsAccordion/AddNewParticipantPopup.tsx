@@ -70,6 +70,12 @@ function AddNewParticipantPopup(props: any) {
 
                                 {!isLoading && (
                                     <List dense sx={{ width: '100%' }}>
+                                        {(!notJoinedFriends || notJoinedFriends.length <= 0) && (
+                                            <div className="flex-center w-100">
+                                                <p className="p-0 m-0 w-100 text-center">All your friends have joined this conversation! Let's get more friends</p>
+                                            </div>
+                                        )}
+
                                         {notJoinedFriends.map((user: any, index: number) => {
                                             const labelId = `checkbox-list-secondary-label-${index}`;
 

@@ -17,9 +17,9 @@ public class Room {
     private UUID id;
     @Column
     private String code;
-    @Column
+    @Column(columnDefinition = "longtext")
     private String name;
-    @Column
+    @Column(columnDefinition = "longtext")
     private String description;
     @Column
     private Date createDate;

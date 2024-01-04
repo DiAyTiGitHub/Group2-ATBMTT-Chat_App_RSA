@@ -497,7 +497,7 @@ public class RoomServiceImpl implements RoomService {
         for (UserDTO joinedUser : joinedUsers) {
             joinedUserIds.add(joinedUser.getId());
         }
-        Set<UserDTO> friendList = userService.getAllUsers();
+        Set<UserDTO> friendList = userService.getAllFiends();
         Set<UserDTO> res = new HashSet<>();
 
         for (UserDTO friendDto : friendList) {

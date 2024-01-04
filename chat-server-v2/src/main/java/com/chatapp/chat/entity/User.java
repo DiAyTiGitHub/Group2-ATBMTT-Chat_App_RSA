@@ -28,7 +28,7 @@ public class User implements Serializable {
     @Column
     @JsonIgnore
     private String password;
-    @Column
+    @Column(columnDefinition = "longtext")
     private String address;
     @Column
     private Boolean gender; // 0 - Female, 1 - Male

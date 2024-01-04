@@ -211,7 +211,6 @@ class ChatStore {
       this.joinedRooms = data;
       this.chosenRoom = data[0];
 
-
     } catch (error) {
       console.log(error);
       toast.error("Load conversation fail, please try again!");
@@ -285,6 +284,8 @@ class ChatStore {
 
       const { data } = await updateRoomInfo(incomingRoom);
 
+      await this.getAllJoinedRooms();
+
       console.log("updated group chat: ", data);
 
       // await this.getAllJoinedRooms();
@@ -293,6 +294,7 @@ class ChatStore {
       return data;
     } catch (err) {
       console.log(err);
+      this.setIsLoading(false);
       toast.error("Update this conversation info fail, please try again!");
       throw new Error(err);
     }
@@ -320,6 +322,7 @@ class ChatStore {
       return data;
     } catch (err) {
       console.log(err);
+      this.setIsLoading(false);
       toast.error("Update this conversation info fail, please try again!");
       throw new Error(err);
     }
@@ -347,6 +350,7 @@ class ChatStore {
       return data;
     } catch (err) {
       console.log(err);
+      this.setIsLoading(false);
       toast.error("Update this conversation info fail, please try again!");
       throw new Error(err);
     }
@@ -394,6 +398,7 @@ class ChatStore {
       return data;
     } catch (err) {
       console.log(err);
+      this.setIsLoading(false);
       toast.error("Update this conversation info fail, please try again!");
       throw new Error(err);
     }
@@ -413,6 +418,7 @@ class ChatStore {
 
       return imageSrc;
     } catch (error) {
+      this.setIsLoading(false);
       console.error('Error updating user info in AccountStore:', error);
       // Xử lý lỗi nếu cần thiết
       throw error;
