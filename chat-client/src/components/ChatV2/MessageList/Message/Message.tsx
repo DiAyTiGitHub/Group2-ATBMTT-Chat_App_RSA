@@ -51,16 +51,18 @@ function Message(props: any) {
 
   useEffect(() => {
     bubbleBackground && setBubbleBackground(bubbleBackground);
-    let bubble = document.querySelector(".message.mine .bubble-container .bubble") as HTMLElement;
-    if (bubble) {
-      bubble.style.backgroundColor = bubbleBackground;
-
-      if (lightOrDark(bubbleBackground)) {
-        bubble.style.color = "black";
-      } else {
-        bubble.style.color = "white";
+    let bubble = document.querySelectorAll(".message.mine .bubble-container .bubble") as NodeListOf<HTMLElement>;
+    bubble.forEach(item => {
+      if (item) {
+        item.style.backgroundColor = bubbleBackground;
+        if (lightOrDark(bubbleBackground)) {
+          item.style.color = "black";
+        } else {
+          item.style.color = "white";
+        }
       }
-    }
+    })
+    console.log(chosenRoom?.color)
   }, []);
 
   function renderPhoto() {
