@@ -34,8 +34,6 @@ const UserProfile: React.FC = ({ }: any) => {
 
     const [imagePath, setImagePath] = useState("");
 
-    console.log("viewProfile: ", viewingProfile);
-
     useEffect(function () {
         if (viewingProfile && viewingProfile?.avatar && viewingProfile.avatar != "") {
             const imageSrcPromise = getAvatarSrc(viewingProfile.avatar);
@@ -43,7 +41,7 @@ const UserProfile: React.FC = ({ }: any) => {
                 setImagePath(data);
             })
         }
-    }, []);
+    }, [viewingProfile, viewingProfile?.avatar]);
 
     return useObserver(() => (
         <>

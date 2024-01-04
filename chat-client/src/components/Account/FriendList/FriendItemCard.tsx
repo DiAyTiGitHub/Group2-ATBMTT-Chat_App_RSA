@@ -20,23 +20,23 @@ function FiendItemCard(props: any) {
                 setImagePath(data);
             })
         }
-    }, []);
+    }, [friend, friend?.id, friend?.avatar]);
 
     return (
         <Grid item xs={12} sm={3}>
             <div className="friendBlock">
                 <img src={imagePath} alt="user image" className="object-cover" />
-                <div className="friendInfo">
-                    <h6 className="friendName">
+                <div className="friendInfo flex-column justify-between">
+                    <h6 className="friendName flex-1 h-100">
                         {friend?.fullname ? (
                             <>
-                                {friend?.username} - '{friend?.fullname}'
+                                {friend?.username} - {friend?.fullname}
                             </>
                         ) : (
                             <>{friend?.username}</>
                         )}
                     </h6>
-                    <div className="buttonContainer">
+                    <div className="buttonContainer ">
                         <Button
                             fullWidth
                             className="pointer mb-2"

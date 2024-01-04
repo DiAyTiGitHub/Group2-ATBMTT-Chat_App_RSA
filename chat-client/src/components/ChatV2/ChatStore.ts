@@ -46,6 +46,9 @@ class ChatStore {
         encryptedChar[i] = RSAService.mod(charCode, e, n);
       }
       let encryptedString = encryptedChar.join(',');
+
+      console.log("Encrypted message: ", encryptedString);
+
       return (encryptedString);
     }
     catch (error) {

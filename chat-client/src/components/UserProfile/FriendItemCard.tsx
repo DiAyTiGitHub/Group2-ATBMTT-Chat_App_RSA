@@ -20,7 +20,7 @@ function FiendItemCard(props: any) {
                 setImagePath(data);
             })
         }
-    }, []);
+    }, [friend, friend?.id, friend?.avatar]);
 
     return (
         <Grid item xs={12} sm={3}>
@@ -40,7 +40,7 @@ function FiendItemCard(props: any) {
                         <Button
                             fullWidth
                             className="pointer mb-2"
-                            onClick={() => navigate("/chat")}
+                            onClick={() => navigate(`/user-profile?userId=${friend?.id}`)}
                             type="button"
                         >
                             <PermContactCalendarIcon className="mr-2" />

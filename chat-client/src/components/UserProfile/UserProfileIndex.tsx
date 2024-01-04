@@ -35,7 +35,7 @@ function UserProfileIndex() {
                     setIsLoading(false);
                 })
         }
-    }, []);
+    }, [userId]);
 
     return (
         <div className="app flex-center w-100 p-0 m-0 flex-1 align-start">

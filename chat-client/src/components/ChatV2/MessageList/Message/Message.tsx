@@ -62,7 +62,6 @@ function Message(props: any) {
         }
       }
     })
-    console.log(chosenRoom?.color)
   }, []);
 
   function renderPhoto() {
